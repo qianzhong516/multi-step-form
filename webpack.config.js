@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const postCssModulesValues = require('postcss-modules-values');
 
 module.exports = {
     mode: 'development',
@@ -35,6 +36,30 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                 },
+            },
+            {
+                test: /\.css$/i,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: {
+                                // enable css-loader for files end with .css instead of .module.css
+                                auto: (resourcePath) =>
+                                    resourcePath.endsWith('.css'),
+                            },
+                        },
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [postCssModulesValues],
+                            },
+                        },
+                    },
+                ],
             },
         ],
     },

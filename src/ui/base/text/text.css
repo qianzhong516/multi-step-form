@@ -1,0 +1,29 @@
+@value colors: "../../../styles/colors.css";
+@value primaryColor, secondaryColor, tertiaryColor from colors;
+@import url('../../../styles/fonts.css');
+
+.primary,
+.secondary,
+.tertiary {
+    font-family: ubuntu-regular;
+}
+
+.primary {
+    color: primaryColor;
+}
+
+.secondary {
+    color: secondaryColor;
+}
+
+.tertiary {
+    color: tertiaryColor;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.title {
+    font-family: ubuntu-bold;
+}

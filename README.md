@@ -18,3 +18,4 @@ npm run dev
 
 -   [] use miniExtractCssPlugin or stay with style-loader?
 -   [] move fonts to the `assets/` folder after build
+-   [] render text color based on theme

@@ -1,19 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Text } from '../text';
+import { InternalText as Typography } from '../text';
 
 const meta = {
-    title: 'Base/Text',
-    component: Text,
+    title: 'Base/Typography',
+    component: Typography,
     tags: ['autodocs'],
-} satisfies Meta<typeof Text>;
+} satisfies Meta<typeof Typography>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Text: Story = {
     args: {
+        type: 'text',
         variant: 'primary',
-        size: 'small',
+        size: 'large',
+        children: 'Hello World',
     },
 };

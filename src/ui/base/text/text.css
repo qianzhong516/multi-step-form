@@ -2,12 +2,6 @@
 @value primaryColor, secondaryColor, tertiaryColor from colors;
 @import url('../../../styles/fonts.css');
 
-.primary,
-.secondary,
-.tertiary {
-    font-family: ubuntu-regular;
-}
-
 .primary {
     color: primaryColor;
 }
@@ -20,10 +14,30 @@
     color: tertiaryColor;
 }
 
+.regular {
+    font-weight: 400;
+}
+
 .bold {
     font-weight: 600;
 }
 
+.text {
+    font-family: ubuntu-regular;
+}
+
 .title {
     font-family: ubuntu-bold;
+}
+
+.large {
+    font-size: 32px;
+}
+
+.medium {
+    font-size: 16px;
+}
+
+.small {
+    font-size: 12px;
 }

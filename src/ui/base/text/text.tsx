@@ -13,7 +13,7 @@ type TextProps = {
 };
 
 /**
- * Do not export for external use.
+ * Do not export for external use. InternalText is for internal use only within this package.
  */
 export const InternalText = ({
     type,
@@ -31,15 +31,17 @@ export const InternalText = ({
         className,
     });
 
-    switch (size) {
-        case 'large':
-            return <h1 className={classNames}>{children}</h1>;
-        case 'medium':
-            return <h2 className={classNames}>{children}</h2>;
-        case 'small':
-            return <h3 className={classNames}>{children}</h3>;
-        default:
-            break;
+    if (type === 'title') {
+        switch (size) {
+            case 'large':
+                return <h1 className={classNames}>{children}</h1>;
+            case 'medium':
+                return <h2 className={classNames}>{children}</h2>;
+            case 'small':
+                return <h3 className={classNames}>{children}</h3>;
+            default:
+                break;
+        }
     }
 
     return <div className={classNames}>{children}</div>;

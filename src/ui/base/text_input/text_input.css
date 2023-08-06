@@ -1,0 +1,31 @@
+@value colors: "../../../styles/colors.css";
+@value primaryColor, secondaryColor, highlightColor, placeholderColor from colors;
+
+.input {
+    font-family: ubuntu-bold;
+    color: primaryColor;
+    font-size: 16px;
+    padding: 0 8px;
+    border: 1px solid secondaryColor;
+    border-radius: 8px;
+    line-height: 36px;
+}
+
+.input::placeholder {
+    color: placeholderColor;
+}
+
+.input:focus,
+.input:focus-within,
+.input:focus-visible {
+    outline: none;
+    border-color: highlightColor;
+}
+
+.title {
+    margin-bottom: 5px;
+}
+
+.fullWidth {
+    width: 100%;
+}

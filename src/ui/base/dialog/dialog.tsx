@@ -1,12 +1,11 @@
-import type { Step } from '../../../../src/types';
 import styles from './dialog.css';
 import { StepCard } from './step_card/step_card';
 import { Title, Text } from '../text/text';
 import { Button } from '../button/button';
 
-type DialogProps = {
-    currentStep: Step;
-    steps: Record<string, string>;
+type DialogProps<Step extends string, CurrentStep extends Step> = {
+    currentStep: CurrentStep;
+    steps: Record<Step, string>;
 } & ContentProps;
 
 type ContentProps = {
@@ -23,11 +22,11 @@ type FooterProps = {
     onBack?(): void;
 };
 
-export const Dialog = ({
+export const Dialog = <Step extends string, CurrentStep extends Step>({
     currentStep,
     steps,
     ...contentProps
-}: DialogProps) => {
+}: DialogProps<Step, CurrentStep>) => {
     return (
         <ModalLayer>
             <div className={styles.dialog}>
@@ -38,10 +37,10 @@ export const Dialog = ({
     );
 };
 
-const Sidebar = ({
+const Sidebar = <Step extends string, CurrentStep extends Step>({
     currentStep,
     steps,
-}: Pick<DialogProps, 'currentStep' | 'steps'>) => {
+}: Pick<DialogProps<Step, CurrentStep>, 'currentStep' | 'steps'>) => {
     return (
         <div className={styles.sidebar}>
             {(Object.keys(steps) as Array<keyof typeof steps>).map(

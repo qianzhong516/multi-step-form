@@ -1,12 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {} from '@storybook/addon-controls';
-import { Dialog as Component, Footer } from '../dialog';
+import { Dialog as Component } from '../dialog';
 import { Placeholder } from '../../placeholder/placeholder';
+
+const currentStepOptions = ['personalInfo', 'selectPlan', 'addons', 'summary'];
 
 const meta = {
     title: 'Base/Dialog',
     component: Component,
     tags: ['autodocs'],
+    argTypes: {
+        currentStep: {
+            options: currentStepOptions,
+            control: {
+                type: 'select',
+            },
+            table: {
+                type: { summary: 'select' },
+                defaultValue: { summary: currentStepOptions[0] },
+            },
+        },
+    },
 } satisfies Meta<typeof Component>;
 
 export default meta;
@@ -15,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Dialog: Story = {
     args: {
-        currentStep: 'personalInfo',
+        currentStep: currentStepOptions[0],
         steps: {
             personalInfo: 'Your info',
             selectPlan: 'Select plan',

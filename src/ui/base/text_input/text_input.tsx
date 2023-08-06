@@ -7,28 +7,29 @@ export type TextInputProps = {
     title?: string;
     placeholder?: string;
     className?: string;
-    stretch?: boolean;
+    required?: boolean;
 };
 
 export const TextInput = ({
     title,
     placeholder,
     className,
-    stretch = false,
+    required = false,
 }: TextInputProps) => {
     const [value, setValue] = React.useState('');
 
     return (
         <div className={className}>
-            {title && (
-                <div className={styles.title}>
+            <div className={styles.header}>
+                {!isEmpty(title) && (
                     <Text.Small variant='primary'>{title}</Text.Small>
-                </div>
-            )}
+                )}
+                {required && isEmpty(value) && (
+                    <ErrorMessage message='This field is required' />
+                )}
+            </div>
             <input
-                className={classnames(styles.input, {
-                    [styles.fullWidth]: stretch,
-                })}
+                className={styles.input}
                 placeholder={placeholder}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
@@ -36,3 +37,11 @@ export const TextInput = ({
         </div>
     );
 };
+
+const ErrorMessage = ({ message }: { message: string }) => (
+    <Text.Small variant='error' styling='bold'>
+        {message}
+    </Text.Small>
+);
+
+const isEmpty = (value: string | undefined) => value?.trim() === '';

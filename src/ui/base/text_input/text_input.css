@@ -5,6 +5,7 @@
     font-family: ubuntu-bold;
     color: primaryColor;
     font-size: 16px;
+    width: 100%;
     padding: 0 8px;
     border: 1px solid secondaryColor;
     border-radius: 8px;
@@ -22,10 +23,9 @@
     border-color: highlightColor;
 }
 
-.title {
+.header {
+    display: flex;
     margin-bottom: 5px;
-}
-
-.fullWidth {
-    width: 100%;
+    justify-content: space-between;
+    align-items: center;
 }

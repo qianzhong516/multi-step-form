@@ -15,6 +15,5 @@ export const Input: Story = {
     args: {
         title: 'Email Address',
         placeholder: 'e.g. stephenking@lorem.com',
-        stretch: true,
     },
 };

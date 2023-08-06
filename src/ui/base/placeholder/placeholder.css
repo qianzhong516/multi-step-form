@@ -1,0 +1,15 @@
+@value colors: "../../../styles/colors.css";
+@value secondaryColor from colors;
+
+.placeholder {
+    background-color: lightgray;
+    border-style: dotted;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* TODO: find the best way to override base/text color */
+.placeholder > * {
+    color: #000;
+}

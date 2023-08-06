@@ -1,0 +1,33 @@
+.modalLayer {
+}
+
+.dialog {
+    display: flex;
+}
+
+.header {
+}
+
+.contentWrapper {
+    padding: 16px 32px;
+}
+
+.content {
+}
+
+.footer {
+}
+
+.sidebar {
+    padding: 32px;
+    background-image: url('../../../assets/images/bg-sidebar-desktop.svg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-width: 200px;
+    min-height: 500px;
+}
+
+.stepCard {
+    margin-bottom: 16px;
+}

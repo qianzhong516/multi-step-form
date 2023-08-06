@@ -9,6 +9,10 @@
     text-transform: capitalize;
 }
 
+.button:hover {
+    cursor: pointer;
+}
+
 .primary {
     background-color: primaryColor;
     color: tertiaryColor;

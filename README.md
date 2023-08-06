@@ -20,3 +20,4 @@ npm run dev
 -   [] move fonts to the `assets/` folder after build
 -   [] render text color based on theme
 -   [] primary color is not dark theme friendly
+-   [] add global css override in both App and storybook. E.g, `box-sizing: border-box`

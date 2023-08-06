@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Dialog as Component } from '../dialog';
+import {} from '@storybook/addon-controls';
+import { Dialog as Component, Footer } from '../dialog';
+import { Placeholder } from '../../placeholder/placeholder';
 
 const meta = {
     title: 'Base/Dialog',
@@ -22,7 +24,11 @@ export const Dialog: Story = {
         },
         title: 'Personal Info',
         subtitle: 'Please provide your name, email address, and phone number',
-        Content: () => <div>Content area</div>,
-        Footer: () => <div>Footer</div>,
+        Content: () => (
+            <Placeholder width='100%' height='100%' title='Content Area' />
+        ),
+        Footer: () => (
+            <Placeholder width='100%' height={100} title='Footer Area' />
+        ),
     },
 };

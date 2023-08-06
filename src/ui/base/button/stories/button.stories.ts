@@ -11,10 +11,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const StepCard: Story = {
+export const Button: Story = {
     args: {
         variant: 'primary',
         title: 'Next Step',
-        onClick: () => void -1,
     },
 };

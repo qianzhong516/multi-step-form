@@ -2,6 +2,7 @@ import type { Step } from '../../../../src/types';
 import styles from './dialog.css';
 import { StepCard } from './step_card/step_card';
 import { Title, Text } from '../text/text';
+import { Button } from '../button/button';
 
 type DialogProps = {
     currentStep: Step;
@@ -18,8 +19,8 @@ type ContentProps = {
 type FooterProps = {
     backButtonText?: string;
     nextButtonText?: string;
-    goNext?(): void;
-    goBack?(): void;
+    onNext?(): void;
+    onBack?(): void;
 };
 
 export const Dialog = ({
@@ -45,9 +46,8 @@ const Sidebar = ({
         <div className={styles.sidebar}>
             {(Object.keys(steps) as Array<keyof typeof steps>).map(
                 (step, index) => (
-                    <div className={styles.stepCard}>
+                    <div key={step} className={styles.stepCard}>
                         <StepCard
-                            key={step}
                             stepName={steps[step]}
                             stepNumber={index + 1}
                             isActive={currentStep === step}
@@ -61,12 +61,14 @@ const Sidebar = ({
 
 const Content = ({ title, subtitle, Content, Footer }: ContentProps) => {
     return (
-        <div className={styles.contentWrapper}>
+        <div className={styles.content}>
             <div className={styles.header}>
-                <Title.Large variant='primary'>{title}</Title.Large>
+                <div className={styles.title}>
+                    <Title.Large variant='primary'>{title}</Title.Large>
+                </div>
                 <Text.Medium variant='secondary'>{subtitle}</Text.Medium>
             </div>
-            <div className={styles.content}>
+            <div className={styles.innerContent}>
                 <Content />
             </div>
             <div className={styles.footer}>
@@ -76,13 +78,30 @@ const Content = ({ title, subtitle, Content, Footer }: ContentProps) => {
     );
 };
 
-const Footer = ({
+export const Footer = ({
     backButtonText,
     nextButtonText,
-    goBack,
-    goNext,
+    onBack,
+    onNext,
 }: FooterProps) => {
-    return <div></div>;
+    return (
+        <div className={styles.innerFooter}>
+            {backButtonText && onBack && (
+                <Button
+                    variant='secondary'
+                    onClick={onBack}
+                    title={backButtonText}
+                />
+            )}
+            {nextButtonText && onNext && (
+                <Button
+                    variant='secondary'
+                    onClick={onNext}
+                    title={nextButtonText}
+                />
+            )}
+        </div>
+    );
 };
 
 const ModalLayer = ({ children }: { children: React.ReactNode }) => (

@@ -58,7 +58,9 @@ function App() {
         return <div>Error. The subsequent node does not exist.</div>;
     }
 
-    const stepStructure = flowStore.createCurrentStep({ navigationProvider });
+    const { step, structure: stepStructure } = flowStore.createCurrentStep({
+        navigationProvider,
+    });
 
     return (
         <div>
@@ -84,18 +86,21 @@ function createPersonalInfoStep({
         console.log('createPersonalInfoStep: ', sharedState);
 
         return {
-            title: 'Personal Info',
-            subtitle: 'Personal Info subtitle',
-            Content: () => <div>Content</div>,
-            onNext: () =>
-                navigationProvider.goNext({
-                    sharedState: {
-                        personalInfo: {
-                            email: 'zhongqian516@gmail.com',
+            step: 'personalInfo',
+            structure: {
+                title: 'Personal Info',
+                subtitle: 'Personal Info subtitle',
+                Content: () => <div>Content</div>,
+                onNext: () =>
+                    navigationProvider.goNext({
+                        sharedState: {
+                            personalInfo: {
+                                email: 'zhongqian516@gmail.com',
+                            },
                         },
-                    },
-                }),
-            onClose: () => navigationProvider.close(),
+                    }),
+                onClose: () => navigationProvider.close(),
+            },
         };
     };
 }
@@ -108,24 +113,27 @@ function createSelectPlanStep({
         console.log('createSelectPlanStep: ', sharedState);
 
         return {
-            title: 'SelectPlan',
-            subtitle: 'SelectPlan subtitle',
-            Content: () => <div>Content</div>,
-            onNext: () =>
-                navigationProvider.goNext({
-                    sharedState: {
-                        plan: {
-                            type: 'yearly',
-                            details: {
-                                arcade: 19,
-                                advanced: 112,
-                                pro: 115,
+            step: 'selectPlan',
+            structure: {
+                title: 'SelectPlan',
+                subtitle: 'SelectPlan subtitle',
+                Content: () => <div>Content</div>,
+                onNext: () =>
+                    navigationProvider.goNext({
+                        sharedState: {
+                            plan: {
+                                type: 'yearly',
+                                details: {
+                                    arcade: 19,
+                                    advanced: 112,
+                                    pro: 115,
+                                },
                             },
                         },
-                    },
-                }),
-            onBack: () => navigationProvider.goBack({ sharedState }),
-            onClose: () => navigationProvider.close(),
+                    }),
+                onBack: () => navigationProvider.goBack({ sharedState }),
+                onClose: () => navigationProvider.close(),
+            },
         };
     };
 }
@@ -138,11 +146,14 @@ function createAddonsStep({
         console.log('createAddonsStep: ', sharedState);
 
         return {
-            title: 'Addons',
-            subtitle: 'Addons subtitle',
-            Content: () => <div>Content</div>,
-            onBack: () => navigationProvider.goBack({ sharedState }),
-            onNext: () => navigationProvider.goNext({ sharedState }),
+            step: 'addons',
+            structure: {
+                title: 'Addons',
+                subtitle: 'Addons subtitle',
+                Content: () => <div>Content</div>,
+                onBack: () => navigationProvider.goBack({ sharedState }),
+                onNext: () => navigationProvider.goNext({ sharedState }),
+            },
         };
     };
 }

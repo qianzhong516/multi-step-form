@@ -15,6 +15,7 @@ export class FlowStoreImpl implements FlowStore {
         private sharedState: SharedState = {}
     ) {
         this.sharedState = sharedState;
+        // TODO: replace steps with `items` to customise the order of steps registered into the store
         this.steps = Object.keys(this.flow) as Step[];
     }
 
@@ -34,6 +35,17 @@ export class FlowStoreImpl implements FlowStore {
             ...this.sharedState,
             ...state,
         };
+    }
+
+    goTo({
+        step,
+        sharedState,
+    }: {
+        step: Step;
+        sharedState: SharedState;
+    }): void {
+        this.updateSharedState(sharedState);
+        this.currentStep = step;
     }
 
     goNext({ sharedState }: { sharedState: SharedState }): void {

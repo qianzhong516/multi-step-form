@@ -1,0 +1,25 @@
+@value colors: "../../../styles/colors.css";
+@value primaryColor, secondaryColor, tertiaryColor from colors;
+
+.button {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    padding: 12px 24px;
+    text-transform: capitalize;
+}
+
+.primary {
+    background-color: primaryColor;
+    color: tertiaryColor;
+    border-radius: 8px;
+}
+
+.secondary {
+    background-color: none;
+}
+
+/* TODO: find the best way to override base/text color */
+.secondary > * {
+    color: secondaryColor !important;
+}

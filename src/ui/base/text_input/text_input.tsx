@@ -3,7 +3,7 @@ import { Text } from '../text/text';
 import styles from './text_input.css';
 
 export type TextInputProps = {
-    title?: string; // TODO: type it to none empty string
+    title?: string;
     placeholder?: string;
     className?: string;
     required?: boolean;
@@ -19,6 +19,7 @@ export const TextInput = ({
 }: TextInputProps) => {
     const [value, setValue] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState<null | string>(null);
+    const [touched, setTouched] = React.useState(false);
 
     const getErrorMessage = React.useCallback(
         (value: string) => {
@@ -31,8 +32,11 @@ export const TextInput = ({
         [value]
     );
 
-    // TODO: add first touched logic
     React.useEffect(() => {
+        if (!touched) {
+            return;
+        }
+
         const error = getErrorMessage(value);
         if (error) {
             setErrorMessage(error);
@@ -40,6 +44,13 @@ export const TextInput = ({
             setErrorMessage(null);
         }
     }, [value]);
+
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!touched) {
+            setTouched(true);
+        }
+        setValue(e.target.value);
+    };
 
     return (
         <div className={className}>
@@ -53,7 +64,7 @@ export const TextInput = ({
                 className={styles.input}
                 placeholder={placeholder}
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={onChange}
             />
         </div>
     );

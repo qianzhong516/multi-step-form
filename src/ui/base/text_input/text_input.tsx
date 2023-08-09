@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Text } from '../text/text';
-import classnames from 'classnames';
 import styles from './text_input.css';
 
 export type TextInputProps = {
-    title?: string;
+    title?: string; // TODO: type it to none empty string
     placeholder?: string;
     className?: string;
     required?: boolean;
+    validate?(value: string): string | undefined;
 };
 
 export const TextInput = ({
@@ -15,8 +15,31 @@ export const TextInput = ({
     placeholder,
     className,
     required = false,
+    validate,
 }: TextInputProps) => {
     const [value, setValue] = React.useState('');
+    const [errorMessage, setErrorMessage] = React.useState<null | string>(null);
+
+    const getErrorMessage = React.useCallback(
+        (value: string) => {
+            if (required && isEmpty(value)) {
+                const requiredFieldErrorMessage = 'This field is required';
+                return requiredFieldErrorMessage;
+            }
+            return validate?.(value);
+        },
+        [value]
+    );
+
+    // TODO: add first touched logic
+    React.useEffect(() => {
+        const error = getErrorMessage(value);
+        if (error) {
+            setErrorMessage(error);
+        } else {
+            setErrorMessage(null);
+        }
+    }, [value]);
 
     return (
         <div className={className}>
@@ -24,9 +47,7 @@ export const TextInput = ({
                 {!isEmpty(title) && (
                     <Text.Small variant='primary'>{title}</Text.Small>
                 )}
-                {required && isEmpty(value) && (
-                    <ErrorMessage message='This field is required' />
-                )}
+                {errorMessage && <ErrorMessage message={errorMessage} />}
             </div>
             <input
                 className={styles.input}

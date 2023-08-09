@@ -12,7 +12,11 @@
     line-height: 36px;
 }
 
-.input::placeholder {
+.input::placeholder,
+/* Internet Explorer 10-11 */
+.input:-ms-input-placeholder, 
+/* Microsoft Edge */
+.input::-ms-input-placeholder {
     color: placeholderColor;
 }
 

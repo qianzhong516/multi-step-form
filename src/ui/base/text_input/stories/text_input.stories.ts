@@ -15,5 +15,15 @@ export const Input: Story = {
     args: {
         title: 'Email Address',
         placeholder: 'e.g. stephenking@lorem.com',
+        validate: (val) => {
+            if (
+                !val.match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                )
+            ) {
+                return 'Invalid email address';
+            }
+        },
+        required: true,
     },
 };

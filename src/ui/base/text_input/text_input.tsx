@@ -24,7 +24,7 @@ export const TextInput = ({
     const getErrorMessage = React.useCallback(
         (value: string) => {
             if (required && isEmpty(value)) {
-                const requiredFieldErrorMessage = 'This field is required';
+                const requiredFieldErrorMessage = 'This field cannot be empty';
                 return requiredFieldErrorMessage;
             }
             return validate?.(value);

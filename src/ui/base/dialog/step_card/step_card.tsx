@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from './step_card.css';
 import { Text } from '../../text/text';
 import classnames from 'classnames';

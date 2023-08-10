@@ -1,3 +1,4 @@
+import React from 'react';
 import { TextInput } from '../../base/text_input/text_input';
 import styles from './personal_info_form.css';
 

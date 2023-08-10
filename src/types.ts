@@ -44,7 +44,7 @@ export const stepTitle: Record<Exclude<Step, 'confirmation'>, string> = {
 export type StepStructure = {
     title: string;
     subtitle: string;
-    Content: React.ComponentType;
+    content: React.ReactNode;
     onNext?: () => void;
     onBack?: () => void;
     onClose?: () => void;

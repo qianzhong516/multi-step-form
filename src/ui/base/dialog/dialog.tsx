@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from './dialog.css';
 import { StepCard } from './step_card/step_card';
 import { Title, Text } from '../text/text';
@@ -11,11 +12,11 @@ type DialogProps<Step extends string, CurrentStep extends Step> = {
 type ContentProps = {
     title: string;
     subtitle: string;
-    Content: React.ComponentType;
-    Footer: React.ComponentType;
+    content: React.ReactNode;
+    footer: React.ReactNode;
 };
 
-type FooterProps = {
+export type FooterProps = {
     backButtonText?: string;
     nextButtonText?: string;
     onNext?(): void;
@@ -58,7 +59,7 @@ const Sidebar = <Step extends string, CurrentStep extends Step>({
     );
 };
 
-const Content = ({ title, subtitle, Content, Footer }: ContentProps) => {
+const Content = ({ title, subtitle, content, footer }: ContentProps) => {
     return (
         <div className={styles.content}>
             <div className={styles.header}>
@@ -67,12 +68,8 @@ const Content = ({ title, subtitle, Content, Footer }: ContentProps) => {
                 </div>
                 <Text.Medium variant='secondary'>{subtitle}</Text.Medium>
             </div>
-            <div className={styles.innerContent}>
-                <Content />
-            </div>
-            <div className={styles.footer}>
-                <Footer />
-            </div>
+            <div className={styles.innerContent}>{content}</div>
+            <div className={styles.footer}>{footer}</div>
         </div>
     );
 };
@@ -85,18 +82,18 @@ export const Footer = ({
 }: FooterProps) => {
     return (
         <div className={styles.innerFooter}>
-            {backButtonText && onBack && (
+            {onBack && (
                 <Button
                     variant='secondary'
                     onClick={onBack}
-                    title={backButtonText}
+                    title={backButtonText ?? 'Go Back'}
                 />
             )}
-            {nextButtonText && onNext && (
+            {onNext && (
                 <Button
-                    variant='secondary'
+                    variant='primary'
                     onClick={onNext}
-                    title={nextButtonText}
+                    title={nextButtonText ?? 'Next Step'}
                 />
             )}
         </div>

@@ -37,11 +37,9 @@ export const Dialog: Story = {
         },
         title: 'Personal Info',
         subtitle: 'Please provide your name, email address, and phone number',
-        Content: () => (
+        content: (
             <Placeholder width='100%' height='100%' title='Content Area' />
         ),
-        Footer: () => (
-            <Placeholder width='100%' height={100} title='Footer Area' />
-        ),
+        footer: <Placeholder width='100%' height={100} title='Footer Area' />,
     },
 };

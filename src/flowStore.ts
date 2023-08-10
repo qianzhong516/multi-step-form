@@ -6,6 +6,8 @@ import type {
     CreateStepStructure,
 } from './types';
 
+// TODO: flowStore should have visibility on when the current step is the last step
+// TODO: how to decouple the confirmation flow with the multi-step flow [M2 scope?]
 export class FlowStoreImpl implements FlowStore {
     steps: Step[] = [];
 

@@ -15,7 +15,7 @@ export function createPersonalInfoStep({
                 title: 'Personal Info',
                 subtitle:
                     'Please provide your name, email address, and phone number',
-                Content: () => <PersonalInfoForm />,
+                content: <PersonalInfoForm />,
                 onNext: () =>
                     navigationProvider.goNext({
                         sharedState: {

@@ -1,15 +1,26 @@
-import type { Flow, CreateStepArgs, CreateStepStructure } from './types';
+import type { Flow, CreateStepArgs, CreateStepStructure, Step } from './types';
 import { FlowStoreImpl as FlowStore } from './flowStore';
 import { NavigationProviderImpl as NavigationProvider } from './navigationProvider';
 import React from 'react';
+import { createPersonalInfoStep } from './ui/multi_step_form/personal_info/create';
+import { Dialog, Footer as DialogFooter } from '../src/ui/base/dialog/dialog';
+import type { FooterProps as DialogFooterProps } from '../src/ui/base/dialog/dialog';
 
 const flow: Flow = {
     personalInfo: createPersonalInfoStep,
     selectPlan: createSelectPlanStep,
     addons: createAddonsStep,
     // TODO: update
-    summary: createAddonsStep,
+    summary: createSummaryStep,
     confirmation: createAddonsStep,
+};
+
+// TODO: work out the confirmation step first
+const steps: Record<string & Omit<Step, 'confirmation'>, string> = {
+    personalInfo: 'Your info',
+    selectPlan: 'Select plan',
+    addons: 'add-ons',
+    summary: 'summary',
 };
 
 const flowStore = new FlowStore(flow, 'personalInfo', {
@@ -27,13 +38,7 @@ const navigationProvider = new NavigationProvider(flowStore);
 function App() {
     const [rerenderCount, setRerenderCount] = React.useState(0);
 
-    const Footer = ({
-        onNext,
-        onBack,
-    }: {
-        onNext?(): void;
-        onBack?(): void;
-    }) => {
+    const Footer = ({ onNext, onBack, ...props }: DialogFooterProps) => {
         const onNextHandler = () => {
             onNext?.();
             setRerenderCount(rerenderCount + 1);
@@ -45,10 +50,11 @@ function App() {
         };
 
         return (
-            <>
-                {onBack && <button onClick={onBackHandler}>Back</button>}
-                {onNext && <button onClick={onNextHandler}>Next</button>}
-            </>
+            <DialogFooter
+                onBack={onBack && onBackHandler}
+                onNext={onNext && onNextHandler}
+                {...props}
+            />
         );
     };
 
@@ -63,46 +69,20 @@ function App() {
     });
 
     return (
-        <div>
-            {stepStructure && (
-                <>
-                    <div>{stepStructure.title}</div>
-                    <div>{stepStructure.subtitle}</div>
-                    <Footer
-                        onNext={stepStructure.onNext}
-                        onBack={stepStructure.onBack}
-                    />
-                </>
-            )}
-        </div>
+        <Dialog
+            currentStep={step}
+            steps={steps}
+            title={stepStructure.title}
+            subtitle={stepStructure.subtitle}
+            content={stepStructure.content}
+            footer={
+                <Footer
+                    onBack={stepStructure.onBack}
+                    onNext={stepStructure.onNext}
+                />
+            }
+        />
     );
-}
-
-function createPersonalInfoStep({
-    flowStore,
-    options: { sharedState },
-}: CreateStepArgs): CreateStepStructure {
-    return ({ navigationProvider }) => {
-        console.log('createPersonalInfoStep: ', sharedState);
-
-        return {
-            step: 'personalInfo',
-            structure: {
-                title: 'Personal Info',
-                subtitle: 'Personal Info subtitle',
-                Content: () => <div>Content</div>,
-                onNext: () =>
-                    navigationProvider.goNext({
-                        sharedState: {
-                            personalInfo: {
-                                email: 'zhongqian516@gmail.com',
-                            },
-                        },
-                    }),
-                onClose: () => navigationProvider.close(),
-            },
-        };
-    };
 }
 
 function createSelectPlanStep({
@@ -117,7 +97,7 @@ function createSelectPlanStep({
             structure: {
                 title: 'SelectPlan',
                 subtitle: 'SelectPlan subtitle',
-                Content: () => <div>Content</div>,
+                content: <div>Content</div>,
                 onNext: () =>
                     navigationProvider.goNext({
                         sharedState: {
@@ -150,7 +130,27 @@ function createAddonsStep({
             structure: {
                 title: 'Addons',
                 subtitle: 'Addons subtitle',
-                Content: () => <div>Content</div>,
+                content: <div>Content</div>,
+                onBack: () => navigationProvider.goBack({ sharedState }),
+                onNext: () => navigationProvider.goNext({ sharedState }),
+            },
+        };
+    };
+}
+
+function createSummaryStep({
+    flowStore,
+    options: { sharedState },
+}: CreateStepArgs): CreateStepStructure {
+    return ({ navigationProvider }) => {
+        console.log('createSummaryStep: ', sharedState);
+
+        return {
+            step: 'summary',
+            structure: {
+                title: 'Summary',
+                subtitle: 'Summary subtitle',
+                content: <div>Content</div>,
                 onBack: () => navigationProvider.goBack({ sharedState }),
                 onNext: () => navigationProvider.goNext({ sharedState }),
             },

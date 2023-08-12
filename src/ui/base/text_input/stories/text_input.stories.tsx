@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { TextInput } from '../text_input';
+import React from 'react';
 
 const meta = {
     title: 'Base/TextInput',
@@ -12,9 +13,23 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Input: Story = {
+    render: (args) => {
+        const [value, setValue] = React.useState('');
+
+        return (
+            <TextInput
+                {...args}
+                value={value}
+                onChange={(value, isError) => {
+                    setValue(value);
+                }}
+            />
+        );
+    },
     args: {
         title: 'Email Address',
         placeholder: 'e.g. stephenking@lorem.com',
+        value: '',
         validate: (val) => {
             if (
                 !val.match(

@@ -1,13 +1,35 @@
 import React from 'react';
 import { CreateStepArgs, CreateStepStructure } from '../../../types';
-import { PersonalInfoForm } from './personal_info_form';
+import {
+    PersonalInfoForm,
+    PersonalInfoFormData,
+    PersonalInfoFormError,
+} from './personal_info_form';
 
 export function createPersonalInfoStep({
     flowStore,
     options: { sharedState },
 }: CreateStepArgs): CreateStepStructure {
     return ({ navigationProvider }) => {
-        console.log('createPersonalInfoStep: ', sharedState);
+        let formData = {
+            name: '',
+            email: '',
+            phone: '',
+        };
+
+        let formError = {
+            isNameError: false,
+            isEmailError: false,
+            isPhoneError: false,
+        };
+
+        const onChange = (
+            data: PersonalInfoFormData,
+            error: PersonalInfoFormError
+        ) => {
+            formData = { ...formData, ...data };
+            formError = { ...formError, ...error };
+        };
 
         return {
             step: 'personalInfo',
@@ -15,13 +37,12 @@ export function createPersonalInfoStep({
                 title: 'Personal Info',
                 subtitle:
                     'Please provide your name, email address, and phone number',
-                content: <PersonalInfoForm />,
+                content: <PersonalInfoForm onChange={onChange} />,
                 onNext: () =>
                     navigationProvider.goNext({
                         sharedState: {
-                            personalInfo: {
-                                email: 'zhongqian516@gmail.com',
-                            },
+                            ...sharedState,
+                            personalInfo: formData,
                         },
                     }),
                 onClose: () => navigationProvider.close(),

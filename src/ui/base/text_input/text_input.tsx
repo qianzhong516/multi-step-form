@@ -7,6 +7,8 @@ export type TextInputProps = {
     placeholder?: string;
     className?: string;
     required?: boolean;
+    value: string;
+    onChange(value: string, isError: boolean): void;
     validate?(value: string): string | undefined;
 };
 
@@ -15,11 +17,11 @@ export const TextInput = ({
     placeholder,
     className,
     required = false,
+    value,
+    onChange,
     validate,
 }: TextInputProps) => {
-    const [value, setValue] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState<null | string>(null);
-    const [touched, setTouched] = React.useState(false);
 
     const getErrorMessage = React.useCallback(
         (value: string) => {
@@ -32,24 +34,15 @@ export const TextInput = ({
         [value]
     );
 
-    React.useEffect(() => {
-        if (!touched) {
-            return;
-        }
-
+    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
         const error = getErrorMessage(value);
         if (error) {
             setErrorMessage(error);
         } else {
             setErrorMessage(null);
         }
-    }, [value]);
-
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!touched) {
-            setTouched(true);
-        }
-        setValue(e.target.value);
+        onChange(value, !!error);
     };
 
     return (
@@ -64,7 +57,7 @@ export const TextInput = ({
                 className={styles.input}
                 placeholder={placeholder}
                 value={value}
-                onChange={onChange}
+                onChange={onChangeHandler}
             />
         </div>
     );

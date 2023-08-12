@@ -4,21 +4,31 @@ import type {
     Step,
     Flow,
     CreateStepStructure,
+    MainStep,
+    SubStep,
 } from './types';
 
-// TODO: flowStore should have visibility on when the current step is the last step
-// TODO: how to decouple the confirmation flow with the multi-step flow [M2 scope?]
+// TODO: how to decouple the confirmation flow with the multi-step flow [M2]
+// TODO: routing node to load the first node [M2]
 export class FlowStoreImpl implements FlowStore {
     steps: Step[] = [];
 
     constructor(
         private readonly flow: Flow,
         private currentStep: Step | null,
-        private sharedState: SharedState = {}
+        private sharedState: SharedState = {},
+        public flowSequence: Partial<
+            Record<MainStep, { subsequence: SubStep[] }>
+        >
     ) {
         this.sharedState = sharedState;
-        // TODO: replace steps with `items` to customise the order of steps registered into the store
-        this.steps = Object.keys(this.flow) as Step[];
+        // push main steps and sub steps into an array by order
+        this.steps = (
+            Object.keys(flowSequence) as (keyof typeof flowSequence)[]
+        ).reduce((prev, curr, _) => {
+            prev.push(curr, ...flowSequence[curr]!.subsequence);
+            return prev;
+        }, [] as Step[]);
     }
 
     get createCurrentStep(): CreateStepStructure | undefined {

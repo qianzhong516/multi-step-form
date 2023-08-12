@@ -34,6 +34,10 @@ export type Step =
     | 'summary'
     | 'confirmation';
 
+export type MainStep = Exclude<Step, 'confirmation'>;
+
+export type SubStep = Exclude<Step, MainStep>;
+
 export const stepTitle: Record<Exclude<Step, 'confirmation'>, string> = {
     personalInfo: 'your info',
     selectPlan: 'select plan',
@@ -68,8 +72,8 @@ export type CreateStepStructure = ({
     navigationProvider: NavigationProvider;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
-    // because two steps can be consolidated into one step.
-    step: Step;
+    // because one main step could contain multiple sub steps.
+    step: MainStep;
     structure: StepStructure;
 };
 

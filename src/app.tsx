@@ -1,4 +1,9 @@
-import type { Flow, CreateStepArgs, CreateStepStructure, Step } from './types';
+import type {
+    Flow,
+    CreateStepArgs,
+    CreateStepStructure,
+    MainStep,
+} from './types';
 import { FlowStoreImpl as FlowStore } from './flowStore';
 import { NavigationProviderImpl as NavigationProvider } from './navigationProvider';
 import React from 'react';
@@ -10,29 +15,45 @@ const flow: Flow = {
     personalInfo: createPersonalInfoStep,
     selectPlan: createSelectPlanStep,
     addons: createAddonsStep,
-    // TODO: update
     summary: createSummaryStep,
-    confirmation: createAddonsStep,
+    confirmation: createConfirmationStep,
 };
 
-// TODO: work out the confirmation step first
-const steps: Record<string & Omit<Step, 'confirmation'>, string> = {
+const steps: Record<MainStep, string> = {
     personalInfo: 'Your info',
     selectPlan: 'Select plan',
     addons: 'add-ons',
     summary: 'summary',
 };
 
-const flowStore = new FlowStore(flow, 'personalInfo', {
-    plan: {
-        type: 'monthly',
-        details: {
-            arcade: 9,
-            advanced: 12,
-            pro: 15,
+const flowStore = new FlowStore(
+    flow,
+    'personalInfo',
+    {
+        plan: {
+            type: 'monthly',
+            details: {
+                arcade: 9,
+                advanced: 12,
+                pro: 15,
+            },
         },
     },
-});
+    {
+        personalInfo: {
+            subsequence: [],
+        },
+        selectPlan: {
+            subsequence: [],
+        },
+        addons: {
+            subsequence: [],
+        },
+        summary: {
+            subsequence: ['confirmation'],
+        },
+    }
+);
 const navigationProvider = new NavigationProvider(flowStore);
 
 function App() {
@@ -153,6 +174,24 @@ function createSummaryStep({
                 content: <div>Content</div>,
                 onBack: () => navigationProvider.goBack({ sharedState }),
                 onNext: () => navigationProvider.goNext({ sharedState }),
+            },
+        };
+    };
+}
+
+function createConfirmationStep({
+    flowStore,
+    options: { sharedState },
+}: CreateStepArgs): CreateStepStructure {
+    return ({ navigationProvider }) => {
+        console.log('createSummaryStep: ', sharedState);
+
+        return {
+            step: 'summary',
+            structure: {
+                title: 'Confirmation',
+                subtitle: 'Confirmation subtitle',
+                content: <div>Content</div>,
             },
         };
     };

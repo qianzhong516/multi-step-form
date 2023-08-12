@@ -38,12 +38,9 @@ export type MainStep = Exclude<Step, 'confirmation'>;
 
 export type SubStep = Exclude<Step, MainStep>;
 
-export const stepTitle: Record<Exclude<Step, 'confirmation'>, string> = {
-    personalInfo: 'your info',
-    selectPlan: 'select plan',
-    addons: 'addon-ons',
-    summary: 'summary',
-};
+export type FlowSequence = Partial<
+    Record<MainStep, { subsequence: SubStep[] }>
+>;
 
 export type StepStructure = {
     title: string;

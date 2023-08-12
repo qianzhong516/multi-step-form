@@ -4,8 +4,7 @@ import type {
     Step,
     Flow,
     CreateStepStructure,
-    MainStep,
-    SubStep,
+    FlowSequence,
 } from './types';
 
 // TODO: how to decouple the confirmation flow with the multi-step flow [M2]
@@ -17,9 +16,7 @@ export class FlowStoreImpl implements FlowStore {
         private readonly flow: Flow,
         private currentStep: Step | null,
         private sharedState: SharedState = {},
-        public flowSequence: Partial<
-            Record<MainStep, { subsequence: SubStep[] }>
-        >
+        public flowSequence: FlowSequence
     ) {
         this.sharedState = sharedState;
         // push main steps and sub steps into an array by order

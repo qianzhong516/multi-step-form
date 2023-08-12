@@ -3,6 +3,8 @@ import type {
     CreateStepArgs,
     CreateStepStructure,
     MainStep,
+    FlowSequence,
+    SharedState,
 } from './types';
 import { FlowStoreImpl as FlowStore } from './flowStore';
 import { NavigationProviderImpl as NavigationProvider } from './navigationProvider';
@@ -26,33 +28,37 @@ const steps: Record<MainStep, string> = {
     summary: 'summary',
 };
 
+const sharedState: SharedState = {
+    plan: {
+        type: 'monthly',
+        details: {
+            arcade: 9,
+            advanced: 12,
+            pro: 15,
+        },
+    },
+};
+
+const flowSequence: FlowSequence = {
+    personalInfo: {
+        subsequence: [],
+    },
+    selectPlan: {
+        subsequence: [],
+    },
+    addons: {
+        subsequence: [],
+    },
+    summary: {
+        subsequence: ['confirmation'],
+    },
+};
+
 const flowStore = new FlowStore(
     flow,
     'personalInfo',
-    {
-        plan: {
-            type: 'monthly',
-            details: {
-                arcade: 9,
-                advanced: 12,
-                pro: 15,
-            },
-        },
-    },
-    {
-        personalInfo: {
-            subsequence: [],
-        },
-        selectPlan: {
-            subsequence: [],
-        },
-        addons: {
-            subsequence: [],
-        },
-        summary: {
-            subsequence: ['confirmation'],
-        },
-    }
+    sharedState,
+    flowSequence
 );
 const navigationProvider = new NavigationProvider(flowStore);
 

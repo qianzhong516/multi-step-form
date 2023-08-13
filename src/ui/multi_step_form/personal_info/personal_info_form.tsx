@@ -15,38 +15,22 @@ export type PersonalInfoFormError = {
 };
 
 type PersonalInfoFormProps = {
-    onChange(
-        formData: PersonalInfoFormData,
-        formError: PersonalInfoFormError
-    ): void;
+    formData: PersonalInfoFormData;
+    onChange(formData: PersonalInfoFormData): void;
 };
 
-export const PersonalInfoForm = ({ onChange }: PersonalInfoFormProps) => {
-    const [formData, setFormData] = React.useState<PersonalInfoFormData>({
-        name: '',
-        email: '',
-        phone: '',
-    });
-    const [formError, setFormError] = React.useState<PersonalInfoFormError>({
-        isNameError: false,
-        isEmailError: false,
-        isPhoneError: false,
-    });
-
-    const onNameChange = (name: string, isNameError: boolean) => {
-        setFormData({ ...formData, name });
-        setFormError({ ...formError, isNameError });
-        onChange({ ...formData, name }, { ...formError, isNameError });
+export const PersonalInfoForm = ({
+    formData,
+    onChange,
+}: PersonalInfoFormProps) => {
+    const onNameChange = (name: string) => {
+        onChange({ ...formData, name });
     };
-    const onEmailChange = (email: string, isEmailError: boolean) => {
-        setFormData({ ...formData, email });
-        setFormError({ ...formError, isEmailError });
-        onChange({ ...formData, email }, { ...formError, isEmailError });
+    const onEmailChange = (email: string) => {
+        onChange({ ...formData, email });
     };
-    const onPhoneChange = (phone: string, isPhoneError: boolean) => {
-        setFormData({ ...formData, phone });
-        setFormError({ ...formError, isPhoneError });
-        onChange({ ...formData, phone }, { ...formError, isPhoneError });
+    const onPhoneChange = (phone: string) => {
+        onChange({ ...formData, phone });
     };
 
     return (

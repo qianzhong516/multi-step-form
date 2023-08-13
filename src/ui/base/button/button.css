@@ -1,5 +1,5 @@
 @value colors: "../../../styles/colors.css";
-@value primaryColor, secondaryColor, tertiaryColor from colors;
+@value primaryColor, secondaryColor, tertiaryColor, disabledColor from colors;
 
 .button {
     outline: none;
@@ -11,6 +11,10 @@
 
 .button:hover {
     cursor: pointer;
+}
+
+.button.disabled {
+    background-color: disabledColor;
 }
 
 .primary {

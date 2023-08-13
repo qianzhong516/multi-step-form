@@ -17,6 +17,7 @@ type ContentProps = {
 };
 
 export type FooterProps = {
+    disabledNext?: boolean;
     backButtonText?: string;
     nextButtonText?: string;
     onNext?(): void;
@@ -75,6 +76,7 @@ const Content = ({ title, subtitle, content, footer }: ContentProps) => {
 };
 
 export const Footer = ({
+    disabledNext = false,
     backButtonText,
     nextButtonText,
     onBack,
@@ -94,6 +96,7 @@ export const Footer = ({
                     variant='primary'
                     onClick={onNext}
                     title={nextButtonText ?? 'Next Step'}
+                    disabled={disabledNext}
                 />
             )}
         </div>

@@ -12,6 +12,8 @@ import React from 'react';
 import { createPersonalInfoStep } from './ui/multi_step_form/personal_info/create';
 import { Dialog, Footer as DialogFooter } from '../src/ui/base/dialog/dialog';
 import type { FooterProps as DialogFooterProps } from '../src/ui/base/dialog/dialog';
+import { MultiStepFormHandler } from './formHandler';
+import { PersonalInfoFormHandler } from './ui/multi_step_form/personal_info/formHandler';
 
 const flow: Flow = {
     personalInfo: createPersonalInfoStep,
@@ -64,6 +66,31 @@ const navigationProvider = new NavigationProvider(flowStore);
 
 function App() {
     const [rerenderCount, setRerenderCount] = React.useState(0);
+    // shared state across all steps
+    const [multiStepFormData, setMultiStepFormData] =
+        React.useState<SharedState>({
+            plan: {
+                type: 'monthly',
+                details: {
+                    arcade: 9,
+                    advanced: 12,
+                    pro: 15,
+                },
+            },
+        });
+
+    const formHandler = new MultiStepFormHandler(
+        multiStepFormData,
+        setMultiStepFormData,
+        {
+            personalInfo: new PersonalInfoFormHandler(
+                multiStepFormData.personalInfo
+            ),
+            selectPlan: undefined,
+            addons: undefined,
+            summary: undefined,
+        }
+    );
 
     const Footer = ({ onNext, onBack, ...props }: DialogFooterProps) => {
         const onNextHandler = () => {
@@ -93,6 +120,7 @@ function App() {
 
     const { step, structure: stepStructure } = flowStore.createCurrentStep({
         navigationProvider,
+        formHandler,
     });
 
     return (
@@ -104,6 +132,7 @@ function App() {
             content={stepStructure.content}
             footer={
                 <Footer
+                    disabledNext={!formHandler.canSubmit(step)}
                     onBack={stepStructure.onBack}
                     onNext={stepStructure.onNext}
                 />

@@ -7,48 +7,36 @@ import {
 } from './personal_info_form';
 import { PersonalInfoFormHandler } from './formHandler';
 
+const STEP = 'personalInfo';
+
 export function createPersonalInfoStep({
     flowStore,
     options: { sharedState },
 }: CreateStepArgs): CreateStepStructure {
-    return ({ navigationProvider }) => {
-        const formData = {
-            name: '',
-            email: '',
-            phone: '',
-        };
-        const formError = {
-            isNameError: false,
-            isEmailError: false,
-            isPhoneError: false,
-        };
-
-        const formHandler = new PersonalInfoFormHandler(formData, formError);
-
-        const onChange = (
-            data: PersonalInfoFormData,
-            error: PersonalInfoFormError
-        ) => {
-            formHandler.setFormData(data);
-            formHandler.setFormError(error);
+    return ({ navigationProvider, formHandler }) => {
+        const onChange = (data: PersonalInfoFormData) => {
+            formHandler?.setFormData(STEP, data);
         };
 
         return {
-            step: 'personalInfo',
+            step: STEP,
             formHandler,
             structure: {
                 title: 'Personal Info',
                 subtitle:
                     'Please provide your name, email address, and phone number',
-                content: <PersonalInfoForm onChange={onChange} />,
+                content: (
+                    <PersonalInfoForm
+                        formData={formHandler.getFormHandler(STEP).formData}
+                        onChange={onChange}
+                    />
+                ),
                 onNext: () => {
-                    if (!formHandler.canSubmit) {
-                        return;
-                    }
                     navigationProvider.goNext({
                         sharedState: {
                             ...sharedState,
-                            personalInfo: formHandler.formData,
+                            personalInfo:
+                                formHandler.getFormHandler(STEP).formData,
                         },
                     });
                 },

@@ -4,11 +4,21 @@ import type {
     PersonalInfoFormError,
 } from './personal_info_form';
 
+const defaultFormData = {
+    name: '',
+    email: '',
+    phone: '',
+};
+
 export class PersonalInfoFormHandler implements FormHandler {
-    constructor(
-        private _formData: PersonalInfoFormData,
-        private _formError: PersonalInfoFormError
-    ) {}
+    private _formData = defaultFormData;
+
+    constructor(formData: PersonalInfoFormData) {
+        this._formData = {
+            ...this._formData,
+            ...formData,
+        };
+    }
 
     get formData() {
         return this._formData;
@@ -20,10 +30,6 @@ export class PersonalInfoFormHandler implements FormHandler {
 
     setFormData(data: PersonalInfoFormData) {
         this._formData = { ...this._formData, ...data };
-    }
-
-    setFormError(error: PersonalInfoFormError) {
-        this._formError = { ...this._formError, ...error };
     }
 
     private get isEmailValid(): boolean {

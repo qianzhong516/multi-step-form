@@ -65,8 +65,10 @@ export type CreateStep = ({
 
 export type CreateStepStructure = ({
     navigationProvider,
+    formHandler,
 }: {
     navigationProvider: NavigationProvider;
+    formHandler: FormHandler | undefined;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
     // because one main step could contain multiple sub steps.

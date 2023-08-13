@@ -91,3 +91,7 @@ export interface FlowStore {
     goBack({ sharedState }: { sharedState: SharedState }): void;
     close(): void;
 }
+
+export interface FormHandler {
+    get canSubmit(): boolean;
+}

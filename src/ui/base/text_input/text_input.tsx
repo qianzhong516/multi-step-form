@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text } from '../text/text';
 import styles from './text_input.css';
+import classnames from 'classnames';
 
 export type TextInputProps = {
     title?: string;
@@ -54,7 +55,9 @@ export const TextInput = ({
                 {errorMessage && <ErrorMessage message={errorMessage} />}
             </div>
             <input
-                className={styles.input}
+                className={classnames(styles.input, {
+                    [styles.error]: !!errorMessage,
+                })}
                 placeholder={placeholder}
                 value={value}
                 onChange={onChangeHandler}

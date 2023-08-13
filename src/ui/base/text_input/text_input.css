@@ -1,5 +1,5 @@
 @value colors: "../../../styles/colors.css";
-@value primaryColor, secondaryColor, highlightColor, placeholderColor from colors;
+@value primaryColor, secondaryColor, highlightColor, placeholderColor, errorColor from colors;
 
 .input {
     font-family: ubuntu-bold;
@@ -21,6 +21,13 @@
 .input:focus-visible {
     outline: none;
     border-color: highlightColor;
+}
+
+.input.error,
+.input:focus.error,
+.input:focus-within.error,
+.input:focus-visible.error {
+    border-color: errorColor;
 }
 
 .header {

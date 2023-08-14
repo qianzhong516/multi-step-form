@@ -1,10 +1,11 @@
-import type {
-    Flow,
-    CreateStepArgs,
-    CreateStepStructure,
-    MainStep,
-    FlowSequence,
-    SharedState,
+import {
+    type Flow,
+    type CreateStepArgs,
+    type CreateStepStructure,
+    type MainStep,
+    type FlowSequence,
+    type SharedState,
+    Step,
 } from './types';
 import { FlowStoreImpl as FlowStore } from './flowStore';
 import { NavigationProviderImpl as NavigationProvider } from './navigationProvider';
@@ -12,16 +13,8 @@ import React from 'react';
 import { createPersonalInfoStep } from './ui/multi_step_form/personal_info/create';
 import { Dialog, Footer as DialogFooter } from '../src/ui/base/dialog/dialog';
 import type { FooterProps as DialogFooterProps } from '../src/ui/base/dialog/dialog';
-import { MultiStepFormHandler } from './formHandler';
+import { MultiStepFormHandlerImpl as MultiStepFormHandler } from './formHandler';
 import { PersonalInfoFormHandler } from './ui/multi_step_form/personal_info/formHandler';
-
-const flow: Flow = {
-    personalInfo: createPersonalInfoStep,
-    selectPlan: createSelectPlanStep,
-    addons: createAddonsStep,
-    summary: createSummaryStep,
-    confirmation: createConfirmationStep,
-};
 
 const steps: Record<MainStep, string> = {
     personalInfo: 'Your info',
@@ -31,7 +24,7 @@ const steps: Record<MainStep, string> = {
 };
 
 const sharedState: SharedState = {
-    plan: {
+    selectPlan: {
         type: 'monthly',
         details: {
             arcade: 9,
@@ -52,13 +45,19 @@ const flowSequence: FlowSequence = {
         subsequence: [],
     },
     summary: {
-        subsequence: ['confirmation'],
+        subsequence: [Step.CONFIRMATION],
     },
 };
 
 const flowStore = new FlowStore(
-    flow,
-    'personalInfo',
+    {
+        personalInfo: createPersonalInfoStep,
+        selectPlan: createSelectPlanStep,
+        addons: createAddonsStep,
+        summary: createSummaryStep,
+        confirmation: createConfirmationStep,
+    },
+    Step.PERSONAL_INFO,
     sharedState,
     flowSequence
 );
@@ -69,7 +68,7 @@ function App() {
     // shared state across all steps
     const [multiStepFormData, setMultiStepFormData] =
         React.useState<SharedState>({
-            plan: {
+            selectPlan: {
                 type: 'monthly',
                 details: {
                     arcade: 9,
@@ -79,7 +78,7 @@ function App() {
             },
         });
 
-    const formHandler = new MultiStepFormHandler(
+    const multiStepFormHandler = new MultiStepFormHandler(
         multiStepFormData,
         setMultiStepFormData,
         {
@@ -120,7 +119,7 @@ function App() {
 
     const { step, structure: stepStructure } = flowStore.createCurrentStep({
         navigationProvider,
-        formHandler,
+        formHandler: multiStepFormHandler,
     });
 
     return (
@@ -132,7 +131,7 @@ function App() {
             content={stepStructure.content}
             footer={
                 <Footer
-                    disabledNext={!formHandler.canSubmit(step)}
+                    disabledNext={!multiStepFormHandler.canSubmit(step)}
                     onBack={stepStructure.onBack}
                     onNext={stepStructure.onNext}
                 />
@@ -144,12 +143,12 @@ function App() {
 function createSelectPlanStep({
     flowStore,
     options: { sharedState },
-}: CreateStepArgs): CreateStepStructure {
+}: CreateStepArgs): CreateStepStructure<Step.SELECT_PLAN> {
     return ({ navigationProvider }) => {
         console.log('createSelectPlanStep: ', sharedState);
 
         return {
-            step: 'selectPlan',
+            step: Step.SELECT_PLAN,
             structure: {
                 title: 'SelectPlan',
                 subtitle: 'SelectPlan subtitle',
@@ -157,7 +156,7 @@ function createSelectPlanStep({
                 onNext: () =>
                     navigationProvider.goNext({
                         sharedState: {
-                            plan: {
+                            selectPlan: {
                                 type: 'yearly',
                                 details: {
                                     arcade: 19,
@@ -177,12 +176,12 @@ function createSelectPlanStep({
 function createAddonsStep({
     flowStore,
     options: { sharedState },
-}: CreateStepArgs): CreateStepStructure {
+}: CreateStepArgs): CreateStepStructure<Step.ADD_ONS> {
     return ({ navigationProvider }) => {
         console.log('createAddonsStep: ', sharedState);
 
         return {
-            step: 'addons',
+            step: Step.ADD_ONS,
             structure: {
                 title: 'Addons',
                 subtitle: 'Addons subtitle',
@@ -197,12 +196,12 @@ function createAddonsStep({
 function createSummaryStep({
     flowStore,
     options: { sharedState },
-}: CreateStepArgs): CreateStepStructure {
+}: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
     return ({ navigationProvider }) => {
         console.log('createSummaryStep: ', sharedState);
 
         return {
-            step: 'summary',
+            step: Step.SUMMARY,
             structure: {
                 title: 'Summary',
                 subtitle: 'Summary subtitle',
@@ -217,12 +216,12 @@ function createSummaryStep({
 function createConfirmationStep({
     flowStore,
     options: { sharedState },
-}: CreateStepArgs): CreateStepStructure {
+}: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
     return ({ navigationProvider }) => {
         console.log('createSummaryStep: ', sharedState);
 
         return {
-            step: 'summary',
+            step: Step.SUMMARY,
             structure: {
                 title: 'Confirmation',
                 subtitle: 'Confirmation subtitle',

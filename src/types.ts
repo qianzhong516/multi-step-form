@@ -21,18 +21,20 @@ export type PlanDetails = {
     details: Record<PlanType, number>;
 };
 
-export type SharedState = {
-    personalInfo?: Partial<PersonalInfo>;
-    plan?: Partial<PlanDetails>;
-    addons?: Addons;
-};
+export const enum Step {
+    PERSONAL_INFO = 'personalInfo',
+    SELECT_PLAN = 'selectPlan',
+    ADD_ONS = 'addons',
+    SUMMARY = 'summary',
+    CONFIRMATION = 'confirmation',
+}
 
-export type Step =
-    | 'personalInfo'
-    | 'selectPlan'
-    | 'addons'
-    | 'summary'
-    | 'confirmation';
+export type SharedState = {
+    [Step.PERSONAL_INFO]?: PersonalInfo;
+    [Step.SELECT_PLAN]?: Partial<PlanDetails>;
+    [Step.ADD_ONS]?: Addons;
+    [Step.SUMMARY]?: PlanDetails & Addons;
+};
 
 export type MainStep = Exclude<Step, 'confirmation'>;
 
@@ -58,17 +60,17 @@ export type CreateStepArgs = {
     };
 };
 
-export type CreateStep = ({
+export type CreateStep<T extends MainStep> = ({
     flowStore,
     options,
-}: CreateStepArgs) => CreateStepStructure;
+}: CreateStepArgs) => CreateStepStructure<T>;
 
-export type CreateStepStructure = ({
+export type CreateStepStructure<T extends MainStep> = ({
     navigationProvider,
     formHandler,
 }: {
     navigationProvider: NavigationProvider;
-    formHandler: FormHandler | undefined;
+    formHandler: MultiStepFormHandler<T> | undefined;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
     // because one main step could contain multiple sub steps.
@@ -76,7 +78,17 @@ export type CreateStepStructure = ({
     structure: StepStructure;
 };
 
-export type Flow = Record<Step, CreateStep>;
+// this is for mapping each form data type into their main step.
+// E.g, MultiStepFormHandler<Step.PERSONAL_INFO>.getFormData(Step.PERSONAL_INFO)
+type stepMap<T extends Step> = {
+    [Step.PERSONAL_INFO]: Step.PERSONAL_INFO;
+    [Step.SELECT_PLAN]: Step.SELECT_PLAN;
+    [Step.ADD_ONS]: Step.ADD_ONS;
+    [Step.SUMMARY]: Step.SUMMARY;
+    [Step.CONFIRMATION]: Step.SUMMARY;
+}[T];
+
+export type Flow<T extends Step> = { [P in T]: CreateStep<stepMap<T>> };
 
 export interface NavigationProvider {
     goTo(...args: Parameters<FlowStore['goTo']>): void;
@@ -87,11 +99,18 @@ export interface NavigationProvider {
 
 export interface FlowStore {
     steps: Step[];
-    get createCurrentStep(): CreateStepStructure | undefined;
+    get createCurrentStep(): CreateStepStructure<MainStep> | undefined;
     goTo({ step, sharedState }: { step: Step; sharedState: SharedState }): void;
     goNext({ sharedState }: { sharedState: SharedState }): void;
     goBack({ sharedState }: { sharedState: SharedState }): void;
     close(): void;
+}
+
+export interface MultiStepFormHandler<T extends MainStep> {
+    getFormData(step: T): SharedState[T];
+    getFormHandler(step: T): FormHandler | undefined;
+    setFormData(step: T, data: SharedState[T]): void;
+    canSubmit(step: T): boolean;
 }
 
 export interface FormHandler {

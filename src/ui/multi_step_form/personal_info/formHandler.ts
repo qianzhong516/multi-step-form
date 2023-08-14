@@ -1,8 +1,4 @@
-import { FormHandler } from '../../../types';
-import type {
-    PersonalInfoFormData,
-    PersonalInfoFormError,
-} from './personal_info_form';
+import { FormHandler, PersonalInfo } from '../../../types';
 
 const defaultFormData = {
     name: '',
@@ -13,7 +9,7 @@ const defaultFormData = {
 export class PersonalInfoFormHandler implements FormHandler {
     private _formData = defaultFormData;
 
-    constructor(formData: PersonalInfoFormData) {
+    constructor(formData: PersonalInfo | undefined) {
         this._formData = {
             ...this._formData,
             ...formData,
@@ -28,7 +24,7 @@ export class PersonalInfoFormHandler implements FormHandler {
         return this.isEmailValid && this.isPhoneValid;
     }
 
-    setFormData(data: PersonalInfoFormData) {
+    setFormData(data: PersonalInfo) {
         this._formData = { ...this._formData, ...data };
     }
 

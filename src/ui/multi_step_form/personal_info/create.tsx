@@ -1,25 +1,23 @@
 import React from 'react';
-import { CreateStepArgs, CreateStepStructure } from '../../../types';
 import {
-    PersonalInfoForm,
-    PersonalInfoFormData,
-    PersonalInfoFormError,
-} from './personal_info_form';
-import { PersonalInfoFormHandler } from './formHandler';
-
-const STEP = 'personalInfo';
+    CreateStepArgs,
+    CreateStepStructure,
+    PersonalInfo,
+    Step,
+} from '../../../types';
+import { PersonalInfoForm } from './personal_info_form';
 
 export function createPersonalInfoStep({
     flowStore,
     options: { sharedState },
-}: CreateStepArgs): CreateStepStructure {
+}: CreateStepArgs): CreateStepStructure<Step.PERSONAL_INFO> {
     return ({ navigationProvider, formHandler }) => {
-        const onChange = (data: PersonalInfoFormData) => {
-            formHandler?.setFormData(STEP, data);
+        const onChange = (data: PersonalInfo) => {
+            formHandler?.setFormData(Step.PERSONAL_INFO, data);
         };
 
         return {
-            step: STEP,
+            step: Step.PERSONAL_INFO,
             formHandler,
             structure: {
                 title: 'Personal Info',
@@ -27,7 +25,9 @@ export function createPersonalInfoStep({
                     'Please provide your name, email address, and phone number',
                 content: (
                     <PersonalInfoForm
-                        formData={formHandler.getFormHandler(STEP).formData}
+                        personalInfo={formHandler?.getFormData(
+                            Step.PERSONAL_INFO
+                        )}
                         onChange={onChange}
                     />
                 ),
@@ -35,8 +35,9 @@ export function createPersonalInfoStep({
                     navigationProvider.goNext({
                         sharedState: {
                             ...sharedState,
-                            personalInfo:
-                                formHandler.getFormHandler(STEP).formData,
+                            personalInfo: formHandler?.getFormData(
+                                Step.PERSONAL_INFO
+                            ),
                         },
                     });
                 },

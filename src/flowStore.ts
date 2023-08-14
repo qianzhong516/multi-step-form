@@ -5,6 +5,7 @@ import type {
     Flow,
     CreateStepStructure,
     FlowSequence,
+    MainStep,
 } from './types';
 
 // TODO: how to decouple the confirmation flow with the multi-step flow [M2]
@@ -13,7 +14,8 @@ export class FlowStoreImpl implements FlowStore {
     steps: Step[] = [];
 
     constructor(
-        private readonly flow: Flow,
+        // TODO: fix: a member cannot be assigned to a union type
+        private readonly flow: Flow<any>,
         private currentStep: Step | null,
         private sharedState: SharedState = {},
         public flowSequence: FlowSequence
@@ -28,7 +30,7 @@ export class FlowStoreImpl implements FlowStore {
         }, [] as Step[]);
     }
 
-    get createCurrentStep(): CreateStepStructure | undefined {
+    get createCurrentStep(): CreateStepStructure<MainStep> | undefined {
         if (this.currentStep == null) {
             return;
         }

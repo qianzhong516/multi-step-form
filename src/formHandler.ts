@@ -1,18 +1,18 @@
 import {
-    Step,
     type FormHandler,
     type MainStep,
     type MultiStepFormHandler,
     type SharedState,
-    PersonalInfo,
 } from './types';
 
 export class MultiStepFormHandlerImpl<T extends MainStep>
     implements MultiStepFormHandler<T>
 {
     constructor(
+        // proxy to the `multiStepFormData` state
         private formData: SharedState,
-        private updateFormData: (val: Partial<SharedState>) => void,
+        // proxy to the `setMultiStepFormData`
+        private updateFormData: (formData: Partial<SharedState>) => void,
         private readonly formHandlerFactory: Record<
             MainStep,
             FormHandler | undefined
@@ -29,7 +29,6 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
 
     setFormData(step: T, data: SharedState[keyof SharedState]) {
         this.updateFormData({ ...this.formData, [step]: data });
-        console.log('personalInfoData: ', data);
     }
 
     canSubmit(step: T) {

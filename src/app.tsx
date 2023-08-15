@@ -11,6 +11,7 @@ import { FlowStoreImpl as FlowStore } from './flowStore';
 import { NavigationProviderImpl as NavigationProvider } from './navigationProvider';
 import React from 'react';
 import { createPersonalInfoStep } from './ui/multi_step_form/personal_info/create';
+import { createSelectPlanStep } from './ui/multi_step_form/select_plan/create';
 import { Dialog, Footer as DialogFooter } from '../src/ui/base/dialog/dialog';
 import type { FooterProps as DialogFooterProps } from '../src/ui/base/dialog/dialog';
 import { MultiStepFormHandlerImpl as MultiStepFormHandler } from './formHandler';
@@ -68,6 +69,8 @@ function App() {
     // shared state across all steps
     const [multiStepFormData, setMultiStepFormData] =
         React.useState<SharedState>({
+            // TODO: Fix. The selectPlan shared state should only contain one
+            // plan with its pricing
             selectPlan: {
                 type: 'monthly',
                 details: {
@@ -138,39 +141,6 @@ function App() {
             }
         />
     );
-}
-
-function createSelectPlanStep({
-    flowStore,
-    options: { sharedState },
-}: CreateStepArgs): CreateStepStructure<Step.SELECT_PLAN> {
-    return ({ navigationProvider }) => {
-        console.log('createSelectPlanStep: ', sharedState);
-
-        return {
-            step: Step.SELECT_PLAN,
-            structure: {
-                title: 'SelectPlan',
-                subtitle: 'SelectPlan subtitle',
-                content: <div>Content</div>,
-                onNext: () =>
-                    navigationProvider.goNext({
-                        sharedState: {
-                            selectPlan: {
-                                type: 'yearly',
-                                details: {
-                                    arcade: 19,
-                                    advanced: 112,
-                                    pro: 115,
-                                },
-                            },
-                        },
-                    }),
-                onBack: () => navigationProvider.goBack({ sharedState }),
-                onClose: () => navigationProvider.close(),
-            },
-        };
-    };
 }
 
 function createAddonsStep({

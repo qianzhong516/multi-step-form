@@ -16,16 +16,8 @@ export class PersonalInfoFormHandler implements FormHandler {
         };
     }
 
-    get formData() {
-        return this._formData;
-    }
-
     get canSubmit(): boolean {
         return this.isEmailValid && this.isPhoneValid;
-    }
-
-    setFormData(data: PersonalInfo) {
-        this._formData = { ...this._formData, ...data };
     }
 
     private get isEmailValid(): boolean {

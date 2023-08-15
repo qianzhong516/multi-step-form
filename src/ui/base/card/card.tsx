@@ -2,13 +2,17 @@ import styles from './card.css';
 import { Text } from '../text/text';
 import classnames from 'classnames';
 
-type CardProps = {
+// TODO: rename to SelectPlanCard
+export type CardProps = {
     icon: React.ReactNode;
     title: string;
     subTitle: string;
     isActive?: boolean;
 };
 
+// TODO: add onClick prop
+// add a comment for addressing accessbility
+// add a descriptor prop
 export const Card = ({
     icon,
     title,

@@ -1,0 +1,25 @@
+@value colors: "../../../styles/colors.css";
+@value secondaryColor, highlightColor from colors;
+
+.card {
+    padding: 16px;
+    border: 1px solid secondaryColor;
+    border-radius: 8px;
+}
+
+.card:hover {
+    cursor: pointer;
+    border-color: highlightColor;
+}
+
+.card.active {
+    border-color: highlightColor;
+}
+
+.icon {
+    margin-bottom: 36px;
+}
+
+.title {
+    margin-bottom: 8px;
+}

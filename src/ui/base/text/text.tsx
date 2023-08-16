@@ -5,7 +5,7 @@ import React from 'react';
 type TextProps = {
     type: 'text' | 'title';
     variant: 'primary' | 'secondary' | 'tertiary' | 'error';
-    size?: 'large' | 'medium' | 'small';
+    size?: 'large' | 'medium' | 'small' | 'xsmall';
     styling?: 'bold' | 'regular';
     /* Style override is not recommended for base components. Use it as the last resort. */
     className?: string;
@@ -62,6 +62,9 @@ function getTypography(type: Pick<TextProps, 'type'>['type']) {
         Small: (props: Omit<TextProps, 'type' | 'size'>) => (
             <InternalText type={type} size='small' {...props} />
         ),
+        ExtraSmall: (props: Omit<TextProps, 'type' | 'size'>) => (
+            <InternalText type={type} size='xsmall' {...props} />
+        ),
     };
 }
 
@@ -78,6 +81,7 @@ function getClassNames({
         { [styles.secondary]: variant === 'secondary' },
         { [styles.tertiary]: variant === 'tertiary' },
         { [styles.error]: variant === 'error' },
+        { [styles.xsmall]: type === 'text' && size === 'xsmall' },
         { [styles.small]: type === 'text' && size === 'small' },
         { [styles.medium]: type === 'text' && size === 'medium' },
         { [styles.large]: type === 'text' && size === 'large' },

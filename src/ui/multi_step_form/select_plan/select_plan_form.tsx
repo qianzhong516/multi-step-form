@@ -4,7 +4,7 @@ import {
     arcadeIcon,
     proIcon,
 } from '../../../ui/base/icon_image/icon_image';
-import { CardProps } from '../../base/card/card';
+import { SelectCardProps } from '../../base/select_card/select_card';
 
 const monthlyPlanDetails = {
     type: 'monthly',
@@ -30,7 +30,9 @@ const iconMap = {
     pro: proIcon,
 };
 
-function createSelectCardOptions(planType: 'monthly' | 'yearly'): CardProps {
+function createSelectCardOptions(
+    planType: 'monthly' | 'yearly'
+): SelectCardProps {
     return {
         title: '',
         subTitle: '',

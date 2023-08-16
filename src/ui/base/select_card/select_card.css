@@ -5,6 +5,10 @@
     padding: 16px;
     border: 1px solid secondaryColor;
     border-radius: 8px;
+    outline: none;
+    background: none;
+    text-align: left;
+    width: 100%;
 }
 
 .card:hover {
@@ -22,4 +26,8 @@
 
 .title {
     margin-bottom: 8px;
+}
+
+.description {
+    margin-top: 5px;
 }

@@ -17,7 +17,7 @@ export const SelectCard: Story = {
     args: {
         icon: <Icon size='medium' img={proIcon} />,
         title: 'Arcade',
-        subTitle: '$9/mo',
+        subtitle: '$9/mo',
         description: '2 months free',
     },
 };

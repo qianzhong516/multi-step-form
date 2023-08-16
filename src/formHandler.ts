@@ -19,7 +19,7 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
         >
     ) {}
 
-    getFormHandler(step: T) {
+    private getFormHandler(step: T) {
         return this.formHandlerFactory[step];
     }
 

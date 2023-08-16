@@ -5,23 +5,27 @@ import classnames from 'classnames';
 export type SelectCardProps = {
     icon: React.ReactNode;
     title: string;
-    subTitle: string;
+    subtitle: string;
     isActive?: boolean;
     description?: string;
     onClick?(): void;
+    className?: string;
 };
 
 // TODO: to address accessbility
 export const SelectCard = ({
     icon,
     title,
-    subTitle,
+    subtitle,
     isActive = false,
     description,
     onClick,
+    className,
 }: SelectCardProps) => (
     <button
-        className={classnames(styles.card, { [styles.active]: isActive })}
+        className={classnames(className, styles.card, {
+            [styles.active]: isActive,
+        })}
         onClick={onClick}>
         <div className={styles.icon}>{icon}</div>
         <div className={styles.title}>
@@ -29,7 +33,7 @@ export const SelectCard = ({
                 {title}
             </Text.Medium>
         </div>
-        <Text.Small variant='secondary'>{subTitle}</Text.Small>
+        <Text.Small variant='secondary'>{subtitle}</Text.Small>
         {description && (
             <div className={styles.description}>
                 <Text.ExtraSmall variant='primary'>

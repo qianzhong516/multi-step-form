@@ -27,11 +27,8 @@ const steps: Record<MainStep, string> = {
 const sharedState: SharedState = {
     selectPlan: {
         type: 'monthly',
-        details: {
-            arcade: 9,
-            advanced: 12,
-            pro: 15,
-        },
+        planType: 'arcade',
+        price: 9,
     },
 };
 
@@ -73,11 +70,8 @@ function App() {
             // plan with its pricing
             selectPlan: {
                 type: 'monthly',
-                details: {
-                    arcade: 9,
-                    advanced: 12,
-                    pro: 15,
-                },
+                planType: 'arcade',
+                price: 9,
             },
         });
 

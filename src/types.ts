@@ -18,7 +18,8 @@ export type Addons = AddonDetails[];
 
 export type PlanDetails = {
     type: RecurringVariant;
-    details: Record<PlanType, number>;
+    planType: PlanType;
+    price: number;
 };
 
 export const enum Step {
@@ -31,7 +32,7 @@ export const enum Step {
 
 export type SharedState = {
     [Step.PERSONAL_INFO]?: PersonalInfo;
-    [Step.SELECT_PLAN]?: Partial<PlanDetails>;
+    [Step.SELECT_PLAN]?: PlanDetails;
     [Step.ADD_ONS]?: Addons;
     [Step.SUMMARY]?: PlanDetails & Addons;
 };
@@ -70,6 +71,7 @@ export type CreateStepStructure<T extends MainStep> = ({
     formHandler,
 }: {
     navigationProvider: NavigationProvider;
+    // TODO: remove optional undefined once all forms are done
     formHandler: MultiStepFormHandler<T> | undefined;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
@@ -101,6 +103,7 @@ export interface FlowStore {
     steps: Step[];
     get createCurrentStep(): CreateStepStructure<MainStep> | undefined;
     goTo({ step, sharedState }: { step: Step; sharedState: SharedState }): void;
+    // TODO: revisit. Is sharedState needed?
     goNext({ sharedState }: { sharedState: SharedState }): void;
     goBack({ sharedState }: { sharedState: SharedState }): void;
     close(): void;
@@ -108,7 +111,6 @@ export interface FlowStore {
 
 export interface MultiStepFormHandler<T extends MainStep> {
     getFormData(step: T): SharedState[T];
-    getFormHandler(step: T): FormHandler | undefined;
     setFormData(step: T, data: SharedState[T]): void;
     canSubmit(step: T): boolean;
 }

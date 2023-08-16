@@ -1,0 +1,43 @@
+@value colors: "../../../styles/colors.css";
+@value primaryColor from colors;
+
+@value toggleButtonWidth: 40px;
+@value indicatorHeight: 20px;
+@value indicatorVerticalOffset: 4px;
+@value indicatorHorizontalOffset: 10px;
+@value indicatorSize: calc((indicatorHeight - indicatorVerticalOffset) / 1.2);
+
+.container {
+    display: flex;
+}
+
+.toggleButton {
+    width: toggleButtonWidth;
+    height: indicatorHeight;
+    outline: none;
+    border: none;
+    border-radius: 80px;
+    background-color: primaryColor;
+    cursor: pointer;
+    padding: calc(indicatorVerticalOffset / 2)
+        calc(indicatorHorizontalOffset / 2);
+    margin: 0 16px;
+}
+
+.indicator {
+    width: indicatorSize;
+    height: indicatorSize;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: transform 200ms linear;
+}
+
+.indicator.active {
+    /**
+     * translateX(100%) increases the element's posX by 100% of itself, 
+     * hence we need to calculate the exact distance in X axis to translate.
+     **/
+    transform: translateX(
+        calc(toggleButtonWidth - indicatorHorizontalOffset - indicatorSize)
+    );
+}

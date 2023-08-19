@@ -32,7 +32,10 @@
 
 .sidebar {
     padding: 32px;
-    background-image: url('../../../assets/images/bg-sidebar-desktop.svg');
+    /* 
+     * TODO: configure webpack to handle svg in .css files
+     * background-image: url(../../../assets/images/bg-sidebar-desktop.svg?encodiong=base64); 
+     */
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;

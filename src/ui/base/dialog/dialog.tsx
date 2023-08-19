@@ -3,6 +3,7 @@ import styles from './dialog.css';
 import { StepCard } from './step_card/step_card';
 import { Title, Text } from '../text/text';
 import { Button } from '../button/button';
+import sideBarBg from '../../../assets/images/bg-sidebar-desktop.svg';
 
 type DialogProps<Step extends string, CurrentStep extends Step> = {
     currentStep: CurrentStep;
@@ -44,7 +45,9 @@ const Sidebar = <Step extends string, CurrentStep extends Step>({
     steps,
 }: Pick<DialogProps<Step, CurrentStep>, 'currentStep' | 'steps'>) => {
     return (
-        <div className={styles.sidebar}>
+        <div
+            className={styles.sidebar}
+            style={{ backgroundImage: `url(${sideBarBg})` }}>
             {(Object.keys(steps) as Array<keyof typeof steps>).map(
                 (step, index) => (
                     <div key={step} className={styles.stepCard}>

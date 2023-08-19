@@ -37,20 +37,19 @@ const iconMap = {
 };
 
 export const SelectPlanForm = ({
-    planType = 'monthly',
     planDetails,
     onChange,
 }: {
-    planType?: 'monthly' | 'yearly';
+    // TODO: remove optional modifier after all steps are added
     planDetails?: PlanDetails;
     onChange(value: PlanDetails): void;
 }) => {
-    const [type, setType] = React.useState(planType);
+    const recurringVariant = planDetails!.type;
+    const cardOptions = createSelectCardOptions(recurringVariant);
 
-    const cardOptions = createSelectCardOptions(type);
-
-    const onToggle = (planType: 'monthly' | 'yearly') => {
-        setType(planType);
+    const onToggle = (recurringVariant: 'monthly' | 'yearly') => {
+        const cardOptions = createSelectCardOptions(recurringVariant);
+        onChange(cardOptions[0].value);
     };
 
     const PlanSelect = () => {
@@ -80,7 +79,7 @@ export const SelectPlanForm = ({
     const toggleButton = (
         <div className={styles.toggleContainer}>
             <ToggleButton
-                defaultValue={planType}
+                defaultValue={recurringVariant}
                 value={{
                     on: 'yearly',
                     off: 'monthly',
@@ -99,9 +98,9 @@ export const SelectPlanForm = ({
 };
 
 function createSelectCardOptions(
-    planType: 'monthly' | 'yearly'
+    recurringVariant: 'monthly' | 'yearly'
 ): (SelectCardProps & { value: PlanDetails })[] {
-    switch (planType) {
+    switch (recurringVariant) {
         case 'monthly':
             return monthlyPlanDetails.options.map(({ name, price }) => ({
                 icon: <Icon img={iconMap[name]} size='medium' />,

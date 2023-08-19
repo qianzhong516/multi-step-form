@@ -24,7 +24,6 @@ export function createSelectPlanStep({
                 subtitle: 'You have the option of monthly or yearly billing.',
                 content: (
                     <SelectPlanForm
-                        planType={formData?.type}
                         planDetails={formData}
                         onChange={onChange}
                     />

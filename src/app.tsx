@@ -15,6 +15,7 @@ import { Dialog, Footer as DialogFooter } from '../src/ui/base/dialog/dialog';
 import type { FooterProps as DialogFooterProps } from '../src/ui/base/dialog/dialog';
 import { MultiStepFormHandlerImpl as MultiStepFormHandler } from './formHandler';
 import { PersonalInfoFormHandler } from './ui/multi_step_form/personal_info/formHandler';
+import { SelectPlanFormHandler } from './ui/multi_step_form/select_plan/formHandler';
 
 const steps: Record<MainStep, string> = {
     personalInfo: 'Your info',
@@ -65,8 +66,6 @@ function App() {
     // shared state across all steps
     const [multiStepFormData, setMultiStepFormData] =
         React.useState<SharedState>({
-            // TODO: Fix. The selectPlan shared state should only contain one
-            // plan with its pricing
             selectPlan: {
                 type: 'monthly',
                 planType: 'arcade',
@@ -81,7 +80,7 @@ function App() {
             personalInfo: new PersonalInfoFormHandler(
                 multiStepFormData.personalInfo
             ),
-            selectPlan: undefined,
+            selectPlan: new SelectPlanFormHandler(),
             addons: undefined,
             summary: undefined,
         }

@@ -108,6 +108,7 @@ export interface FlowStore {
 }
 
 export interface MultiStepFormHandler<T extends MainStep> {
+    getRecurringType(): RecurringVariant;
     getFormData(step: T): SharedState[T];
     setFormData(step: T, data: SharedState[T]): void;
     canSubmit(step: T): boolean;

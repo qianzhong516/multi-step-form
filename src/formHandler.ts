@@ -3,6 +3,7 @@ import {
     type MainStep,
     type MultiStepFormHandler,
     type SharedState,
+    Step,
 } from './types';
 
 export class MultiStepFormHandlerImpl<T extends MainStep>
@@ -21,6 +22,11 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
 
     private getFormHandler(step: T) {
         return this.formHandlerFactory[step];
+    }
+
+    getRecurringType() {
+        // TODO: remove the optional modifier
+        return this.formData[Step.SELECT_PLAN]?.type || 'monthly';
     }
 
     getFormData(step: T) {

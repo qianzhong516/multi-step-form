@@ -53,11 +53,11 @@ export const PlanAddonsForm = ({
     addons,
     onChange,
 }: {
-    recurringType: RecurringVariant;
+    recurringType: RecurringVariant | undefined;
     addons: AddonDetails[] | undefined;
     onChange(value: AddonDetails): void;
 }) => {
-    const addonOptions = createAddonOptions(recurringType);
+    const addonOptions = createAddonOptions(recurringType!);
     const handleOnChange = (isSelected: boolean, value: AddonDetails) => {
         if (isSelected) {
             onChange(value);
@@ -68,6 +68,7 @@ export const PlanAddonsForm = ({
         <div className={styles.container}>
             {addonOptions.map((option) => (
                 <MultiSelectCard
+                    key={option.title}
                     {...option}
                     isSelected={
                         !!addons?.some(

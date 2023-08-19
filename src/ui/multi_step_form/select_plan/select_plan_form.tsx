@@ -5,10 +5,12 @@ import {
     proIcon,
 } from '../../../ui/base/icon_image/icon_image';
 import { SelectCardProps } from '../../base/select_card/select_card';
-import { capitalize } from '../../utils/utils';
+import { capitalize, isObjectStructuallyEqual } from '../../utils/utils';
 import { SelectCard } from '../../base/select_card/select_card';
 import { PlanDetails } from '../../../types';
 import { ToggleButton } from '../../base/toggle_button/toggle_button';
+import { Icon } from '../../base/icon/icon';
+import styles from './select_plan.css';
 
 const monthlyPlanDetails = {
     type: 'monthly',
@@ -36,9 +38,11 @@ const iconMap = {
 
 export const SelectPlanForm = ({
     planType = 'monthly',
+    planDetails,
     onChange,
 }: {
     planType?: 'monthly' | 'yearly';
+    planDetails?: PlanDetails;
     onChange(value: PlanDetails): void;
 }) => {
     const [type, setType] = React.useState(planType);
@@ -49,36 +53,47 @@ export const SelectPlanForm = ({
         setType(planType);
     };
 
-    const planSelectComponent = cardOptions.map(
-        ({ value, ...cardProps }, i) => {
-            const [index, setIndex] = React.useState(0);
-            const onClick = React.useCallback(() => setIndex(i), []);
+    const PlanSelect = () => {
+        return (
+            <div className={styles.planSelect}>
+                {cardOptions.map(({ value, ...cardProps }, i) => {
+                    const onClick = React.useCallback(() => {
+                        onChange(value);
+                    }, []);
 
-            React.useEffect(() => {
-                onChange(value);
-            }, [index]);
+                    return (
+                        <SelectCard
+                            key={cardProps.title}
+                            isActive={
+                                planDetails &&
+                                isObjectStructuallyEqual(planDetails, value)
+                            }
+                            onClick={onClick}
+                            {...cardProps}
+                        />
+                    );
+                })}
+            </div>
+        );
+    };
 
-            return (
-                <SelectCard
-                    key={cardProps.title}
-                    isActive={index === i}
-                    onClick={onClick}
-                    {...cardProps}
-                />
-            );
-        }
+    const toggleButton = (
+        <div className={styles.toggleContainer}>
+            <ToggleButton
+                defaultValue={planType}
+                value={{
+                    on: 'yearly',
+                    off: 'monthly',
+                }}
+                onToggle={onToggle}
+            />
+        </div>
     );
 
     return (
         <div>
-            {planSelectComponent}
-            <ToggleButton
-                value={{
-                    on: 'monthly',
-                    off: 'yearly',
-                }}
-                onToggle={onToggle}
-            />
+            <PlanSelect />
+            {toggleButton}
         </div>
     );
 };
@@ -89,7 +104,7 @@ function createSelectCardOptions(
     switch (planType) {
         case 'monthly':
             return monthlyPlanDetails.options.map(({ name, price }) => ({
-                icon: iconMap[name],
+                icon: <Icon img={iconMap[name]} size='medium' />,
                 title: capitalize(name),
                 subtitle: `${price}/mo`,
                 value: {
@@ -101,7 +116,7 @@ function createSelectCardOptions(
         case 'yearly':
             return yearlyPlanDetails.options.map(
                 ({ name, price, description }) => ({
-                    icon: iconMap[name],
+                    icon: <Icon img={iconMap[name]} size='medium' />,
                     title: capitalize(name),
                     subtitle: `${price}/mo`,
                     description,

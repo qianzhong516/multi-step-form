@@ -25,6 +25,7 @@ export function createSelectPlanStep({
                 content: (
                     <SelectPlanForm
                         planType={formData?.type}
+                        planDetails={formData}
                         onChange={onChange}
                     />
                 ),

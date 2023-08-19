@@ -1,0 +1,16 @@
+@value colors: "../../../styles/colors.css";
+@value highlightBgColor from colors;
+
+.planSelect {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.toggleContainer {
+    display: flex;
+    justify-content: center;
+    background-color: highlightBgColor;
+    padding: 12px;
+    border-radius: 8px;
+}

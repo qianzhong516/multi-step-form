@@ -1,4 +1,5 @@
 import styles from './icon.css';
+import React from 'react';
 
 type IconSize = 'small' | 'medium' | 'large';
 

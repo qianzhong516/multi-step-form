@@ -1,6 +1,7 @@
 import styles from './select_card.css';
 import { Text } from '../text/text';
 import classnames from 'classnames';
+import React from 'react';
 
 export type SelectCardProps = {
     icon: React.ReactNode;

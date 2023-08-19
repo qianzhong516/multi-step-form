@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const DefautOff: Story = {
     args: {
-        defaultOn: false,
+        defaultValue: 'Monthly',
         value: {
             on: 'Monthly',
             off: 'Yearly',
@@ -23,7 +23,7 @@ export const DefautOff: Story = {
 
 export const DefautOn: Story = {
     args: {
-        defaultOn: true,
+        defaultValue: 'Yearly',
         value: {
             on: 'Monthly',
             off: 'Yearly',

@@ -2,9 +2,10 @@ import React from 'react';
 import styles from './toggle_button.css';
 import classnames from 'classnames';
 import { Text } from '../text/text';
+import { capitalize } from '../../utils/utils';
 
 type ToggleButtonProps<OnState extends string, OffState extends string> = {
-    defaultOn?: boolean;
+    defaultValue: OnState | OffState;
     value: {
         on: OnState;
         off: OffState;
@@ -13,31 +14,31 @@ type ToggleButtonProps<OnState extends string, OffState extends string> = {
 };
 
 export const ToggleButton = <OnState extends string, OffState extends string>({
-    defaultOn = false,
+    defaultValue,
     value,
     onToggle,
 }: ToggleButtonProps<OnState, OffState>) => {
-    const [isOn, setIsOn] = React.useState(defaultOn);
+    const [isOn, setIsOn] = React.useState(defaultValue === value.on);
 
     const onClick = () => {
-        onToggle(isOn ? value.on : value.off);
+        onToggle(isOn ? value.off : value.on);
         setIsOn((isOn) => !isOn);
     };
 
     return (
         <div className={styles.container}>
-            <Text.Small variant='primary' styling='bold'>
-                {value.on}
-            </Text.Small>
+            <Text.Medium variant='primary' styling='bold'>
+                {capitalize(value.off)}
+            </Text.Medium>
             <button className={styles.toggleButton} onClick={onClick}>
                 <div
                     className={classnames(styles.indicator, {
                         [styles.active]: isOn,
                     })}></div>
             </button>
-            <Text.Small variant='primary' styling='bold'>
-                {value.off}
-            </Text.Small>
+            <Text.Medium variant='primary' styling='bold'>
+                {capitalize(value.on)}
+            </Text.Medium>
         </div>
     );
 };

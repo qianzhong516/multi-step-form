@@ -1,0 +1,26 @@
+@value colors: "../../../styles/colors.css";
+@value secondaryColor, highlightColor, highlightBgColor from colors;
+
+.container {
+    display: flex;
+    align-items: center;
+    border: 1px solid secondaryColor;
+    border-radius: 8px;
+    padding: 24px 12px;
+}
+
+.container.active {
+    border-color: highlightColor;
+    background-color: highlightBgColor;
+}
+
+.checkbox {
+    margin-right: 24px;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-grow: 1;
+}

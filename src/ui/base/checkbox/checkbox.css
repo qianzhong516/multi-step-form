@@ -1,5 +1,5 @@
 @value colors: "../../../styles/colors.css";
-@value secondaryColor, highlightColor, disabledColor from colors;
+@value secondaryColor, disabledColor from colors;
 
 @value checkboxSize: 18px;
 @value markerWidth: 10px;
@@ -24,7 +24,7 @@
 }
 
 .checkbox.checked {
-    background-color: highlightColor;
+    background-color: #423cf4;
 }
 
 /* Style the check mark */

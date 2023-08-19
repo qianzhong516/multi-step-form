@@ -11,6 +11,7 @@ import { NavigationProviderImpl as NavigationProvider } from './navigationProvid
 import React from 'react';
 import { createPersonalInfoStep } from './ui/multi_step_form/personal_info/create';
 import { createSelectPlanStep } from './ui/multi_step_form/select_plan/create';
+import { createPlanAddonsStep } from './ui/multi_step_form/plan_addons/create';
 import { Dialog, Footer as DialogFooter } from '../src/ui/base/dialog/dialog';
 import type { FooterProps as DialogFooterProps } from '../src/ui/base/dialog/dialog';
 import { MultiStepFormHandlerImpl as MultiStepFormHandler } from './formHandler';
@@ -51,7 +52,7 @@ const flowStore = new FlowStore(
     {
         personalInfo: createPersonalInfoStep,
         selectPlan: createSelectPlanStep,
-        addons: createAddonsStep,
+        addons: createPlanAddonsStep,
         summary: createSummaryStep,
         confirmation: createConfirmationStep,
     },
@@ -133,26 +134,6 @@ function App() {
             }
         />
     );
-}
-
-function createAddonsStep({
-    flowStore,
-    options: { sharedState },
-}: CreateStepArgs): CreateStepStructure<Step.ADD_ONS> {
-    return ({ navigationProvider }) => {
-        console.log('createAddonsStep: ', sharedState);
-
-        return {
-            step: Step.ADD_ONS,
-            structure: {
-                title: 'Addons',
-                subtitle: 'Addons subtitle',
-                content: <div>Content</div>,
-                onBack: () => navigationProvider.goBack({ sharedState }),
-                onNext: () => navigationProvider.goNext({ sharedState }),
-            },
-        };
-    };
 }
 
 function createSummaryStep({

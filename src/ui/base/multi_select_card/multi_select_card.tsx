@@ -4,12 +4,12 @@ import { Text } from '../text/text';
 import styles from './multi_select_card.css';
 import { Checkbox } from '../checkbox/checkbox';
 
-type MultiSelectCardProps = {
+export type MultiSelectCardProps = {
     title: string;
     subtitle: string;
     displayValue: string;
     isSelected: boolean;
-    onChange(): void;
+    onChange(isSelected: boolean): void;
 };
 
 export const MultiSelectCard = ({
@@ -18,22 +18,31 @@ export const MultiSelectCard = ({
     displayValue,
     isSelected,
     onChange,
-}: MultiSelectCardProps) => (
-    <div
-        className={classnames(styles.container, {
-            [styles.active]: isSelected,
-        })}>
-        <div className={styles.checkbox}>
-            <Checkbox isSelected={isSelected} onChange={onChange} />
+}: MultiSelectCardProps) => {
+    const [isActive, setIsActive] = React.useState(isSelected);
+
+    const handleOnChange = () => {
+        onChange(!isActive);
+        setIsActive((isActive) => !isActive);
+    };
+
+    return (
+        <div
+            className={classnames(styles.container, {
+                [styles.active]: isActive,
+            })}>
+            <div className={styles.checkbox}>
+                <Checkbox isSelected={isActive} onChange={handleOnChange} />
+            </div>
+            <div className={styles.description}>
+                <Text.Medium variant='primary' styling='bold'>
+                    {title}
+                </Text.Medium>
+                <Text.Small variant='secondary'>{subtitle}</Text.Small>
+            </div>
+            <div>
+                <Text.Small variant='primary'>{displayValue}</Text.Small>
+            </div>
         </div>
-        <div className={styles.description}>
-            <Text.Medium variant='primary' styling='bold'>
-                {title}
-            </Text.Medium>
-            <Text.Small variant='secondary'>{subtitle}</Text.Small>
-        </div>
-        <div>
-            <Text.Small variant='primary'>{displayValue}</Text.Small>
-        </div>
-    </div>
-);
+    );
+};

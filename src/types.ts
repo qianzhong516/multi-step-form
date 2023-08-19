@@ -10,11 +10,9 @@ export type AddOnType =
     | 'customizableProfile';
 
 export type AddonDetails = {
-    type: RecurringVariant;
-    details: Record<AddOnType, number>;
+    type: AddOnType;
+    price: number;
 };
-
-export type Addons = AddonDetails[];
 
 export type PlanDetails = {
     type: RecurringVariant;
@@ -33,8 +31,8 @@ export const enum Step {
 export type SharedState = {
     [Step.PERSONAL_INFO]?: PersonalInfo;
     [Step.SELECT_PLAN]?: PlanDetails;
-    [Step.ADD_ONS]?: Addons;
-    [Step.SUMMARY]?: PlanDetails & Addons;
+    [Step.ADD_ONS]?: AddonDetails[];
+    [Step.SUMMARY]?: PlanDetails & AddonDetails[];
 };
 
 export type MainStep = Exclude<Step, 'confirmation'>;

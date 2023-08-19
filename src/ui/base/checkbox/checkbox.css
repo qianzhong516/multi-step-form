@@ -1,0 +1,49 @@
+@value colors: "../../../styles/colors.css";
+@value secondaryColor, highlightColor, disabledColor from colors;
+
+@value checkboxSize: 18px;
+@value markerWidth: 10px;
+@value markerHeight: 3px;
+@value markerBorderSize: 2px;
+
+/* Reset checkbox's default styles */
+.checkbox {
+    position: relative;
+    appearance: none;
+    width: checkboxSize;
+    height: checkboxSize;
+    background: transparent;
+    border: 1px solid secondaryColor;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.checkbox:checked {
+    outline: none;
+    border: none;
+}
+
+.checkbox.checked {
+    background-color: highlightColor;
+}
+
+/* Style the check mark */
+.checkbox::after {
+    content: '';
+    position: absolute;
+}
+
+.checked.checkbox::after {
+    width: markerWidth;
+    height: markerHeight;
+    border-left: markerBorderSize solid #fff;
+    border-bottom: markerBorderSize solid #fff;
+    transform: rotate(-45deg);
+    top: calc((checkboxSize - markerHeight - markerBorderSize * 2) / 2);
+    left: calc((checkboxSize - markerWidth - markerBorderSize) / 2);
+}
+
+.checkbox.disabled {
+    background-color: disabledColor;
+    cursor: default;
+}

@@ -23,16 +23,16 @@ const iconMap = {
 };
 
 export const SelectPlanForm = ({
-    planDetails,
+    currentPlanDetails,
     onChange,
     getPlanSelectOptions,
 }: {
     // TODO: remove optional modifier after all steps are added
-    planDetails?: PlanDetails;
+    currentPlanDetails?: PlanDetails;
     onChange(value: PlanDetails): void;
     getPlanSelectOptions(type: RecurringVariant): PlanSelectOption;
 }) => {
-    const recurringVariant = planDetails!.type;
+    const recurringVariant = currentPlanDetails!.type;
     const cardOptions = createSelectCardOptions(
         getPlanSelectOptions(recurringVariant)
     );
@@ -41,7 +41,10 @@ export const SelectPlanForm = ({
         const cardOptions = createSelectCardOptions(
             getPlanSelectOptions(recurringVariant)
         );
-        onChange(cardOptions[0].value);
+        const selectedOptionIndex = cardOptions.findIndex(
+            (option) => option.value.planType === currentPlanDetails!.planType
+        );
+        onChange(cardOptions[selectedOptionIndex].value);
     };
 
     const PlanSelect = () => {
@@ -56,8 +59,11 @@ export const SelectPlanForm = ({
                         <SelectCard
                             key={cardProps.title}
                             isActive={
-                                planDetails &&
-                                isObjectStructuallyEqual(planDetails, value)
+                                currentPlanDetails &&
+                                isObjectStructuallyEqual(
+                                    currentPlanDetails,
+                                    value
+                                )
                             }
                             onClick={onClick}
                             {...cardProps}

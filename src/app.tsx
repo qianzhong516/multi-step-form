@@ -91,6 +91,7 @@ function App() {
     console.log(multiStepFormData);
 
     const updateMultiStepFormData = (data: Partial<SharedState>) => {
+        // make sure form data is updated in correct order
         setMultiStepFormData((prev) => ({ ...prev, ...data }));
     };
 

@@ -27,7 +27,7 @@ export const SelectPlanForm: Story = {
         return (
             <Component
                 {...args}
-                planDetails={planDetails}
+                currentPlanDetails={planDetails}
                 onChange={onChange}
             />
         );

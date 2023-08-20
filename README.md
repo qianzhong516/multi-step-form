@@ -16,7 +16,10 @@ npm run dev
 
 ### Technical Choice
 
-1. Immediate error feedback is provided while users are filling in each form. Users cannot proceed to a next step if there is any error in the form. Next button isn't disbaled because footer and content form are two parrallel children within the Dialog component. It requires a common context for those two components to communicate with each other. However, the design choice in this repo is to manage form data within each form isolately by avoiding having a central state controller on the top level.
+-   The design choice in this repo is to manage form data within each form isolately.
+-   There is no easy way to communicate between steps. E.g, if user had previsouly selected addons, then changed the recurring type of plan in the select plan step, we need to update the addon items accordingly in the form data. We have two options to address this problem:
+    -   Use a message controller and subscribe to the events on the application's top level, so that user can switch between steps freely from the sidebar
+    -   Subscribe to a side effect to update the data in the addons step by detecting if there is a change in the recurring type. However, with this approach user cannot switch between steps freely from the sidebar
 
 ### TODOs
 

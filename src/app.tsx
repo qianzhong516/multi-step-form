@@ -17,6 +17,7 @@ import type { FooterProps as DialogFooterProps } from '../src/ui/base/dialog/dia
 import { MultiStepFormHandlerImpl as MultiStepFormHandler } from './formHandler';
 import { PersonalInfoFormHandler } from './ui/multi_step_form/personal_info/formHandler';
 import { SelectPlanFormHandler } from './ui/multi_step_form/select_plan/formHandler';
+import { PlanAddonsFormHandler } from './ui/multi_step_form/plan_addons/formHandler';
 
 const steps: Record<MainStep, string> = {
     personalInfo: 'Your info',
@@ -74,6 +75,8 @@ function App() {
             },
         });
 
+    console.log(multiStepFormData);
+
     const multiStepFormHandler = new MultiStepFormHandler(
         multiStepFormData,
         setMultiStepFormData,
@@ -82,7 +85,7 @@ function App() {
                 multiStepFormData.personalInfo
             ),
             selectPlan: new SelectPlanFormHandler(),
-            addons: undefined,
+            addons: new PlanAddonsFormHandler(),
             summary: undefined,
         }
     );
@@ -161,8 +164,6 @@ function createConfirmationStep({
     options: { sharedState },
 }: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
     return ({ navigationProvider }) => {
-        console.log('createSummaryStep: ', sharedState);
-
         return {
             step: Step.SUMMARY,
             structure: {

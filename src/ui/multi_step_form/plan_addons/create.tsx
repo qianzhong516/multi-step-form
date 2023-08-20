@@ -12,9 +12,20 @@ export function createPlanAddonsStep({
     options: { sharedState },
 }: CreateStepArgs): CreateStepStructure<Step.ADD_ONS> {
     return ({ navigationProvider, formHandler }) => {
-        const onChange = (value: AddonDetails) => {
+        const onChange = (isSelected: boolean, value: AddonDetails) => {
             const selectedAddons = formHandler?.getFormData(Step.ADD_ONS) ?? [];
-            formHandler?.setFormData(Step.ADD_ONS, [...selectedAddons, value]);
+            if (isSelected) {
+                formHandler?.setFormData(Step.ADD_ONS, [
+                    ...selectedAddons,
+                    value,
+                ]);
+                return;
+            }
+            // remove the deselected addon item
+            formHandler?.setFormData(
+                Step.ADD_ONS,
+                selectedAddons.filter((addon) => addon.type !== value.type)
+            );
         };
         const selectedAddons = formHandler?.getFormData(Step.ADD_ONS);
 

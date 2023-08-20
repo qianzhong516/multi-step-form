@@ -117,7 +117,7 @@ function createSelectCardOptions(
                 ({ name, price, description }) => ({
                     icon: <Icon img={iconMap[name]} size='medium' />,
                     title: capitalize(name),
-                    subtitle: `${price}/mo`,
+                    subtitle: `${price}/yr`,
                     description,
                     value: {
                         type: 'yearly',

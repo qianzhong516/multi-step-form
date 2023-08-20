@@ -54,14 +54,14 @@ export const PlanAddonsForm = ({
     onChange,
 }: {
     recurringType: RecurringVariant | undefined;
+    // TODO: `AddonDetails` needs the recurringVariant to update addOn items accordingly
+    // if there is a change on the recurringVariant from last step
     addons: AddonDetails[] | undefined;
-    onChange(value: AddonDetails): void;
+    onChange(isSelected: boolean, value: AddonDetails): void;
 }) => {
     const addonOptions = createAddonOptions(recurringType!);
     const handleOnChange = (isSelected: boolean, value: AddonDetails) => {
-        if (isSelected) {
-            onChange(value);
-        }
+        onChange(isSelected, value);
     };
 
     return (

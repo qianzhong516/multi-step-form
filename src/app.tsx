@@ -5,6 +5,8 @@ import {
     type FlowSequence,
     type SharedState,
     Step,
+    PlanSelectOption,
+    AddonOption,
 } from './types';
 import { FlowStoreImpl as FlowStore } from './flowStore';
 import { NavigationProviderImpl as NavigationProvider } from './navigationProvider';
@@ -18,6 +20,7 @@ import { MultiStepFormHandlerImpl as MultiStepFormHandler } from './formHandler'
 import { PersonalInfoFormHandler } from './ui/multi_step_form/personal_info/formHandler';
 import { SelectPlanFormHandler } from './ui/multi_step_form/select_plan/formHandler';
 import { PlanAddonsFormHandler } from './ui/multi_step_form/plan_addons/formHandler';
+import { SharedStateControllerImpl as SharedStateController } from './sharedStateController';
 
 const steps: Record<MainStep, string> = {
     personalInfo: 'Your info',
@@ -31,6 +34,10 @@ const sharedState: SharedState = {
         type: 'monthly',
         planType: 'arcade',
         price: 9,
+    },
+    addons: {
+        type: 'monthly',
+        items: [],
     },
 };
 
@@ -65,6 +72,8 @@ const navigationProvider = new NavigationProvider(flowStore);
 
 function App() {
     const [rerenderCount, setRerenderCount] = React.useState(0);
+    const planSelectOptions = React.useRef<PlanSelectOption[]>([]);
+    const addonOptions = React.useRef<AddonOption[]>([]);
     // shared state across all steps
     const [multiStepFormData, setMultiStepFormData] =
         React.useState<SharedState>({
@@ -73,13 +82,21 @@ function App() {
                 planType: 'arcade',
                 price: 9,
             },
+            addons: {
+                type: 'monthly',
+                items: [],
+            },
         });
 
     console.log(multiStepFormData);
 
+    const updateMultiStepFormData = (data: Partial<SharedState>) => {
+        setMultiStepFormData((prev) => ({ ...prev, ...data }));
+    };
+
     const multiStepFormHandler = new MultiStepFormHandler(
         multiStepFormData,
-        setMultiStepFormData,
+        updateMultiStepFormData,
         {
             personalInfo: new PersonalInfoFormHandler(
                 multiStepFormData.personalInfo
@@ -89,6 +106,28 @@ function App() {
             summary: undefined,
         }
     );
+
+    const setPlanSelectOptions = (options: PlanSelectOption[]) => {
+        planSelectOptions.current = options;
+    };
+
+    const setAddonOptions = (options: AddonOption[]) => {
+        addonOptions.current = options;
+    };
+
+    const sharedStateController = new SharedStateController(
+        multiStepFormData,
+        updateMultiStepFormData,
+        planSelectOptions.current,
+        addonOptions.current,
+        setPlanSelectOptions,
+        setAddonOptions
+    );
+
+    React.useEffect(() => {
+        // TODO: handle error state
+        sharedStateController.load();
+    }, []);
 
     const Footer = ({ onNext, onBack, ...props }: DialogFooterProps) => {
         const onNextHandler = () => {
@@ -119,6 +158,7 @@ function App() {
     const { step, structure: stepStructure } = flowStore.createCurrentStep({
         navigationProvider,
         formHandler: multiStepFormHandler,
+        sharedStateController,
     });
 
     return (

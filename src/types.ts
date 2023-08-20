@@ -30,8 +30,10 @@ export const enum Step {
 
 export type SharedState = {
     [Step.PERSONAL_INFO]?: PersonalInfo;
-    [Step.SELECT_PLAN]?: PlanDetails;
-    [Step.ADD_ONS]?: AddonDetails[];
+    [Step.SELECT_PLAN]: PlanDetails;
+    [Step.ADD_ONS]: { type: RecurringVariant } & {
+        items: AddonDetails[];
+    };
     [Step.SUMMARY]?: PlanDetails & AddonDetails[];
 };
 
@@ -67,10 +69,12 @@ export type CreateStep<T extends MainStep> = ({
 export type CreateStepStructure<T extends MainStep> = ({
     navigationProvider,
     formHandler,
+    sharedStateController,
 }: {
     navigationProvider: NavigationProvider;
     // TODO: remove optional undefined once all forms are done
     formHandler: MultiStepFormHandler<T> | undefined;
+    sharedStateController: SharedStateController;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
     // because one main step could contain multiple sub steps.
@@ -108,10 +112,33 @@ export interface FlowStore {
 }
 
 export interface MultiStepFormHandler<T extends MainStep> {
-    getRecurringType(): RecurringVariant;
-    getFormData(step: T): SharedState[T];
-    setFormData(step: T, data: SharedState[T]): void;
+    getCurrentFormData(step: T): SharedState[T];
+    setCurrentFormData(step: T, data: SharedState[T]): void;
     canSubmit(step: T): boolean;
+}
+
+export type AddonOption = {
+    type: RecurringVariant;
+    options: {
+        name: string;
+        price: number;
+        description: string;
+    }[];
+};
+
+export type PlanSelectOption = {
+    type: RecurringVariant;
+    options: {
+        name: PlanType;
+        price: number;
+    }[];
+};
+
+export interface SharedStateController {
+    load(): Promise<void>;
+    getAddonOptions(type: RecurringVariant): AddonOption;
+    getPlanSelectOptions(type: RecurringVariant): PlanSelectOption;
+    updateAddons(type: RecurringVariant): void;
 }
 
 export interface FormHandler {

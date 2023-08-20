@@ -7,28 +7,14 @@ import {
 import { SelectCardProps } from '../../base/select_card/select_card';
 import { capitalize, isObjectStructuallyEqual } from '../../utils/utils';
 import { SelectCard } from '../../base/select_card/select_card';
-import { PlanDetails } from '../../../types';
+import {
+    PlanDetails,
+    PlanSelectOption,
+    RecurringVariant,
+} from '../../../types';
 import { ToggleButton } from '../../base/toggle_button/toggle_button';
 import { Icon } from '../../base/icon/icon';
 import styles from './select_plan.css';
-
-const monthlyPlanDetails = {
-    type: 'monthly',
-    options: [
-        { name: 'arcade', price: 9 },
-        { name: 'advanced', price: 12 },
-        { name: 'pro', price: 15 },
-    ],
-} as const;
-
-const yearlyPlanDetails = {
-    type: 'yearly',
-    options: [
-        { name: 'arcade', price: 90, description: '2 months free' },
-        { name: 'advanced', price: 120, description: '2 months free' },
-        { name: 'pro', price: 150, description: '2 months free' },
-    ],
-} as const;
 
 const iconMap = {
     arcade: arcadeIcon,
@@ -39,16 +25,22 @@ const iconMap = {
 export const SelectPlanForm = ({
     planDetails,
     onChange,
+    getPlanSelectOptions,
 }: {
     // TODO: remove optional modifier after all steps are added
     planDetails?: PlanDetails;
     onChange(value: PlanDetails): void;
+    getPlanSelectOptions(type: RecurringVariant): PlanSelectOption;
 }) => {
     const recurringVariant = planDetails!.type;
-    const cardOptions = createSelectCardOptions(recurringVariant);
+    const cardOptions = createSelectCardOptions(
+        getPlanSelectOptions(recurringVariant)
+    );
 
     const onToggle = (recurringVariant: 'monthly' | 'yearly') => {
-        const cardOptions = createSelectCardOptions(recurringVariant);
+        const cardOptions = createSelectCardOptions(
+            getPlanSelectOptions(recurringVariant)
+        );
         onChange(cardOptions[0].value);
     };
 
@@ -98,11 +90,11 @@ export const SelectPlanForm = ({
 };
 
 function createSelectCardOptions(
-    recurringVariant: 'monthly' | 'yearly'
+    planSelectOption: PlanSelectOption
 ): (SelectCardProps & { value: PlanDetails })[] {
-    switch (recurringVariant) {
+    switch (planSelectOption.type) {
         case 'monthly':
-            return monthlyPlanDetails.options.map(({ name, price }) => ({
+            return planSelectOption.options.map(({ name, price }) => ({
                 icon: <Icon img={iconMap[name]} size='medium' />,
                 title: capitalize(name),
                 subtitle: `${price}/mo`,
@@ -113,19 +105,17 @@ function createSelectCardOptions(
                 },
             }));
         case 'yearly':
-            return yearlyPlanDetails.options.map(
-                ({ name, price, description }) => ({
-                    icon: <Icon img={iconMap[name]} size='medium' />,
-                    title: capitalize(name),
-                    subtitle: `${price}/yr`,
-                    description,
-                    value: {
-                        type: 'yearly',
-                        planType: name,
-                        price,
-                    },
-                })
-            );
+            return planSelectOption.options.map(({ name, price }) => ({
+                icon: <Icon img={iconMap[name]} size='medium' />,
+                title: capitalize(name),
+                subtitle: `${price}/yr`,
+                description: '2 months free',
+                value: {
+                    type: 'yearly',
+                    planType: name,
+                    price,
+                },
+            }));
         default:
             throw new Error('Invalid plan type.');
     }

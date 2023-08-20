@@ -4,8 +4,10 @@ import {
     type MultiStepFormHandler,
     type SharedState,
     Step,
+    RecurringVariant,
 } from './types';
 
+// the form handler related to the current step only
 export class MultiStepFormHandlerImpl<T extends MainStep>
     implements MultiStepFormHandler<T>
 {
@@ -24,17 +26,12 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
         return this.formHandlerFactory[step];
     }
 
-    getRecurringType() {
-        // TODO: remove the optional modifier
-        return this.formData[Step.SELECT_PLAN]?.type || 'monthly';
-    }
-
-    getFormData(step: T) {
+    getCurrentFormData(step: T) {
         return this.formData[step];
     }
 
-    setFormData(step: T, data: SharedState[keyof SharedState]) {
-        this.updateFormData({ ...this.formData, [step]: data });
+    setCurrentFormData(step: T, data: SharedState[keyof SharedState]) {
+        this.updateFormData({ [step]: data });
     }
 
     canSubmit(step: T) {

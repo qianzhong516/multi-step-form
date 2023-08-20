@@ -4,6 +4,7 @@ import {
     CreateStepStructure,
     Step,
     PlanDetails,
+    RecurringVariant,
 } from '../../../types';
 import { SelectPlanForm } from './select_plan_form';
 
@@ -11,11 +12,17 @@ export function createSelectPlanStep({
     flowStore,
     options: { sharedState },
 }: CreateStepArgs): CreateStepStructure<Step.SELECT_PLAN> {
-    return ({ navigationProvider, formHandler }) => {
+    return ({ navigationProvider, formHandler, sharedStateController }) => {
         const onChange = (value: PlanDetails) => {
-            formHandler?.setFormData(Step.SELECT_PLAN, value);
+            formHandler?.setCurrentFormData(Step.SELECT_PLAN, value);
+            sharedStateController.updateAddons(value.type);
         };
-        const formData = formHandler?.getFormData(Step.SELECT_PLAN);
+
+        const getPlanSelectOptions = (type: RecurringVariant) => {
+            return sharedStateController.getPlanSelectOptions(type);
+        };
+
+        const formData = formHandler?.getCurrentFormData(Step.SELECT_PLAN);
 
         return {
             step: Step.SELECT_PLAN,
@@ -26,16 +33,12 @@ export function createSelectPlanStep({
                     <SelectPlanForm
                         planDetails={formData}
                         onChange={onChange}
+                        getPlanSelectOptions={getPlanSelectOptions}
                     />
                 ),
                 onNext: () =>
                     navigationProvider.goNext({
-                        sharedState: {
-                            ...sharedState,
-                            selectPlan: formHandler?.getFormData(
-                                Step.SELECT_PLAN
-                            ),
-                        },
+                        sharedState,
                     }),
                 onBack: () => navigationProvider.goBack({ sharedState }),
                 onClose: () => navigationProvider.close(),

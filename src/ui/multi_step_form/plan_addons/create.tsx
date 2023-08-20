@@ -11,23 +11,34 @@ export function createPlanAddonsStep({
     flowStore,
     options: { sharedState },
 }: CreateStepArgs): CreateStepStructure<Step.ADD_ONS> {
-    return ({ navigationProvider, formHandler }) => {
+    return ({ navigationProvider, formHandler, sharedStateController }) => {
         const onChange = (isSelected: boolean, value: AddonDetails) => {
-            const selectedAddons = formHandler?.getFormData(Step.ADD_ONS) ?? [];
+            const formData = formHandler!.getCurrentFormData(Step.ADD_ONS);
             if (isSelected) {
-                formHandler?.setFormData(Step.ADD_ONS, [
-                    ...selectedAddons,
-                    value,
-                ]);
+                formHandler!.setCurrentFormData(Step.ADD_ONS, {
+                    ...formData,
+                    items: [...formData.items, value],
+                });
                 return;
             }
             // remove the deselected addon item
-            formHandler?.setFormData(
-                Step.ADD_ONS,
-                selectedAddons.filter((addon) => addon.type !== value.type)
+            formHandler?.setCurrentFormData(Step.ADD_ONS, {
+                ...formData,
+                items: formData.items.filter(
+                    (addon) => addon.type !== value.type
+                ),
+            });
+        };
+
+        const getAddonOption = () => {
+            return sharedStateController.getAddonOptions(
+                formHandler!.getCurrentFormData(Step.ADD_ONS).type
             );
         };
-        const selectedAddons = formHandler?.getFormData(Step.ADD_ONS);
+
+        const selectedAddons = formHandler!.getCurrentFormData(
+            Step.ADD_ONS
+        ).items;
 
         return {
             step: Step.ADD_ONS,
@@ -36,8 +47,8 @@ export function createPlanAddonsStep({
                 subtitle: 'Addons help enhance your gaming experience.',
                 content: (
                     <PlanAddonsForm
+                        getAddonOption={getAddonOption}
                         onChange={onChange}
-                        recurringType={formHandler?.getRecurringType()}
                         addons={selectedAddons}
                     />
                 ),

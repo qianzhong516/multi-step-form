@@ -13,7 +13,7 @@ export function createPersonalInfoStep({
 }: CreateStepArgs): CreateStepStructure<Step.PERSONAL_INFO> {
     return ({ navigationProvider, formHandler }) => {
         const onChange = (data: PersonalInfo) => {
-            formHandler?.setFormData(Step.PERSONAL_INFO, data);
+            formHandler?.setCurrentFormData(Step.PERSONAL_INFO, data);
         };
 
         return {
@@ -25,7 +25,7 @@ export function createPersonalInfoStep({
                     'Please provide your name, email address, and phone number',
                 content: (
                     <PersonalInfoForm
-                        personalInfo={formHandler?.getFormData(
+                        personalInfo={formHandler?.getCurrentFormData(
                             Step.PERSONAL_INFO
                         )}
                         onChange={onChange}
@@ -35,7 +35,7 @@ export function createPersonalInfoStep({
                     navigationProvider.goNext({
                         sharedState: {
                             ...sharedState,
-                            personalInfo: formHandler?.getFormData(
+                            personalInfo: formHandler?.getCurrentFormData(
                                 Step.PERSONAL_INFO
                             ),
                         },

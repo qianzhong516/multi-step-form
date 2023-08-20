@@ -1,65 +1,28 @@
 import React from 'react';
-import { AddOnType, AddonDetails, RecurringVariant } from '../../../types';
+import {
+    AddOnType,
+    AddonDetails,
+    AddonOption,
+    RecurringVariant,
+} from '../../../types';
 import {
     MultiSelectCard,
     type MultiSelectCardProps,
 } from '../../base/multi_select_card/multi_select_card';
 import styles from './plan_addons_form.css';
 
-const monthlyAddonList = {
-    type: 'monthly',
-    options: [
-        {
-            name: 'Online service',
-            description: 'Access to multiplayer games',
-            price: 9,
-        },
-        {
-            name: 'Larger storage',
-            description: 'Extra 1TB of cloud save',
-            price: 12,
-        },
-        {
-            name: 'Customizable profile',
-            description: 'Custom theme on your profile',
-            price: 15,
-        },
-    ],
-} as const;
-
-const yearlyAddonList = {
-    type: 'yearly',
-    options: [
-        {
-            name: 'Online service',
-            description: 'Access to multiplayer games',
-            price: 10,
-        },
-        {
-            name: 'Larger storage',
-            description: 'Extra 1TB of cloud save',
-            price: 20,
-        },
-        {
-            name: 'Customizable profile',
-            description: 'Custom theme on your profile',
-            price: 20,
-        },
-    ],
-} as const;
-
 export const PlanAddonsForm = ({
-    recurringType,
     addons,
     onChange,
+    getAddonOption,
 }: {
-    recurringType: RecurringVariant | undefined;
     // TODO: `AddonDetails` needs the recurringVariant to update addOn items accordingly
     // if there is a change on the recurringVariant from last step
     addons: AddonDetails[] | undefined;
     onChange(isSelected: boolean, value: AddonDetails): void;
+    getAddonOption(): AddonOption;
 }) => {
-    const addonOptions = createAddonOptions(recurringType!);
+    const addonOptions = createAddonOptions(getAddonOption());
     const handleOnChange = (isSelected: boolean, value: AddonDetails) => {
         onChange(isSelected, value);
     };
@@ -86,15 +49,15 @@ export const PlanAddonsForm = ({
     );
 };
 
-function createAddonOptions(type: RecurringVariant): (Omit<
+function createAddonOptions(addonOption: AddonOption): (Omit<
     MultiSelectCardProps,
     'onChange' | 'isSelected'
 > & {
     value: AddonDetails;
 })[] {
-    switch (type) {
+    switch (addonOption.type) {
         case 'monthly':
-            return monthlyAddonList.options.map((option) => ({
+            return addonOption.options.map((option) => ({
                 title: option.name,
                 subtitle: option.description,
                 displayValue: `+$${option.price}/mo`,
@@ -104,7 +67,7 @@ function createAddonOptions(type: RecurringVariant): (Omit<
                 },
             }));
         case 'yearly':
-            return yearlyAddonList.options.map((option) => ({
+            return addonOption.options.map((option) => ({
                 title: option.name,
                 subtitle: option.description,
                 displayValue: `+$${option.price}/yr`,
@@ -118,7 +81,7 @@ function createAddonOptions(type: RecurringVariant): (Omit<
     }
 }
 
-function mapNameType(name: string): AddOnType {
+export function mapNameType(name: string): AddOnType {
     switch (name) {
         case 'Online service':
             return 'onlineService';

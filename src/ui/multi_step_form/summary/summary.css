@@ -1,0 +1,43 @@
+@value colors: "../../../styles/colors.css";
+@value highlightBgColor from colors;
+
+.container {
+    background-color: highlightBgColor;
+    padding: 32px;
+    border-radius: 8px;
+}
+
+.plan {
+    display: flex;
+    margin-bottom: 12px;
+    justify-content: space-between;
+}
+
+.addonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.addonRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    padding: 32px;
+    align-items: center;
+}
+
+.planType {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.changeBtn {
+    padding: 0 !important;
+    text-align: left;
+}

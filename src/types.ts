@@ -136,6 +136,7 @@ export type PlanSelectOption = {
 
 export interface SharedStateController {
     load(): Promise<void>;
+    getFormData(): SharedState;
     getAddonOptions(type: RecurringVariant): AddonOption;
     getPlanSelectOptions(type: RecurringVariant): PlanSelectOption;
     updateAddons(type: RecurringVariant): void;

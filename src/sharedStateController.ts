@@ -45,6 +45,10 @@ export class SharedStateControllerImpl implements SharedStateController {
         });
     }
 
+    getFormData() {
+        return this.formData;
+    }
+
     getAddonOptions(type: RecurringVariant) {
         return type === 'monthly' ? this.addonOptions[0] : this.addonOptions[1];
     }

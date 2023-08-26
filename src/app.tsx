@@ -14,6 +14,7 @@ import React from 'react';
 import { createPersonalInfoStep } from './ui/multi_step_form/personal_info/create';
 import { createSelectPlanStep } from './ui/multi_step_form/select_plan/create';
 import { createPlanAddonsStep } from './ui/multi_step_form/plan_addons/create';
+import { createSummaryStep } from './ui/multi_step_form/summary/create';
 import { Dialog, Footer as DialogFooter } from '../src/ui/base/dialog/dialog';
 import type { FooterProps as DialogFooterProps } from '../src/ui/base/dialog/dialog';
 import { MultiStepFormHandlerImpl as MultiStepFormHandler } from './formHandler';
@@ -178,26 +179,6 @@ function App() {
             }
         />
     );
-}
-
-function createSummaryStep({
-    flowStore,
-    options: { sharedState },
-}: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
-    return ({ navigationProvider }) => {
-        console.log('createSummaryStep: ', sharedState);
-
-        return {
-            step: Step.SUMMARY,
-            structure: {
-                title: 'Summary',
-                subtitle: 'Summary subtitle',
-                content: <div>Content</div>,
-                onBack: () => navigationProvider.goBack({ sharedState }),
-                onNext: () => navigationProvider.goNext({ sharedState }),
-            },
-        };
-    };
 }
 
 function createConfirmationStep({

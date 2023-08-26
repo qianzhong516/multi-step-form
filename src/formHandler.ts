@@ -68,8 +68,8 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
             : this.planSelectOptions[1];
     }
 
-    getFormData() {
-        return this.formData;
+    getFormData<U extends MainStep>(step: U): SharedState[U] {
+        return this.formData[step];
     }
 
     setFormData<U extends MainStep>(step: U, data: SharedState[U]) {

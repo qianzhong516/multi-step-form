@@ -17,7 +17,7 @@ export function createSelectPlanStep({
         const formData = formHandler?.getCurrentFormData(Step.SELECT_PLAN);
 
         const presenter = new SelectPlanPresenter(
-            formHandler!.getFormData(),
+            formHandler!.getFormData(Step.ADD_ONS),
             formHandler!.getAddonOptions()
         );
         const onChange = (value: PlanDetails) => {

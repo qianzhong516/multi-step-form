@@ -9,7 +9,7 @@ import { mapNameType } from '../plan_addons/plan_addons_form';
 
 export class SelectPlanPresenter {
     constructor(
-        private readonly formData: SharedState,
+        private readonly addonsFormData: SharedState[Step.ADD_ONS],
         private addonOptions: AddonOption[]
     ) {}
 
@@ -18,16 +18,16 @@ export class SelectPlanPresenter {
     }
 
     getUpdatedAddons(type: RecurringVariant) {
-        if (this.formData[Step.ADD_ONS]?.type == null) {
-            const addons = this.formData[Step.ADD_ONS] ?? {
+        if (this.addonsFormData?.type == null) {
+            const addons = this.addonsFormData ?? {
                 type,
                 items: [],
             };
             return addons;
         }
 
-        if (this.formData[Step.ADD_ONS].type !== type) {
-            const selectedAddonItems = this.formData[Step.ADD_ONS].items;
+        if (this.addonsFormData.type !== type) {
+            const selectedAddonItems = this.addonsFormData.items;
             const updatedAddonOptions = this.getAddonOptions(type)
                 .options.map((option) =>
                     selectedAddonItems.some(

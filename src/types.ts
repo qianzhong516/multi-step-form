@@ -110,7 +110,7 @@ export interface FlowStore {
 }
 
 export interface MultiStepFormHandler<T extends MainStep> {
-    getFormData(): SharedState;
+    getFormData<U extends MainStep>(step: U): SharedState[U];
     setFormData<U extends MainStep>(step: U, data: SharedState[U]): void;
     getCurrentFormData(step: T): SharedState[T];
     setCurrentFormData(step: T, data: SharedState[T]): void;

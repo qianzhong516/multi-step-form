@@ -6,7 +6,7 @@ export function createSummaryStep({
     flowStore,
     options: { sharedState },
 }: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
-    return ({ navigationProvider, sharedStateController }) => {
+    return ({ navigationProvider, formHandler }) => {
         return {
             step: Step.SUMMARY,
             structure: {
@@ -14,12 +14,8 @@ export function createSummaryStep({
                 subtitle: 'Double-check everything looks OK before confirming.',
                 content: (
                     <Summary
-                        planDetails={{
-                            type: 'monthly',
-                            planType: 'arcade',
-                            price: 0,
-                        }}
-                        addons={[]}
+                        planDetails={formHandler!.getFormData(Step.SELECT_PLAN)}
+                        addons={formHandler!.getFormData(Step.ADD_ONS).items}
                     />
                 ),
                 onBack: () => navigationProvider.goBack({ sharedState }),

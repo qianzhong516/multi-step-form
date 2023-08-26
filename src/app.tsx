@@ -21,7 +21,6 @@ import { MultiStepFormHandlerImpl as MultiStepFormHandler } from './formHandler'
 import { PersonalInfoFormHandler } from './ui/multi_step_form/personal_info/formHandler';
 import { SelectPlanFormHandler } from './ui/multi_step_form/select_plan/formHandler';
 import { PlanAddonsFormHandler } from './ui/multi_step_form/plan_addons/formHandler';
-import { SharedStateControllerImpl as SharedStateController } from './sharedStateController';
 
 const steps: Record<MainStep, string> = {
     personalInfo: 'Your info',
@@ -96,19 +95,6 @@ function App() {
         setMultiStepFormData((prev) => ({ ...prev, ...data }));
     };
 
-    const multiStepFormHandler = new MultiStepFormHandler(
-        multiStepFormData,
-        updateMultiStepFormData,
-        {
-            personalInfo: new PersonalInfoFormHandler(
-                multiStepFormData.personalInfo
-            ),
-            selectPlan: new SelectPlanFormHandler(),
-            addons: new PlanAddonsFormHandler(),
-            summary: undefined,
-        }
-    );
-
     const setPlanSelectOptions = (options: PlanSelectOption[]) => {
         planSelectOptions.current = options;
     };
@@ -117,18 +103,26 @@ function App() {
         addonOptions.current = options;
     };
 
-    const sharedStateController = new SharedStateController(
+    const multiStepFormHandler = new MultiStepFormHandler(
         multiStepFormData,
-        updateMultiStepFormData,
         planSelectOptions.current,
         addonOptions.current,
+        updateMultiStepFormData,
+        {
+            personalInfo: new PersonalInfoFormHandler(
+                multiStepFormData.personalInfo
+            ),
+            selectPlan: new SelectPlanFormHandler(),
+            addons: new PlanAddonsFormHandler(),
+            summary: undefined,
+        },
         setPlanSelectOptions,
         setAddonOptions
     );
 
     React.useEffect(() => {
         // TODO: handle error state
-        sharedStateController.load();
+        multiStepFormHandler.load();
     }, []);
 
     const Footer = ({ onNext, onBack, ...props }: DialogFooterProps) => {
@@ -160,7 +154,6 @@ function App() {
     const { step, structure: stepStructure } = flowStore.createCurrentStep({
         navigationProvider,
         formHandler: multiStepFormHandler,
-        sharedStateController,
     });
 
     return (

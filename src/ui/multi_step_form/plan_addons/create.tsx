@@ -11,7 +11,7 @@ export function createPlanAddonsStep({
     flowStore,
     options: { sharedState },
 }: CreateStepArgs): CreateStepStructure<Step.ADD_ONS> {
-    return ({ navigationProvider, formHandler, sharedStateController }) => {
+    return ({ navigationProvider, formHandler }) => {
         const onChange = (isSelected: boolean, value: AddonDetails) => {
             const formData = formHandler!.getCurrentFormData(Step.ADD_ONS);
             if (isSelected) {
@@ -31,9 +31,11 @@ export function createPlanAddonsStep({
         };
 
         const getAddonOption = () => {
-            return sharedStateController.getAddonOptions(
-                formHandler!.getCurrentFormData(Step.ADD_ONS).type
-            );
+            // TODO: clean up
+            return formHandler!.getCurrentFormData(Step.ADD_ONS).type ===
+                'monthly'
+                ? formHandler!.getAddonOptions()[0]
+                : formHandler!.getAddonOptions()[1];
         };
 
         const selectedAddons = formHandler!.getCurrentFormData(

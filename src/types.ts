@@ -69,12 +69,10 @@ export type CreateStep<T extends MainStep> = ({
 export type CreateStepStructure<T extends MainStep> = ({
     navigationProvider,
     formHandler,
-    sharedStateController,
 }: {
     navigationProvider: NavigationProvider;
     // TODO: remove optional undefined once all forms are done
     formHandler: MultiStepFormHandler<T> | undefined;
-    sharedStateController: SharedStateController;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
     // because one main step could contain multiple sub steps.
@@ -112,9 +110,13 @@ export interface FlowStore {
 }
 
 export interface MultiStepFormHandler<T extends MainStep> {
+    getFormData(): SharedState;
+    setFormData<U extends MainStep>(step: U, data: SharedState[U]): void;
     getCurrentFormData(step: T): SharedState[T];
     setCurrentFormData(step: T, data: SharedState[T]): void;
     canSubmit(step: T): boolean;
+    getAddonOptions(): AddonOption[];
+    getPlanSelectOptions(type: RecurringVariant): PlanSelectOption;
 }
 
 export type AddonOption = {
@@ -133,14 +135,6 @@ export type PlanSelectOption = {
         price: number;
     }[];
 };
-
-export interface SharedStateController {
-    load(): Promise<void>;
-    getFormData(): SharedState;
-    getAddonOptions(type: RecurringVariant): AddonOption;
-    getPlanSelectOptions(type: RecurringVariant): PlanSelectOption;
-    updateAddons(type: RecurringVariant): void;
-}
 
 export interface FormHandler {
     get canSubmit(): boolean;

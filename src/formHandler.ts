@@ -54,6 +54,10 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
         });
     }
 
+    private getFormHandler(step: T) {
+        return this.formHandlerFactory[step];
+    }
+
     getAddonOptions() {
         return this.addonOptions;
     }
@@ -64,20 +68,16 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
             : this.planSelectOptions[1];
     }
 
-    private getFormHandler(step: T) {
-        return this.formHandlerFactory[step];
-    }
-
-    getCurrentFormData(step: T) {
-        return this.formData[step];
-    }
-
     getFormData() {
         return this.formData;
     }
 
     setFormData<U extends MainStep>(step: U, data: SharedState[U]) {
         this.updateFormData({ [step]: data });
+    }
+
+    getCurrentFormData(step: T) {
+        return this.formData[step];
     }
 
     setCurrentFormData(step: T, data: SharedState[keyof SharedState]) {

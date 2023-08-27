@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SelectPlanForm as Component } from '../select_plan_form';
 import React from 'react';
-import { PlanDetails } from '../../../../types';
+import { PlanDetails, RecurringVariant } from '../../../../types';
 
 const meta = {
     title: 'Multi-step Form/SelectPlan',
@@ -27,10 +27,35 @@ export const SelectPlanForm: Story = {
         return (
             <Component
                 {...args}
-                planDetails={planDetails}
+                currentPlanDetails={planDetails}
                 onChange={onChange}
             />
         );
     },
-    args: {},
+    args: {
+        getPlanSelectOptions: (type: RecurringVariant) => {
+            switch (type) {
+                case 'monthly':
+                    return {
+                        type: 'monthly',
+                        options: [
+                            { name: 'arcade', price: 9 },
+                            { name: 'advanced', price: 12 },
+                            { name: 'pro', price: 15 },
+                        ],
+                    };
+                case 'yearly':
+                    return {
+                        type: 'yearly',
+                        options: [
+                            { name: 'arcade', price: 90 },
+                            { name: 'advanced', price: 120 },
+                            { name: 'pro', price: 150 },
+                        ],
+                    };
+                default:
+                    throw new Error('Invalid recurring type.');
+            }
+        },
+    },
 };

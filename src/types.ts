@@ -30,8 +30,10 @@ export const enum Step {
 
 export type SharedState = {
     [Step.PERSONAL_INFO]?: PersonalInfo;
-    [Step.SELECT_PLAN]?: PlanDetails;
-    [Step.ADD_ONS]?: AddonDetails[];
+    [Step.SELECT_PLAN]: PlanDetails;
+    [Step.ADD_ONS]: { type: RecurringVariant } & {
+        items: AddonDetails[];
+    };
     [Step.SUMMARY]?: PlanDetails & AddonDetails[];
 };
 
@@ -108,11 +110,31 @@ export interface FlowStore {
 }
 
 export interface MultiStepFormHandler<T extends MainStep> {
-    getRecurringType(): RecurringVariant;
-    getFormData(step: T): SharedState[T];
-    setFormData(step: T, data: SharedState[T]): void;
+    getFormData<U extends MainStep>(step: U): SharedState[U];
+    setFormData<U extends MainStep>(step: U, data: SharedState[U]): void;
+    getCurrentFormData(step: T): SharedState[T];
+    setCurrentFormData(step: T, data: SharedState[T]): void;
     canSubmit(step: T): boolean;
+    getAddonOptions(): AddonOption[];
+    getPlanSelectOptions(type: RecurringVariant): PlanSelectOption;
 }
+
+export type AddonOption = {
+    type: RecurringVariant;
+    options: {
+        name: string;
+        price: number;
+        description: string;
+    }[];
+};
+
+export type PlanSelectOption = {
+    type: RecurringVariant;
+    options: {
+        name: PlanType;
+        price: number;
+    }[];
+};
 
 export interface FormHandler {
     get canSubmit(): boolean;

@@ -8,7 +8,7 @@ import {
     RecurringVariant,
 } from '../../../types';
 import { capitalize } from '../../utils/utils';
-import { Button } from '../../base/button/button';
+import { Link } from '../../base/link/link';
 
 export const Summary = ({
     planDetails,
@@ -30,19 +30,15 @@ export const Summary = ({
                             {capitalize(planDetails.planType)}
                             {` (${capitalize(planDetails.type)})`}
                         </Text.Medium>
-                        {/* TODO: Make a link component */}
-                        <Button
-                            variant='secondary'
-                            className={styles.changeBtn}
-                            onClick={onChangePlan}>
-                            <Text.Small variant='secondary'>Change</Text.Small>
-                        </Button>
+                        <Link variant='secondary' onClick={onChangePlan}>
+                            Change
+                        </Link>
                     </div>
                     <Text.Medium variant='primary' styling='bold'>
                         {labelPrice(planDetails.type, planDetails.price)}
                     </Text.Medium>
                 </div>
-                {/* add separator here */}
+                {/* TODO: add separator here */}
                 <div className={styles.addonContainer}>
                     {addons.map((addon) => (
                         <AddonRow

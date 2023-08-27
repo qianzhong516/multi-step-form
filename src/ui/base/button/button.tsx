@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import styles from './button.css';
 import { Text } from '../text/text';
 import classnames from 'classnames';

@@ -1,0 +1,10 @@
+@value colors: "../../../styles/colors.css";
+@value primaryColor, secondaryColor from colors;
+
+.primary.link:hover > * {
+    color: secondaryColor;
+}
+
+.secondary.link:hover > * {
+    color: primaryColor;
+}

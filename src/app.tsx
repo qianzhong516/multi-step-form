@@ -73,15 +73,20 @@ function App() {
         formHandler: multiStepFormHandler,
     });
 
-    const onBackHandler = () => {
-        stepStructure.onBack?.();
-        setRerenderCount(rerenderCount + 1);
-    };
-
-    const onNextHandler = () => {
-        stepStructure.onNext?.();
-        setRerenderCount(rerenderCount + 1);
-    };
+    const onBack = stepStructure.onBack;
+    const onNext = stepStructure.onNext;
+    const onBackHandler = onBack
+        ? () => {
+              onBack();
+              setRerenderCount(rerenderCount + 1);
+          }
+        : undefined;
+    const onNextHandler = onNext
+        ? () => {
+              onNext();
+              setRerenderCount(rerenderCount + 1);
+          }
+        : undefined;
 
     const footer = (
         <DialogFooter onBack={onBackHandler} onNext={onNextHandler} />

@@ -9,7 +9,7 @@ import React from 'react';
 
 export function createPlanAddonsStep({
     flowStore,
-    options: { sharedState },
+    options: {},
 }: CreateStepArgs): CreateStepStructure<Step.ADD_ONS> {
     return ({ navigationProvider, formHandler }) => {
         const onChange = (isSelected: boolean, value: AddonDetails) => {
@@ -54,8 +54,8 @@ export function createPlanAddonsStep({
                         addons={selectedAddons}
                     />
                 ),
-                onBack: () => navigationProvider.goBack({ sharedState }),
-                onNext: () => navigationProvider.goNext({ sharedState }),
+                onBack: () => navigationProvider.goBack(),
+                onNext: () => navigationProvider.goNext(),
             },
         };
     };

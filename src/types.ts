@@ -58,9 +58,7 @@ export type StepStructure = Pick<
 
 export type CreateStepArgs = {
     flowStore: FlowStore;
-    options: {
-        sharedState: SharedState;
-    };
+    options: {};
 };
 
 export type CreateStep<T extends MainStep> = ({
@@ -104,10 +102,10 @@ export interface NavigationProvider {
 export interface FlowStore {
     steps: Step[];
     get createCurrentStep(): CreateStepStructure<MainStep> | undefined;
-    goTo({ step, sharedState }: { step: Step; sharedState: SharedState }): void;
+    goTo({ step }: { step: Step }): void;
     // TODO: revisit. Is sharedState needed?
-    goNext({ sharedState }: { sharedState: SharedState }): void;
-    goBack({ sharedState }: { sharedState: SharedState }): void;
+    goNext(): void;
+    goBack(): void;
     close(): void;
 }
 

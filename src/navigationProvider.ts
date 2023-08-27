@@ -6,22 +6,16 @@ export class NavigationProviderImpl implements NavigationProvider {
         private readonly closeDialog?: () => void
     ) {}
 
-    goTo({
-        step,
-        sharedState,
-    }: {
-        step: Step;
-        sharedState: SharedState;
-    }): void {
-        this.flowStore.goTo({ step, sharedState });
+    goTo({ step }: { step: Step }): void {
+        this.flowStore.goTo({ step });
     }
 
-    goNext({ sharedState }: { sharedState: SharedState }): void {
-        this.flowStore.goNext({ sharedState });
+    goNext(): void {
+        this.flowStore.goNext();
     }
 
-    goBack({ sharedState }: { sharedState: SharedState }): void {
-        this.flowStore.goBack({ sharedState });
+    goBack(): void {
+        this.flowStore.goBack();
     }
 
     close(): void {

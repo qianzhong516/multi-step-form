@@ -4,7 +4,7 @@ import { Confirmation } from './confirmation';
 
 export function createConfirmationStep({
     flowStore,
-    options: { sharedState },
+    options: {},
 }: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
     return ({ navigationProvider }) => {
         return {

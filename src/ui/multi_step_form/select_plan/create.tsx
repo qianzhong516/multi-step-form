@@ -11,7 +11,7 @@ import { SelectPlanPresenter } from './presenter';
 
 export function createSelectPlanStep({
     flowStore,
-    options: { sharedState },
+    options: {},
 }: CreateStepArgs): CreateStepStructure<Step.SELECT_PLAN> {
     return ({ navigationProvider, formHandler }) => {
         const formData = formHandler?.getCurrentFormData(Step.SELECT_PLAN);
@@ -44,11 +44,8 @@ export function createSelectPlanStep({
                         getPlanSelectOptions={getPlanSelectOptions}
                     />
                 ),
-                onNext: () =>
-                    navigationProvider.goNext({
-                        sharedState,
-                    }),
-                onBack: () => navigationProvider.goBack({ sharedState }),
+                onNext: () => navigationProvider.goNext(),
+                onBack: () => navigationProvider.goBack(),
                 onClose: () => navigationProvider.close(),
             },
         };

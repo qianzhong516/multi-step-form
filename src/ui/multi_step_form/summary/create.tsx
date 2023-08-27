@@ -4,7 +4,7 @@ import { Summary } from './summary';
 
 export function createSummaryStep({
     flowStore,
-    options: { sharedState },
+    options: {},
 }: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
     return ({ navigationProvider, formHandler }) => {
         return {
@@ -18,8 +18,8 @@ export function createSummaryStep({
                         addons={formHandler!.getFormData(Step.ADD_ONS).items}
                     />
                 ),
-                onBack: () => navigationProvider.goBack({ sharedState }),
-                onNext: () => navigationProvider.goNext({ sharedState }),
+                onBack: () => navigationProvider.goBack(),
+                onNext: () => navigationProvider.goNext(),
             },
         };
     };

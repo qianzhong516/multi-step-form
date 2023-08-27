@@ -9,7 +9,7 @@ import { PersonalInfoForm } from './personal_info_form';
 
 export function createPersonalInfoStep({
     flowStore,
-    options: { sharedState },
+    options: {},
 }: CreateStepArgs): CreateStepStructure<Step.PERSONAL_INFO> {
     return ({ navigationProvider, formHandler }) => {
         const onChange = (data: PersonalInfo) => {
@@ -31,16 +31,7 @@ export function createPersonalInfoStep({
                         onChange={onChange}
                     />
                 ),
-                onNext: () => {
-                    navigationProvider.goNext({
-                        sharedState: {
-                            ...sharedState,
-                            personalInfo: formHandler?.getCurrentFormData(
-                                Step.PERSONAL_INFO
-                            ),
-                        },
-                    });
-                },
+                onNext: () => navigationProvider.goNext(),
                 onClose: () => navigationProvider.close(),
             },
         };

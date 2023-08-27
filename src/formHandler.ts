@@ -3,11 +3,9 @@ import {
     type MainStep,
     type MultiStepFormHandler,
     type SharedState,
-    Step,
     RecurringVariant,
     PlanSelectOption,
     AddonOption,
-    AddonDetails,
 } from './types';
 
 // the form handler related to the current step only
@@ -106,6 +104,7 @@ const yearlyPlanDetails: PlanSelectOption = {
         { name: 'pro', price: 150 },
     ],
 };
+
 const monthlyAddonList: AddonOption = {
     type: 'monthly',
     options: [

@@ -37,45 +37,27 @@ export class FlowStoreImpl implements FlowStore {
 
         return this.flow[this.currentStep]({
             flowStore: this,
-            options: { sharedState: this.sharedState },
+            options: {},
         });
     }
 
-    private updateSharedState(state: SharedState) {
-        this.sharedState = {
-            ...this.sharedState,
-            ...state,
-        };
-    }
-
-    goTo({
-        step,
-        sharedState,
-    }: {
-        step: Step;
-        sharedState: SharedState;
-    }): void {
-        this.updateSharedState(sharedState);
+    goTo({ step }: { step: Step }): void {
         this.currentStep = step;
     }
 
-    goNext({ sharedState }: { sharedState: SharedState }): void {
+    goNext(): void {
         if (this.currentStep == null) {
             throw new Error('currentStep does not exist.');
         }
-
-        this.updateSharedState(sharedState);
 
         const index = this.steps.indexOf(this.currentStep);
         this.currentStep = this.steps[index + 1];
     }
 
-    goBack({ sharedState }: { sharedState: SharedState }): void {
+    goBack(): void {
         if (this.currentStep == null) {
             throw new Error('currentStep does not exist.');
         }
-
-        this.updateSharedState(sharedState);
 
         const index = this.steps.indexOf(this.currentStep);
         this.currentStep = this.steps[index - 1];

@@ -23,6 +23,10 @@
     border-radius: 8px;
 }
 
+.primary:hover {
+    background-color: #174a8a;
+}
+
 .secondary {
     background-color: none;
 }
@@ -30,4 +34,8 @@
 /* TODO: find the best way to override base/text color */
 .secondary > * {
     color: secondaryColor !important;
+}
+
+.secondary:hover > * {
+    color: primaryColor !important;
 }

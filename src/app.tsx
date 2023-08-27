@@ -6,6 +6,7 @@ import { PersonalInfoFormHandler } from './ui/multi_step_form/personal_info/form
 import { SelectPlanFormHandler } from './ui/multi_step_form/select_plan/formHandler';
 import { PlanAddonsFormHandler } from './ui/multi_step_form/plan_addons/formHandler';
 import { navigationProvider, flowStore, steps } from './init_app';
+import { SummaryFormHandler } from './ui/multi_step_form/summary/formHandler';
 
 function App() {
     const [rerenderCount, setRerenderCount] = React.useState(0);
@@ -51,7 +52,7 @@ function App() {
             ),
             selectPlan: new SelectPlanFormHandler(),
             addons: new PlanAddonsFormHandler(),
-            summary: undefined,
+            summary: new SummaryFormHandler(),
         },
         setPlanSelectOptions,
         setAddonOptions
@@ -89,7 +90,11 @@ function App() {
         : undefined;
 
     const footer = (
-        <DialogFooter onBack={onBackHandler} onNext={onNextHandler} />
+        <DialogFooter
+            onBack={onBackHandler}
+            onNext={onNextHandler}
+            disabledNext={!multiStepFormHandler.canSubmit(step)}
+        />
     );
 
     return (

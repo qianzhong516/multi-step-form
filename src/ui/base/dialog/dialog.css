@@ -2,7 +2,9 @@
 }
 
 .dialog {
+    max-width: 800px;
     display: flex;
+    box-shadow: 2px 2px 8px #888888;
 }
 
 .header {
@@ -14,9 +16,9 @@
 }
 
 .content {
-    max-width: 500px;
     display: flex;
     flex-direction: column;
+    width: 100%;
     padding: 16px 32px;
 }
 
@@ -28,7 +30,14 @@
 }
 
 .innerFooter {
-    display: flex;
+}
+
+.backButton {
+    float: left;
+}
+
+.nextButton {
+    float: right;
 }
 
 .sidebar {

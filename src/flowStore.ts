@@ -1,6 +1,5 @@
 import type {
     FlowStore,
-    SharedState,
     Step,
     Flow,
     CreateStepStructure,

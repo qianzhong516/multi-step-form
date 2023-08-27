@@ -96,6 +96,7 @@ export const Footer = ({
                     variant='secondary'
                     onClick={onBack}
                     title={backButtonText ?? 'Go Back'}
+                    className={styles.backButton}
                 />
             )}
             {onNext && (
@@ -104,6 +105,7 @@ export const Footer = ({
                     onClick={onNext}
                     title={nextButtonText ?? 'Next Step'}
                     disabled={disabledNext}
+                    className={styles.nextButton}
                 />
             )}
         </div>

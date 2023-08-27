@@ -1,18 +1,11 @@
-import React from 'react';
-import {
-    CreateStepArgs,
-    CreateStepStructure,
-    FlowSequence,
-    MainStep,
-    SharedState,
-    Step,
-} from './types';
+import { FlowSequence, MainStep, SharedState, Step } from './types';
 import { FlowStoreImpl as FlowStore } from './flowStore';
 import { createPersonalInfoStep } from './ui/multi_step_form/personal_info/create';
 import { createSelectPlanStep } from './ui/multi_step_form/select_plan/create';
 import { createPlanAddonsStep } from './ui/multi_step_form/plan_addons/create';
 import { createSummaryStep } from './ui/multi_step_form/summary/create';
 import { NavigationProviderImpl as NavigationProvider } from './navigationProvider';
+import { createConfirmationStep } from './ui/multi_step_form/confirmation/create';
 
 export const steps: Record<MainStep, string> = {
     personalInfo: 'Your info',
@@ -62,19 +55,3 @@ export const flowStore = new FlowStore(
 );
 
 export const navigationProvider = new NavigationProvider(flowStore);
-
-function createConfirmationStep({
-    flowStore,
-    options: { sharedState },
-}: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
-    return ({ navigationProvider }) => {
-        return {
-            step: Step.SUMMARY,
-            structure: {
-                title: 'Confirmation',
-                subtitle: 'Confirmation subtitle',
-                content: <div>Content</div>,
-            },
-        };
-    };
-}

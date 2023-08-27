@@ -10,9 +10,9 @@ type DialogProps<Step extends string, CurrentStep extends Step> = {
     steps: Record<Step, string>;
 } & ContentProps;
 
-type ContentProps = {
-    title: string;
-    subtitle: string;
+export type ContentProps = {
+    title?: string;
+    subtitle?: string;
     content: React.ReactNode;
     footer: React.ReactNode;
 };
@@ -67,10 +67,14 @@ const Content = ({ title, subtitle, content, footer }: ContentProps) => {
     return (
         <div className={styles.content}>
             <div className={styles.header}>
-                <div className={styles.title}>
-                    <Title.Large variant='primary'>{title}</Title.Large>
-                </div>
-                <Text.Medium variant='secondary'>{subtitle}</Text.Medium>
+                {title && (
+                    <div className={styles.title}>
+                        <Title.Large variant='primary'>{title}</Title.Large>
+                    </div>
+                )}
+                {subtitle && (
+                    <Text.Medium variant='secondary'>{subtitle}</Text.Medium>
+                )}
             </div>
             <div className={styles.innerContent}>{content}</div>
             <div className={styles.footer}>{footer}</div>

@@ -1,3 +1,5 @@
+import type { ContentProps as DialogContentProps } from './ui/base/dialog/dialog';
+
 export type PersonalInfo = Record<'name' | 'email' | 'phone', string>;
 
 export type PlanType = 'arcade' | 'advanced' | 'pro';
@@ -45,10 +47,10 @@ export type FlowSequence = Partial<
     Record<MainStep, { subsequence: SubStep[] }>
 >;
 
-export type StepStructure = {
-    title: string;
-    subtitle: string;
-    content: React.ReactNode;
+export type StepStructure = Pick<
+    DialogContentProps,
+    'title' | 'subtitle' | 'content'
+> & {
     onNext?: () => void;
     onBack?: () => void;
     onClose?: () => void;

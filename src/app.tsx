@@ -27,8 +27,6 @@ function App() {
             },
         });
 
-    console.log(multiStepFormData);
-
     const rerenderStep = () => _rerenderStep((prev) => ++prev);
 
     const updateMultiStepFormData = (data: Partial<SharedState>) => {

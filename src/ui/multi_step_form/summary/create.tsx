@@ -7,6 +7,10 @@ export function createSummaryStep({
     options: {},
 }: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
     return ({ navigationProvider, formHandler }) => {
+        const onChangePlan = () => {
+            navigationProvider.goTo({ step: Step.SELECT_PLAN });
+        };
+
         return {
             step: Step.SUMMARY,
             structure: {
@@ -16,6 +20,7 @@ export function createSummaryStep({
                     <Summary
                         planDetails={formHandler.getFormData(Step.SELECT_PLAN)}
                         addons={formHandler.getFormData(Step.ADD_ONS).items}
+                        onChangePlan={onChangePlan}
                     />
                 ),
                 onBack: () => navigationProvider.goBack(),

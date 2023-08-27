@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from './summary.css';
 import { Text } from '../../base/text/text';
 import {
@@ -6,16 +7,17 @@ import {
     PlanDetails,
     RecurringVariant,
 } from '../../../types';
-import React from 'react';
 import { capitalize } from '../../utils/utils';
 import { Button } from '../../base/button/button';
 
 export const Summary = ({
     planDetails,
     addons,
+    onChangePlan,
 }: {
     planDetails: PlanDetails;
     addons: AddonDetails[];
+    onChangePlan: () => void;
 }) => {
     const totalPrice = getTotalPrice(planDetails, addons);
 
@@ -31,7 +33,8 @@ export const Summary = ({
                         {/* TODO: Make a link component */}
                         <Button
                             variant='secondary'
-                            className={styles.changeBtn}>
+                            className={styles.changeBtn}
+                            onClick={onChangePlan}>
                             <Text.Small variant='secondary'>Change</Text.Small>
                         </Button>
                     </div>

@@ -4,7 +4,6 @@ import { createPersonalInfoStep } from './ui/multi_step_form/personal_info/creat
 import { createSelectPlanStep } from './ui/multi_step_form/select_plan/create';
 import { createPlanAddonsStep } from './ui/multi_step_form/plan_addons/create';
 import { createSummaryStep } from './ui/multi_step_form/summary/create';
-import { NavigationProviderImpl as NavigationProvider } from './navigationProvider';
 import { createConfirmationStep } from './ui/multi_step_form/confirmation/create';
 
 export const steps: Record<MainStep, string> = {
@@ -40,5 +39,3 @@ export const flowStore = new FlowStore(
     Step.PERSONAL_INFO,
     flowSequence
 );
-
-export const navigationProvider = new NavigationProvider(flowStore);

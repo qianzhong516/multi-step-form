@@ -5,11 +5,12 @@ import { MultiStepFormHandlerImpl as MultiStepFormHandler } from './formHandler'
 import { PersonalInfoFormHandler } from './ui/multi_step_form/personal_info/formHandler';
 import { SelectPlanFormHandler } from './ui/multi_step_form/select_plan/formHandler';
 import { PlanAddonsFormHandler } from './ui/multi_step_form/plan_addons/formHandler';
-import { navigationProvider, flowStore, steps } from './init_app';
+import { flowStore, steps } from './init_app';
+import { NavigationProviderImpl as NavigationProvider } from './navigationProvider';
 import { SummaryFormHandler } from './ui/multi_step_form/summary/formHandler';
 
 function App() {
-    const [rerenderCount, setRerenderCount] = React.useState(0);
+    const [_, _rerenderStep] = React.useState(0);
     const planSelectOptions = React.useRef<PlanSelectOption[]>([]);
     const addonOptions = React.useRef<AddonOption[]>([]);
     // shared state across all steps
@@ -28,6 +29,8 @@ function App() {
 
     console.log(multiStepFormData);
 
+    const rerenderStep = () => _rerenderStep((prev) => ++prev);
+
     const updateMultiStepFormData = (data: Partial<SharedState>) => {
         // make sure form data is updated in correct order
         setMultiStepFormData((prev) => ({ ...prev, ...data }));
@@ -40,6 +43,8 @@ function App() {
     const setAddonOptions = (options: AddonOption[]) => {
         addonOptions.current = options;
     };
+
+    const navigationProvider = new NavigationProvider(flowStore, rerenderStep);
 
     const multiStepFormHandler = new MultiStepFormHandler(
         multiStepFormData,
@@ -74,25 +79,10 @@ function App() {
         formHandler: multiStepFormHandler,
     });
 
-    const onBack = stepStructure.onBack;
-    const onNext = stepStructure.onNext;
-    const onBackHandler = onBack
-        ? () => {
-              onBack();
-              setRerenderCount(rerenderCount + 1);
-          }
-        : undefined;
-    const onNextHandler = onNext
-        ? () => {
-              onNext();
-              setRerenderCount(rerenderCount + 1);
-          }
-        : undefined;
-
     const footer = (
         <DialogFooter
-            onBack={onBackHandler}
-            onNext={onNextHandler}
+            onBack={stepStructure.onBack}
+            onNext={stepStructure.onNext}
             disabledNext={!multiStepFormHandler.canSubmit(step)}
         />
     );

@@ -13,9 +13,9 @@ export function createPlanAddonsStep({
 }: CreateStepArgs): CreateStepStructure<Step.ADD_ONS> {
     return ({ navigationProvider, formHandler }) => {
         const onChange = (isSelected: boolean, value: AddonDetails) => {
-            const formData = formHandler!.getCurrentFormData(Step.ADD_ONS);
+            const formData = formHandler.getCurrentFormData(Step.ADD_ONS);
             if (isSelected) {
-                formHandler!.setCurrentFormData(Step.ADD_ONS, {
+                formHandler.setCurrentFormData(Step.ADD_ONS, {
                     ...formData,
                     items: [...formData.items, value],
                 });
@@ -32,13 +32,13 @@ export function createPlanAddonsStep({
 
         const getAddonOption = () => {
             // TODO: clean up
-            return formHandler!.getCurrentFormData(Step.ADD_ONS).type ===
+            return formHandler.getCurrentFormData(Step.ADD_ONS).type ===
                 'monthly'
-                ? formHandler!.getAddonOptions()[0]
-                : formHandler!.getAddonOptions()[1];
+                ? formHandler.getAddonOptions()[0]
+                : formHandler.getAddonOptions()[1];
         };
 
-        const selectedAddons = formHandler!.getCurrentFormData(
+        const selectedAddons = formHandler.getCurrentFormData(
             Step.ADD_ONS
         ).items;
 

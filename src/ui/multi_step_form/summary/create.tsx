@@ -14,8 +14,8 @@ export function createSummaryStep({
                 subtitle: 'Double-check everything looks OK before confirming.',
                 content: (
                     <Summary
-                        planDetails={formHandler!.getFormData(Step.SELECT_PLAN)}
-                        addons={formHandler!.getFormData(Step.ADD_ONS).items}
+                        planDetails={formHandler.getFormData(Step.SELECT_PLAN)}
+                        addons={formHandler.getFormData(Step.ADD_ONS).items}
                     />
                 ),
                 onBack: () => navigationProvider.goBack(),

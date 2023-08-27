@@ -17,10 +17,8 @@ export class FlowStoreImpl implements FlowStore {
         // TODO: fix: a member cannot be assigned to a union type
         private readonly flow: Flow<any>,
         private currentStep: Step | null,
-        private sharedState: SharedState,
         public flowSequence: FlowSequence
     ) {
-        this.sharedState = sharedState;
         // push main steps and sub steps into an array by order
         this.steps = (
             Object.keys(flowSequence) as (keyof typeof flowSequence)[]

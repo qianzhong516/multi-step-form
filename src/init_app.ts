@@ -1,4 +1,4 @@
-import { FlowSequence, MainStep, SharedState, Step } from './types';
+import { FlowSequence, MainStep, Step } from './types';
 import { FlowStoreImpl as FlowStore } from './flowStore';
 import { createPersonalInfoStep } from './ui/multi_step_form/personal_info/create';
 import { createSelectPlanStep } from './ui/multi_step_form/select_plan/create';
@@ -12,18 +12,6 @@ export const steps: Record<MainStep, string> = {
     selectPlan: 'Select plan',
     addons: 'add-ons',
     summary: 'summary',
-};
-
-const sharedState: SharedState = {
-    selectPlan: {
-        type: 'monthly',
-        planType: 'arcade',
-        price: 9,
-    },
-    addons: {
-        type: 'monthly',
-        items: [],
-    },
 };
 
 const flowSequence: FlowSequence = {
@@ -50,7 +38,6 @@ export const flowStore = new FlowStore(
         confirmation: createConfirmationStep,
     },
     Step.PERSONAL_INFO,
-    sharedState,
     flowSequence
 );
 

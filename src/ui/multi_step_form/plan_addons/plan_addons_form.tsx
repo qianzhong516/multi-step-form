@@ -18,7 +18,7 @@ export const PlanAddonsForm = ({
 }: {
     // TODO: `AddonDetails` needs the recurringVariant to update addOn items accordingly
     // if there is a change on the recurringVariant from last step
-    addons: AddonDetails[] | undefined;
+    addons: AddonDetails[];
     onChange(isSelected: boolean, value: AddonDetails): void;
     getAddonOption(): AddonOption;
 }) => {
@@ -33,13 +33,11 @@ export const PlanAddonsForm = ({
                 <MultiSelectCard
                     key={option.title}
                     {...option}
-                    isSelected={
-                        !!addons?.some(
-                            (addon) =>
-                                option.value.price === addon.price &&
-                                option.value.type === addon.type
-                        )
-                    }
+                    isSelected={addons.some(
+                        (addon) =>
+                            option.value.price === addon.price &&
+                            option.value.type === addon.type
+                    )}
                     onChange={(isSelected) =>
                         handleOnChange(isSelected, option.value)
                     }

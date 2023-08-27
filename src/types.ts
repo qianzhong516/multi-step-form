@@ -71,8 +71,7 @@ export type CreateStepStructure<T extends MainStep> = ({
     formHandler,
 }: {
     navigationProvider: NavigationProvider;
-    // TODO: remove optional undefined once all forms are done
-    formHandler: MultiStepFormHandler<T> | undefined;
+    formHandler: MultiStepFormHandler<T>;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
     // because one main step could contain multiple sub steps.
@@ -103,7 +102,6 @@ export interface FlowStore {
     steps: Step[];
     get createCurrentStep(): CreateStepStructure<MainStep> | undefined;
     goTo({ step }: { step: Step }): void;
-    // TODO: revisit. Is sharedState needed?
     goNext(): void;
     goBack(): void;
     close(): void;

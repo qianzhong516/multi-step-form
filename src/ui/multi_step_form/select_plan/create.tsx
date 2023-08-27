@@ -14,17 +14,17 @@ export function createSelectPlanStep({
     options: {},
 }: CreateStepArgs): CreateStepStructure<Step.SELECT_PLAN> {
     return ({ navigationProvider, formHandler }) => {
-        const formData = formHandler?.getCurrentFormData(Step.SELECT_PLAN);
+        const formData = formHandler.getCurrentFormData(Step.SELECT_PLAN);
 
         const presenter = new SelectPlanPresenter(
-            formHandler!.getFormData(Step.ADD_ONS),
-            formHandler!.getAddonOptions()
+            formHandler.getFormData(Step.ADD_ONS),
+            formHandler.getAddonOptions()
         );
         const onChange = (value: PlanDetails) => {
-            formHandler?.setCurrentFormData(Step.SELECT_PLAN, value);
+            formHandler.setCurrentFormData(Step.SELECT_PLAN, value);
             const updatedAddons = presenter.getUpdatedAddons(value.type);
             if (updatedAddons) {
-                formHandler?.setFormData(Step.ADD_ONS, updatedAddons);
+                formHandler.setFormData(Step.ADD_ONS, updatedAddons);
             }
         };
 

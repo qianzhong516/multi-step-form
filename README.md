@@ -20,8 +20,7 @@ https://github.com/qianzhong516/multi-step-form-2/assets/33209457/3a958c12-dae3-
 
 This project is built based on the design from [Frontend Mentor](https://www.frontendmentor.io/challenges/multistep-form-YVAnSdqQBJ).
 
-
-## Techstack Intro
+## Tech Stack Intro
 
 Instead of relying on existing tools like create-react-app, webpack has been set up from scratch in the project to have complete control over the build process. The TypeScript code is transpiled by Babel plugins that help ensuring the code works smoothly across different environments. TypeScript package keeps the codebase reliable with thorough type checking.
 

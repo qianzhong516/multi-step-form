@@ -1,6 +1,30 @@
 ## Multi-step Form
 
-### Build
+<p>
+  <img alt="Webpack" src="https://img.shields.io/badge/Webpack-8DD6F9?logo=webpack&logoColor=white&style=for-the-badge" />
+  <img alt="Storybook" src="https://img.shields.io/badge/Storybook-FF4785?logo=storybook&logoColor=white&style=for-the-badge" />
+  <img alt="React" src="https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000000&style=for-the-badge" />
+  <img alt="NodeJs" src="https://img.shields.io/badge/Node.JS-339933?logo=Node.Js&logoColor=white&style=for-the-badge" />
+  <img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000000&style=for-the-badge" />
+  <img alt="HTML" src="https://img.shields.io/badge/HTML-E34F26?logo=html5&logoColor=white&style=for-the-badge" />
+  <img alt="Css" src="https://img.shields.io/badge/CSS-1572B6?logo=css3&logoColor=white&style=for-the-badge" />
+</p>
+
+## Demo
+
+https://multi-step-form-27082023-794b6e0622ab.herokuapp.com/
+
+## Project Intro
+
+This project is built based on the design from [Frontend Mentor](https://www.frontendmentor.io/challenges/multistep-form-YVAnSdqQBJ).
+
+## Techstack Intro
+
+Instead of relying on existing tools like create-react-app, webpack has been set up from scratch in the project to have complete control over the build process. The TypeScript code is transpiled by Babel plugins that help ensuring the code works smoothly across different environments. TypeScript package keeps the codebase reliable with thorough type checking.
+
+I've kept things simple by not using state management tools like Redux or Mobx. The app follows the principles of object-oriented programming, focusing on clear and efficient design.
+
+## Build
 
 Type check and build the project by running
 
@@ -14,14 +38,21 @@ Kick off the webpack dev server by running
 npm run dev
 ```
 
-### Technical Choice
+Serve the built static html file after build
 
--   The design choice in this repo is to manage form data within each form isolately.
--   There is no easy way to communicate between steps. E.g, if user had previsouly selected addons, then changed the recurring type of plan in the select plan step, we need to update the addon items accordingly in the form data. We have two options to address this problem:
-    -   Use a message controller and subscribe to the events on the application's top level, so that user can switch between steps freely from the sidebar
-    -   Subscribe to a side effect to update the data in the addons step by detecting if there is a change in the recurring type. However, with this approach user cannot switch between steps freely from the sidebar
+```
+npm start
+```
 
-### TODOs
+and acceess http://localhost:8080
+
+Storybook build
+
+```
+npm run storybook
+```
+
+## TODOs
 
 -   [] use miniExtractCssPlugin or stay with style-loader?
 -   [] move fonts to the `assets/` folder after build

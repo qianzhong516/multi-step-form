@@ -1,9 +1,9 @@
 import type { NavigationProvider, FlowStore, Step } from './types';
 
 /**
- * NavigationProvider is a proxy to flowStore navgiation.
+ * NavigationProvider is a proxy to flowStore navgiations.
  * Step navigation is managed in flowStore isolately from the state management system to form an
- * object-oriented code structure, hence rerender is called manually on each type of navigation.
+ * object-oriented code structure, hence rerender is called manually in each type of navigation.
  */
 export class NavigationProviderImpl implements NavigationProvider {
     constructor(

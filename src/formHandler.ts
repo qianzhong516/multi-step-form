@@ -8,7 +8,11 @@ import {
     AddonOption,
 } from './types';
 
-// the form handler related to the current step only
+/**
+ * MultiStepFormHandler loads the static options to show in the steps.
+ * It also acts as a proxy to the form data state for reading and
+ * writing the form data in each step.
+ */
 export class MultiStepFormHandlerImpl<T extends MainStep>
     implements MultiStepFormHandler<T>
 {

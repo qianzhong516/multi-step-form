@@ -22,6 +22,7 @@ export type PlanDetails = {
     price: number;
 };
 
+// all steps need to be shown
 export const enum Step {
     PERSONAL_INFO = 'personalInfo',
     SELECT_PLAN = 'selectPlan',
@@ -39,6 +40,7 @@ export type SharedState = {
     [Step.SUMMARY]?: PlanDetails & AddonDetails[];
 };
 
+// the steps shown in the dialog sidebar
 export type MainStep = Exclude<Step, 'confirmation'>;
 
 export type SubStep = Exclude<Step, MainStep>;
@@ -74,13 +76,12 @@ export type CreateStepStructure<T extends MainStep> = ({
     formHandler: MultiStepFormHandler<T>;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
-    // because one main step could contain multiple sub steps.
+    // because one MainStep could contain multiple sub steps.
     step: MainStep;
     structure: StepStructure;
 };
 
-// this is for mapping each form data type into their main step.
-// E.g, MultiStepFormHandler<Step.PERSONAL_INFO>.getFormData(Step.PERSONAL_INFO)
+// mapping each form data type into their main step.
 type stepMap<T extends Step> = {
     [Step.PERSONAL_INFO]: Step.PERSONAL_INFO;
     [Step.SELECT_PLAN]: Step.SELECT_PLAN;

@@ -13,7 +13,7 @@ function App() {
     const [_, _rerenderStep] = React.useState(0);
     const planSelectOptions = React.useRef<PlanSelectOption[]>([]);
     const addonOptions = React.useRef<AddonOption[]>([]);
-    // shared state across all steps
+    // the form data across all steps
     const [multiStepFormData, setMultiStepFormData] =
         React.useState<SharedState>({
             selectPlan: {

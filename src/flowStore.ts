@@ -7,13 +7,14 @@ import type {
     MainStep,
 } from './types';
 
-// TODO: how to decouple the confirmation flow with the multi-step flow [M2]
-// TODO: routing node to load the first node [M2]
+/**
+ * FlowStore manages the form navigation and returns a function to create the current step
+ */
 export class FlowStoreImpl implements FlowStore {
     steps: Step[] = [];
 
     constructor(
-        // TODO: fix: a member cannot be assigned to a union type
+        // TODO: fix: `any` is an escape hatch before a better solution
         private readonly flow: Flow<any>,
         private currentStep: Step | null,
         public flowSequence: FlowSequence

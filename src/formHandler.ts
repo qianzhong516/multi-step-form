@@ -26,9 +26,7 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
         private readonly formHandlerFactory: Record<
             MainStep,
             FormHandler | undefined
-        >,
-        private setPlanSelectOptions: (options: PlanSelectOption[]) => void,
-        private setAddonOptions: (options: AddonOption[]) => void
+        >
     ) {}
 
     async load() {
@@ -36,8 +34,7 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
             this.fetchAddonOptions(),
             this.fetchPlanSelectOptions(),
         ]);
-        this.setPlanSelectOptions(planSelectOptions);
-        this.setAddonOptions(addonOptions);
+        return { addonOptions, planSelectOptions };
     }
 
     private async fetchAddonOptions(): Promise<AddonOption[]> {

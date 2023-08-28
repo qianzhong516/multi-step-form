@@ -12,8 +12,10 @@ import styles from './app.css';
 
 function App() {
     const [_, _rerenderStep] = React.useState(0);
-    const planSelectOptions = React.useRef<PlanSelectOption[]>([]);
-    const addonOptions = React.useRef<AddonOption[]>([]);
+    const [planSelectOptions, setPlanSelectOptions] = React.useState<
+        PlanSelectOption[]
+    >([]);
+    const [addonOptions, setAddonOptions] = React.useState<AddonOption[]>([]);
     // the form data across all steps
     const [multiStepFormData, setMultiStepFormData] =
         React.useState<SharedState>({
@@ -28,52 +30,58 @@ function App() {
             },
         });
 
-    const rerenderStep = () => _rerenderStep((prev) => ++prev);
-
-    const updateMultiStepFormData = (data: Partial<SharedState>) => {
-        // make sure form data is updated in correct order
-        setMultiStepFormData((prev) => ({ ...prev, ...data }));
-    };
-
-    const setPlanSelectOptions = (options: PlanSelectOption[]) => {
-        planSelectOptions.current = options;
-    };
-
-    const setAddonOptions = (options: AddonOption[]) => {
-        addonOptions.current = options;
-    };
-
-    const navigationProvider = new NavigationProvider(flowStore, rerenderStep);
-
-    const multiStepFormHandler = new MultiStepFormHandler(
-        multiStepFormData,
-        planSelectOptions.current,
-        addonOptions.current,
-        updateMultiStepFormData,
-        {
-            personalInfo: new PersonalInfoFormHandler(
-                multiStepFormData.personalInfo
-            ),
-            selectPlan: new SelectPlanFormHandler(),
-            addons: new PlanAddonsFormHandler(),
-            summary: new SummaryFormHandler(),
-        },
-        setPlanSelectOptions,
-        setAddonOptions
-    );
-
     React.useEffect(() => {
         // TODO: handle error state
-        multiStepFormHandler.load();
+        multiStepFormHandler
+            .load()
+            .then(({ addonOptions, planSelectOptions }) => {
+                setAddonOptions(addonOptions);
+                setPlanSelectOptions(planSelectOptions);
+            });
     }, []);
 
-    if (flowStore.createCurrentStep == null) {
+    const rerenderStep = React.useCallback(
+        () => _rerenderStep((prev) => ++prev),
+        []
+    );
+    const updateMultiStepFormData = React.useCallback(
+        (data: Partial<SharedState>) => {
+            // make sure form data is updated in correct order
+            setMultiStepFormData((prev) => ({ ...prev, ...data }));
+        },
+        []
+    );
+
+    const navigationProvider = React.useMemo(
+        () => new NavigationProvider(flowStore, rerenderStep),
+        []
+    );
+    const multiStepFormHandler = React.useMemo(
+        () =>
+            new MultiStepFormHandler(
+                multiStepFormData,
+                planSelectOptions,
+                addonOptions,
+                updateMultiStepFormData,
+                {
+                    personalInfo: new PersonalInfoFormHandler(
+                        multiStepFormData.personalInfo
+                    ),
+                    selectPlan: new SelectPlanFormHandler(),
+                    addons: new PlanAddonsFormHandler(),
+                    summary: new SummaryFormHandler(),
+                }
+            ),
+        [multiStepFormData, planSelectOptions, addonOptions]
+    );
+
+    const createCurrentStep = flowStore.createCurrentStep;
+    if (createCurrentStep == null) {
         // TODO: if current step does not exist, close the dialog
         navigationProvider.close();
         return <div>Error. The subsequent node does not exist.</div>;
     }
-
-    const { step, structure: stepStructure } = flowStore.createCurrentStep({
+    const { step, structure: stepStructure } = createCurrentStep({
         navigationProvider,
         formHandler: multiStepFormHandler,
     });

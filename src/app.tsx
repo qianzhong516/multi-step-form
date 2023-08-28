@@ -8,6 +8,7 @@ import { PlanAddonsFormHandler } from './ui/multi_step_form/plan_addons/formHand
 import { flowStore, steps } from './init_app';
 import { NavigationProviderImpl as NavigationProvider } from './navigationProvider';
 import { SummaryFormHandler } from './ui/multi_step_form/summary/formHandler';
+import styles from './app.css';
 
 function App() {
     const [_, _rerenderStep] = React.useState(0);
@@ -86,14 +87,16 @@ function App() {
     );
 
     return (
-        <Dialog
-            currentStep={step}
-            steps={steps}
-            title={stepStructure.title}
-            subtitle={stepStructure.subtitle}
-            content={stepStructure.content}
-            footer={footer}
-        />
+        <div className={styles.app}>
+            <Dialog
+                currentStep={step}
+                steps={steps}
+                title={stepStructure.title}
+                subtitle={stepStructure.subtitle}
+                content={stepStructure.content}
+                footer={footer}
+            />
+        </div>
     );
 }
 

@@ -2,7 +2,7 @@
 }
 
 .dialog {
-    max-width: 800px;
+    width: 800px;
     display: flex;
     box-shadow: 2px 2px 8px #888888;
 }

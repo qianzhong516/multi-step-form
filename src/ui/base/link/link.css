@@ -1,10 +1,27 @@
 @value colors: "../../../styles/colors.css";
 @value primaryColor, secondaryColor from colors;
 
+.primary.link {
+    text-decoration-color: primaryColor;
+}
+
+.secondary.link {
+    text-decoration-color: secondaryColor;
+}
+
+.primary.link:hover {
+    text-decoration-color: secondaryColor;
+}
+
 .primary.link:hover > * {
     color: secondaryColor;
 }
 
+.secondary.link:hover {
+    text-decoration-color: primaryColor;
+}
+
 .secondary.link:hover > * {
     color: primaryColor;
+    text-decoration-color: primaryColor;
 }

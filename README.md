@@ -14,9 +14,12 @@
 
 https://multi-step-form-27082023-794b6e0622ab.herokuapp.com/
 
+https://github.com/qianzhong516/multi-step-form-2/assets/33209457/3a958c12-dae3-4b6e-90ec-67af0aeed8c4
+
 ## Project Intro
 
 This project is built based on the design from [Frontend Mentor](https://www.frontendmentor.io/challenges/multistep-form-YVAnSdqQBJ).
+
 
 ## Techstack Intro
 

@@ -14,8 +14,7 @@ export class FlowStoreImpl implements FlowStore {
     steps: Step[] = [];
 
     constructor(
-        // TODO: fix: `any` is an escape hatch before a better solution
-        private readonly flow: Flow<any>,
+        private readonly flow: Flow,
         private currentStep: Step | null,
         public flowSequence: FlowSequence
     ) {
@@ -28,7 +27,12 @@ export class FlowStoreImpl implements FlowStore {
         }, [] as Step[]);
     }
 
-    get createCurrentStep(): CreateStepStructure<MainStep> | undefined {
+    get createCurrentStep():
+        | CreateStepStructure<Step.PERSONAL_INFO>
+        | CreateStepStructure<Step.SELECT_PLAN>
+        | CreateStepStructure<Step.ADD_ONS>
+        | CreateStepStructure<Step.SUMMARY>
+        | undefined {
         if (this.currentStep == null) {
             return;
         }

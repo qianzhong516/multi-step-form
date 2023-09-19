@@ -73,11 +73,11 @@ export type CreateStepStructure<T extends MainStep> = ({
     formHandler,
 }: {
     navigationProvider: NavigationProvider;
-    formHandler: MultiStepFormHandler<T>;
+    formHandler: MultiStepFormHandler;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
     // because one MainStep could contain multiple sub steps.
-    step: MainStep;
+    step: T;
     structure: StepStructure;
 };
 
@@ -90,7 +90,7 @@ type stepMap<T extends Step> = {
     [Step.CONFIRMATION]: Step.SUMMARY;
 }[T];
 
-export type Flow<T extends Step> = { [P in T]: CreateStep<stepMap<T>> };
+export type Flow = { [P in Step]: CreateStep<stepMap<P>> };
 
 export interface NavigationProvider {
     goTo(...args: Parameters<FlowStore['goTo']>): void;
@@ -101,19 +101,24 @@ export interface NavigationProvider {
 
 export interface FlowStore {
     steps: Step[];
-    get createCurrentStep(): CreateStepStructure<MainStep> | undefined;
+    get createCurrentStep():
+        | CreateStepStructure<Step.PERSONAL_INFO>
+        | CreateStepStructure<Step.SELECT_PLAN>
+        | CreateStepStructure<Step.ADD_ONS>
+        | CreateStepStructure<Step.SUMMARY>
+        | undefined;
     goTo({ step }: { step: Step }): void;
     goNext(): void;
     goBack(): void;
     close(): void;
 }
 
-export interface MultiStepFormHandler<T extends MainStep> {
+export interface MultiStepFormHandler {
     getFormData<U extends MainStep>(step: U): SharedState[U];
     setFormData<U extends MainStep>(step: U, data: SharedState[U]): void;
-    getCurrentFormData(step: T): SharedState[T];
-    setCurrentFormData(step: T, data: SharedState[T]): void;
-    canSubmit(step: T): boolean;
+    getCurrentFormData<T extends MainStep>(step: T): SharedState[T];
+    setCurrentFormData<T extends MainStep>(step: T, data: SharedState[T]): void;
+    canSubmit<T extends MainStep>(step: T): boolean;
     getAddonOptions(): AddonOption[];
     getPlanSelectOptions(type: RecurringVariant): PlanSelectOption;
 }

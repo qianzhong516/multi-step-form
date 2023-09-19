@@ -13,9 +13,7 @@ import {
  * It also acts as a proxy to the form data state for reading and
  * writing the form data in each step.
  */
-export class MultiStepFormHandlerImpl<T extends MainStep>
-    implements MultiStepFormHandler<T>
-{
+export class MultiStepFormHandlerImpl implements MultiStepFormHandler {
     constructor(
         // proxy to the `multiStepFormData` state
         private formData: SharedState,
@@ -53,7 +51,7 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
         });
     }
 
-    private getFormHandler(step: T) {
+    private getFormHandler<T extends MainStep>(step: T) {
         return this.formHandlerFactory[step];
     }
 
@@ -75,15 +73,18 @@ export class MultiStepFormHandlerImpl<T extends MainStep>
         this.updateFormData({ [step]: data });
     }
 
-    getCurrentFormData(step: T) {
+    getCurrentFormData<T extends MainStep>(step: T) {
         return this.formData[step];
     }
 
-    setCurrentFormData(step: T, data: SharedState[keyof SharedState]) {
+    setCurrentFormData<T extends MainStep>(
+        step: T,
+        data: SharedState[keyof SharedState]
+    ) {
         this.updateFormData({ [step]: data });
     }
 
-    canSubmit(step: T) {
+    canSubmit<T extends MainStep>(step: T) {
         return !!this.getFormHandler(step)?.canSubmit;
     }
 }

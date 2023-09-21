@@ -1,13 +1,15 @@
-import type { NavigationProvider, FlowStore, Step } from './types';
+import type { NavigationProvider, FlowStore, Step, MainStep } from './types';
 
 /**
  * NavigationProvider is a proxy to flowStore navgiations.
  * Step navigation is managed in flowStore isolately from the state management system to form an
  * object-oriented code structure, hence rerender is called manually in each type of navigation.
  */
-export class NavigationProviderImpl implements NavigationProvider {
+export class NavigationProviderImpl
+    implements NavigationProvider<Step, MainStep>
+{
     constructor(
-        private readonly flowStore: FlowStore,
+        private readonly flowStore: FlowStore<Step, MainStep>,
         private readonly rerenderStep: () => void,
         private readonly closeDialog?: () => void
     ) {}

@@ -45,8 +45,9 @@ export type MainStep = Exclude<Step, 'confirmation'>;
 
 export type SubStep = Exclude<Step, MainStep>;
 
-export type FlowSequence = Partial<
-    Record<MainStep, { subsequence: SubStep[] }>
+// make MainStep & SubStep abstract for testing purpose
+export type FlowSequence<MainStep, SubStep> = Partial<
+    Record<MainStep & string, { subsequence: SubStep[] }>
 >;
 
 export type StepStructure = Pick<
@@ -58,55 +59,45 @@ export type StepStructure = Pick<
     onClose?: () => void;
 };
 
-export type CreateStepArgs = {
-    flowStore: FlowStore;
+export type CreateStepArgs<Step, MainStep> = {
+    flowStore: FlowStore<Step, MainStep>;
     options: {};
 };
 
-export type CreateStep<T extends MainStep> = ({
+export type CreateStep<Step, MainStep> = ({
     flowStore,
     options,
-}: CreateStepArgs) => CreateStepStructure<T>;
+}: CreateStepArgs<Step, MainStep>) => CreateStepStructure<Step, MainStep>;
 
-export type CreateStepStructure<T extends MainStep> = ({
+export type CreateStepStructure<Step, MainStep> = ({
     navigationProvider,
     formHandler,
 }: {
-    navigationProvider: NavigationProvider;
+    navigationProvider: NavigationProvider<Step, MainStep>;
     formHandler: MultiStepFormHandler;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
     // because one MainStep could contain multiple sub steps.
-    step: T;
+    step: MainStep;
     structure: StepStructure;
 };
 
-// mapping each form data type into their main step.
-type stepMap<T extends Step> = {
-    [Step.PERSONAL_INFO]: Step.PERSONAL_INFO;
-    [Step.SELECT_PLAN]: Step.SELECT_PLAN;
-    [Step.ADD_ONS]: Step.ADD_ONS;
-    [Step.SUMMARY]: Step.SUMMARY;
-    [Step.CONFIRMATION]: Step.SUMMARY;
-}[T];
+export type Flow<Step, MainStep> = {
+    [P in Step & string]: CreateStep<Step, MainStep>;
+};
 
-export type Flow = { [P in Step]: CreateStep<stepMap<P>> };
-
-export interface NavigationProvider {
-    goTo(...args: Parameters<FlowStore['goTo']>): void;
-    goNext(...args: Parameters<FlowStore['goNext']>): void;
-    goBack(...args: Parameters<FlowStore['goBack']>): void;
+export interface NavigationProvider<Step, MainStep> {
+    goTo(...args: Parameters<FlowStore<Step, MainStep>['goTo']>): void;
+    goNext(...args: Parameters<FlowStore<Step, MainStep>['goNext']>): void;
+    goBack(...args: Parameters<FlowStore<Step, MainStep>['goBack']>): void;
     close(): void;
 }
 
-export interface FlowStore {
+export interface FlowStore<Step, MainStep> {
     steps: Step[];
-    get createCurrentStep():
-        | CreateStepStructure<Step.PERSONAL_INFO>
-        | CreateStepStructure<Step.SELECT_PLAN>
-        | CreateStepStructure<Step.ADD_ONS>
-        | CreateStepStructure<Step.SUMMARY>
-        | undefined;
+    get createCurrentStep(): Step extends any
+        ? CreateStepStructure<Step, MainStep> | undefined
+        : never;
     goTo({ step }: { step: Step }): void;
     goNext(): void;
     goBack(): void;

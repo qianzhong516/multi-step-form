@@ -2,6 +2,7 @@ import type {
     CreateStepArgs,
     CreateStepStructure,
     AddonDetails,
+    MainStep,
 } from '../../../types';
 import { Step } from '../../../types';
 import { PlanAddonsForm } from './plan_addons_form';
@@ -10,7 +11,7 @@ import React from 'react';
 export function createPlanAddonsStep({
     flowStore,
     options: {},
-}: CreateStepArgs): CreateStepStructure<Step.ADD_ONS> {
+}: CreateStepArgs<Step, MainStep>): CreateStepStructure<Step, Step.ADD_ONS> {
     return ({ navigationProvider, formHandler }) => {
         const onChange = (isSelected: boolean, value: AddonDetails) => {
             const formData = formHandler.getCurrentFormData(Step.ADD_ONS);

@@ -1,11 +1,16 @@
 import React from 'react';
-import { CreateStepArgs, CreateStepStructure, Step } from '../../../types';
+import {
+    CreateStepArgs,
+    CreateStepStructure,
+    MainStep,
+    Step,
+} from '../../../types';
 import { Confirmation } from './confirmation';
 
 export function createConfirmationStep({
     flowStore,
     options: {},
-}: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
+}: CreateStepArgs<Step, MainStep>): CreateStepStructure<Step, Step.SUMMARY> {
     return ({ navigationProvider }) => {
         return {
             step: Step.SUMMARY,

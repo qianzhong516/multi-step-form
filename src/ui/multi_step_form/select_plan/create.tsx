@@ -5,6 +5,7 @@ import {
     Step,
     PlanDetails,
     RecurringVariant,
+    MainStep,
 } from '../../../types';
 import { SelectPlanForm } from './select_plan_form';
 import { SelectPlanPresenter } from './presenter';
@@ -12,7 +13,10 @@ import { SelectPlanPresenter } from './presenter';
 export function createSelectPlanStep({
     flowStore,
     options: {},
-}: CreateStepArgs): CreateStepStructure<Step.SELECT_PLAN> {
+}: CreateStepArgs<Step, MainStep>): CreateStepStructure<
+    Step,
+    Step.SELECT_PLAN
+> {
     return ({ navigationProvider, formHandler }) => {
         const formData = formHandler.getCurrentFormData(Step.SELECT_PLAN);
 

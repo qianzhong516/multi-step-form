@@ -5,18 +5,19 @@ import type {
     CreateStepStructure,
     FlowSequence,
     MainStep,
+    SubStep,
 } from './types';
 
 /**
  * FlowStore manages the form navigation and returns a function to create the current step
  */
-export class FlowStoreImpl implements FlowStore {
+export class FlowStoreImpl implements FlowStore<Step, MainStep> {
     steps: Step[] = [];
 
     constructor(
-        private readonly flow: Flow,
+        private readonly flow: Flow<Step, MainStep>,
         private currentStep: Step | null,
-        public flowSequence: FlowSequence
+        public flowSequence: FlowSequence<MainStep, SubStep>
     ) {
         // push main steps and sub steps into an array by order
         this.steps = (
@@ -27,12 +28,9 @@ export class FlowStoreImpl implements FlowStore {
         }, [] as Step[]);
     }
 
-    get createCurrentStep():
-        | CreateStepStructure<Step.PERSONAL_INFO>
-        | CreateStepStructure<Step.SELECT_PLAN>
-        | CreateStepStructure<Step.ADD_ONS>
-        | CreateStepStructure<Step.SUMMARY>
-        | undefined {
+    get createCurrentStep(): Step extends any
+        ? CreateStepStructure<Step, MainStep> | undefined
+        : never {
         if (this.currentStep == null) {
             return;
         }

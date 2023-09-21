@@ -1,11 +1,16 @@
-import { CreateStepArgs, CreateStepStructure, Step } from '../../../types';
+import {
+    CreateStepArgs,
+    CreateStepStructure,
+    MainStep,
+    Step,
+} from '../../../types';
 import React from 'react';
 import { Summary } from './summary';
 
 export function createSummaryStep({
     flowStore,
     options: {},
-}: CreateStepArgs): CreateStepStructure<Step.SUMMARY> {
+}: CreateStepArgs<Step, MainStep>): CreateStepStructure<Step, Step.SUMMARY> {
     return ({ navigationProvider, formHandler }) => {
         const onChangePlan = () => {
             navigationProvider.goTo({ step: Step.SELECT_PLAN });

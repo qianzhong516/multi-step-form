@@ -59,22 +59,38 @@ export type StepStructure = Pick<
     onClose?: () => void;
 };
 
-export type CreateStepArgs<Step, MainStep> = {
-    flowStore: FlowStore<Step, MainStep>;
+export type CreateStepArgs<
+    Step,
+    MainStep extends PropertyKey,
+    SharedState extends Partial<Record<MainStep, any>>
+> = {
+    flowStore: FlowStore<Step, MainStep, SharedState>;
     options: {};
 };
 
-export type CreateStep<Step, MainStep> = ({
+export type CreateStep<
+    Step,
+    MainStep extends PropertyKey,
+    SharedState extends Partial<Record<MainStep, any>>
+> = ({
     flowStore,
     options,
-}: CreateStepArgs<Step, MainStep>) => CreateStepStructure<Step, MainStep>;
+}: CreateStepArgs<Step, MainStep, SharedState>) => CreateStepStructure<
+    Step,
+    MainStep,
+    SharedState
+>;
 
-export type CreateStepStructure<Step, MainStep> = ({
+export type CreateStepStructure<
+    Step,
+    MainStep extends PropertyKey,
+    SharedState
+> = ({
     navigationProvider,
     formHandler,
 }: {
-    navigationProvider: NavigationProvider<Step, MainStep>;
-    formHandler: MultiStepFormHandler;
+    navigationProvider: NavigationProvider<Step, MainStep, SharedState>;
+    formHandler: MultiStepFormHandler<SharedState>;
 }) => {
     // `step` is for controlling the active step in the dialog sidebar,
     // because one MainStep could contain multiple sub steps.
@@ -82,21 +98,35 @@ export type CreateStepStructure<Step, MainStep> = ({
     structure: StepStructure;
 };
 
-export type Flow<Step, MainStep> = {
-    [P in Step & string]: CreateStep<Step, MainStep>;
+export type Flow<
+    Step,
+    MainStep extends PropertyKey,
+    SharedState extends Partial<Record<MainStep, any>>
+> = {
+    [P in Step & string]: CreateStep<Step, MainStep, SharedState>;
 };
 
-export interface NavigationProvider<Step, MainStep> {
-    goTo(...args: Parameters<FlowStore<Step, MainStep>['goTo']>): void;
-    goNext(...args: Parameters<FlowStore<Step, MainStep>['goNext']>): void;
-    goBack(...args: Parameters<FlowStore<Step, MainStep>['goBack']>): void;
+export interface NavigationProvider<
+    Step,
+    MainStep extends PropertyKey,
+    SharedState
+> {
+    goTo(
+        ...args: Parameters<FlowStore<Step, MainStep, SharedState>['goTo']>
+    ): void;
+    goNext(
+        ...args: Parameters<FlowStore<Step, MainStep, SharedState>['goNext']>
+    ): void;
+    goBack(
+        ...args: Parameters<FlowStore<Step, MainStep, SharedState>['goBack']>
+    ): void;
     close(): void;
 }
 
-export interface FlowStore<Step, MainStep> {
+export interface FlowStore<Step, MainStep extends PropertyKey, SharedState> {
     steps: Step[];
     get createCurrentStep(): Step extends any
-        ? CreateStepStructure<Step, MainStep> | undefined
+        ? CreateStepStructure<Step, MainStep, SharedState> | undefined
         : never;
     goTo({ step }: { step: Step }): void;
     goNext(): void;
@@ -104,12 +134,13 @@ export interface FlowStore<Step, MainStep> {
     close(): void;
 }
 
-export interface MultiStepFormHandler {
-    getFormData<U extends MainStep>(step: U): SharedState[U];
-    setFormData<U extends MainStep>(step: U, data: SharedState[U]): void;
-    getCurrentFormData<T extends MainStep>(step: T): SharedState[T];
-    setCurrentFormData<T extends MainStep>(step: T, data: SharedState[T]): void;
-    canSubmit<T extends MainStep>(step: T): boolean;
+export interface MultiStepFormHandler<SharedState> {
+    getFormData<U extends keyof SharedState>(step: U): SharedState[U];
+    setFormData<U extends keyof SharedState>(
+        step: U,
+        data: SharedState[U]
+    ): void;
+    canSubmit<U extends keyof SharedState>(step: U): boolean;
     getAddonOptions(): AddonOption[];
     getPlanSelectOptions(type: RecurringVariant): PlanSelectOption;
 }

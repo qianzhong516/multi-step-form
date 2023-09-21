@@ -3,6 +3,7 @@ import type {
     CreateStepStructure,
     AddonDetails,
     MainStep,
+    SharedState,
 } from '../../../types';
 import { Step } from '../../../types';
 import { PlanAddonsForm } from './plan_addons_form';
@@ -11,19 +12,23 @@ import React from 'react';
 export function createPlanAddonsStep({
     flowStore,
     options: {},
-}: CreateStepArgs<Step, MainStep>): CreateStepStructure<Step, Step.ADD_ONS> {
+}: CreateStepArgs<Step, MainStep, SharedState>): CreateStepStructure<
+    Step,
+    Step.ADD_ONS,
+    SharedState
+> {
     return ({ navigationProvider, formHandler }) => {
         const onChange = (isSelected: boolean, value: AddonDetails) => {
-            const formData = formHandler.getCurrentFormData(Step.ADD_ONS);
+            const formData = formHandler.getFormData(Step.ADD_ONS);
             if (isSelected) {
-                formHandler.setCurrentFormData(Step.ADD_ONS, {
+                formHandler.setFormData(Step.ADD_ONS, {
                     ...formData,
                     items: [...formData.items, value],
                 });
                 return;
             }
             // remove the deselected addon item
-            formHandler?.setCurrentFormData(Step.ADD_ONS, {
+            formHandler?.setFormData(Step.ADD_ONS, {
                 ...formData,
                 items: formData.items.filter(
                     (addon) => addon.type !== value.type
@@ -33,15 +38,12 @@ export function createPlanAddonsStep({
 
         const getAddonOption = () => {
             // TODO: clean up
-            return formHandler.getCurrentFormData(Step.ADD_ONS).type ===
-                'monthly'
+            return formHandler.getFormData(Step.ADD_ONS).type === 'monthly'
                 ? formHandler.getAddonOptions()[0]
                 : formHandler.getAddonOptions()[1];
         };
 
-        const selectedAddons = formHandler.getCurrentFormData(
-            Step.ADD_ONS
-        ).items;
+        const selectedAddons = formHandler.getFormData(Step.ADD_ONS).items;
 
         return {
             step: Step.ADD_ONS,

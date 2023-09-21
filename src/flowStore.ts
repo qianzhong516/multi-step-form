@@ -6,16 +6,17 @@ import type {
     FlowSequence,
     MainStep,
     SubStep,
+    SharedState,
 } from './types';
 
 /**
  * FlowStore manages the form navigation and returns a function to create the current step
  */
-export class FlowStoreImpl implements FlowStore<Step, MainStep> {
+export class FlowStoreImpl implements FlowStore<Step, MainStep, SharedState> {
     steps: Step[] = [];
 
     constructor(
-        private readonly flow: Flow<Step, MainStep>,
+        private readonly flow: Flow<Step, MainStep, SharedState>,
         private currentStep: Step | null,
         public flowSequence: FlowSequence<MainStep, SubStep>
     ) {
@@ -29,7 +30,7 @@ export class FlowStoreImpl implements FlowStore<Step, MainStep> {
     }
 
     get createCurrentStep(): Step extends any
-        ? CreateStepStructure<Step, MainStep> | undefined
+        ? CreateStepStructure<Step, MainStep, SharedState> | undefined
         : never {
         if (this.currentStep == null) {
             return;

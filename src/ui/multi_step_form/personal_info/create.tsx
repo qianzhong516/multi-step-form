@@ -4,6 +4,7 @@ import {
     CreateStepStructure,
     MainStep,
     PersonalInfo,
+    SharedState,
     Step,
 } from '../../../types';
 import { PersonalInfoForm } from './personal_info_form';
@@ -11,13 +12,14 @@ import { PersonalInfoForm } from './personal_info_form';
 export function createPersonalInfoStep({
     flowStore,
     options: {},
-}: CreateStepArgs<Step, MainStep>): CreateStepStructure<
+}: CreateStepArgs<Step, MainStep, SharedState>): CreateStepStructure<
     Step,
-    Step.PERSONAL_INFO
+    Step.PERSONAL_INFO,
+    SharedState
 > {
     return ({ navigationProvider, formHandler }) => {
         const onChange = (data: PersonalInfo) => {
-            formHandler.setCurrentFormData(Step.PERSONAL_INFO, data);
+            formHandler.setFormData(Step.PERSONAL_INFO, data);
         };
 
         return {
@@ -29,7 +31,7 @@ export function createPersonalInfoStep({
                     'Please provide your name, email address, and phone number',
                 content: (
                     <PersonalInfoForm
-                        personalInfo={formHandler.getCurrentFormData(
+                        personalInfo={formHandler.getFormData(
                             Step.PERSONAL_INFO
                         )}
                         onChange={onChange}

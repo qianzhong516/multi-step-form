@@ -6,6 +6,7 @@ import {
     PlanDetails,
     RecurringVariant,
     MainStep,
+    SharedState,
 } from '../../../types';
 import { SelectPlanForm } from './select_plan_form';
 import { SelectPlanPresenter } from './presenter';
@@ -13,19 +14,20 @@ import { SelectPlanPresenter } from './presenter';
 export function createSelectPlanStep({
     flowStore,
     options: {},
-}: CreateStepArgs<Step, MainStep>): CreateStepStructure<
+}: CreateStepArgs<Step, MainStep, SharedState>): CreateStepStructure<
     Step,
-    Step.SELECT_PLAN
+    Step.SELECT_PLAN,
+    SharedState
 > {
     return ({ navigationProvider, formHandler }) => {
-        const formData = formHandler.getCurrentFormData(Step.SELECT_PLAN);
+        const formData = formHandler.getFormData(Step.SELECT_PLAN);
 
         const presenter = new SelectPlanPresenter(
             formHandler.getFormData(Step.ADD_ONS),
             formHandler.getAddonOptions()
         );
         const onChange = (value: PlanDetails) => {
-            formHandler.setCurrentFormData(Step.SELECT_PLAN, value);
+            formHandler.setFormData(Step.SELECT_PLAN, value);
             const updatedAddons = presenter.getUpdatedAddons(value.type);
             if (updatedAddons) {
                 formHandler.setFormData(Step.ADD_ONS, updatedAddons);

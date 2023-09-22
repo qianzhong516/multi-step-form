@@ -1,4 +1,4 @@
-import { FlowSequence, MainStep, Step, SubStep } from './types';
+import { FlowSequence, MainStep, SharedState, Step, SubStep } from './types';
 import { FlowStoreImpl as FlowStore } from './flowStore';
 import { createPersonalInfoStep } from './ui/multi_step_form/personal_info/create';
 import { createSelectPlanStep } from './ui/multi_step_form/select_plan/create';
@@ -28,7 +28,7 @@ const flowSequence: FlowSequence<MainStep, SubStep> = {
     },
 };
 
-export const flowStore = new FlowStore(
+export const flowStore = new FlowStore<Step, MainStep, SubStep, SharedState>(
     {
         personalInfo: createPersonalInfoStep,
         selectPlan: createSelectPlanStep,

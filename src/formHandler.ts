@@ -1,8 +1,12 @@
 import {
+    monthlyAddonList,
+    monthlyPlanDetails,
+    yearlyAddonList,
+    yearlyPlanDetails,
+} from './data';
+import {
     type FormHandler,
-    type MainStep,
     type MultiStepFormHandler,
-    type SharedState,
     RecurringVariant,
     PlanSelectOption,
     AddonOption,
@@ -13,7 +17,7 @@ import {
  * It also acts as a proxy to the form data state for reading and
  * writing the form data in each step.
  */
-export class MultiStepFormHandlerImpl
+export class MultiStepFormHandlerImpl<SharedState>
     implements MultiStepFormHandler<SharedState>
 {
     constructor(
@@ -22,9 +26,11 @@ export class MultiStepFormHandlerImpl
         private planSelectOptions: PlanSelectOption[],
         private addonOptions: AddonOption[],
         // proxy to the `setMultiStepFormData`
-        private updateFormData: (formData: Partial<SharedState>) => void,
+        private updateFormData: <U extends keyof SharedState>(
+            formData: Record<string, SharedState[U]>
+        ) => void,
         private readonly formHandlerFactory: Record<
-            MainStep,
+            keyof SharedState,
             FormHandler | undefined
         >
     ) {}
@@ -38,6 +44,7 @@ export class MultiStepFormHandlerImpl
     }
 
     private async fetchAddonOptions(): Promise<AddonOption[]> {
+        // setTimeout to simulate an api call
         return new Promise((res, _) => {
             setTimeout(() => {
                 res([monthlyAddonList, yearlyAddonList]);
@@ -53,7 +60,7 @@ export class MultiStepFormHandlerImpl
         });
     }
 
-    private getFormHandler<T extends MainStep>(step: T) {
+    private getFormHandler<U extends keyof SharedState>(step: U) {
         return this.formHandlerFactory[step];
     }
 
@@ -75,67 +82,7 @@ export class MultiStepFormHandlerImpl
         this.updateFormData({ [step]: data });
     }
 
-    canSubmit<T extends MainStep>(step: T) {
+    canSubmit<U extends keyof SharedState>(step: U) {
         return !!this.getFormHandler(step)?.canSubmit;
     }
 }
-
-const monthlyPlanDetails: PlanSelectOption = {
-    type: 'monthly',
-    options: [
-        { name: 'arcade', price: 9 },
-        { name: 'advanced', price: 12 },
-        { name: 'pro', price: 15 },
-    ],
-};
-
-const yearlyPlanDetails: PlanSelectOption = {
-    type: 'yearly',
-    options: [
-        { name: 'arcade', price: 90 },
-        { name: 'advanced', price: 120 },
-        { name: 'pro', price: 150 },
-    ],
-};
-
-const monthlyAddonList: AddonOption = {
-    type: 'monthly',
-    options: [
-        {
-            name: 'Online service',
-            description: 'Access to multiplayer games',
-            price: 9,
-        },
-        {
-            name: 'Larger storage',
-            description: 'Extra 1TB of cloud save',
-            price: 12,
-        },
-        {
-            name: 'Customizable profile',
-            description: 'Custom theme on your profile',
-            price: 15,
-        },
-    ],
-};
-
-const yearlyAddonList: AddonOption = {
-    type: 'yearly',
-    options: [
-        {
-            name: 'Online service',
-            description: 'Access to multiplayer games',
-            price: 10,
-        },
-        {
-            name: 'Larger storage',
-            description: 'Extra 1TB of cloud save',
-            price: 20,
-        },
-        {
-            name: 'Customizable profile',
-            description: 'Custom theme on your profile',
-            price: 20,
-        },
-    ],
-};

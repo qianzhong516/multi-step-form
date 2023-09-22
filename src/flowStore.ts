@@ -1,18 +1,20 @@
 import type {
     FlowStore,
-    Step,
     Flow,
     CreateStepStructure,
     FlowSequence,
-    MainStep,
-    SubStep,
-    SharedState,
 } from './types';
 
 /**
  * FlowStore manages the form navigation and returns a function to create the current step
  */
-export class FlowStoreImpl implements FlowStore<Step, MainStep, SharedState> {
+export class FlowStoreImpl<
+    Step extends string,
+    MainStep extends Step,
+    SubStep extends Step,
+    SharedState
+> implements FlowStore<Step, MainStep, SharedState>
+{
     steps: Step[] = [];
 
     constructor(
@@ -29,9 +31,9 @@ export class FlowStoreImpl implements FlowStore<Step, MainStep, SharedState> {
         }, [] as Step[]);
     }
 
-    get createCurrentStep(): Step extends any
-        ? CreateStepStructure<Step, MainStep, SharedState> | undefined
-        : never {
+    get createCurrentStep():
+        | CreateStepStructure<Step, MainStep, SharedState>
+        | undefined {
         if (this.currentStep == null) {
             return;
         }

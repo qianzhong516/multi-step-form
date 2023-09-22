@@ -46,8 +46,8 @@ export type MainStep = Exclude<Step, 'confirmation'>;
 export type SubStep = Exclude<Step, MainStep>;
 
 // make MainStep & SubStep abstract for testing purpose
-export type FlowSequence<MainStep, SubStep> = Partial<
-    Record<MainStep & string, { subsequence: SubStep[] }>
+export type FlowSequence<MainStep extends PropertyKey, SubStep> = Partial<
+    Record<MainStep, { subsequence: SubStep[] }>
 >;
 
 export type StepStructure = Pick<
@@ -60,18 +60,18 @@ export type StepStructure = Pick<
 };
 
 export type CreateStepArgs<
-    Step,
-    MainStep extends PropertyKey,
-    SharedState extends Partial<Record<MainStep, any>>
+    Step extends PropertyKey,
+    MainStep extends Step,
+    SharedState
 > = {
     flowStore: FlowStore<Step, MainStep, SharedState>;
     options: {};
 };
 
 export type CreateStep<
-    Step,
-    MainStep extends PropertyKey,
-    SharedState extends Partial<Record<MainStep, any>>
+    Step extends PropertyKey,
+    MainStep extends Step,
+    SharedState
 > = ({
     flowStore,
     options,
@@ -82,8 +82,8 @@ export type CreateStep<
 >;
 
 export type CreateStepStructure<
-    Step,
-    MainStep extends PropertyKey,
+    Step extends PropertyKey,
+    MainStep extends Step,
     SharedState
 > = ({
     navigationProvider,
@@ -99,16 +99,16 @@ export type CreateStepStructure<
 };
 
 export type Flow<
-    Step,
-    MainStep extends PropertyKey,
-    SharedState extends Partial<Record<MainStep, any>>
+    Step extends PropertyKey,
+    MainStep extends Step,
+    SharedState
 > = {
     [P in Step & string]: CreateStep<Step, MainStep, SharedState>;
 };
 
 export interface NavigationProvider<
-    Step,
-    MainStep extends PropertyKey,
+    Step extends PropertyKey,
+    MainStep extends Step,
     SharedState
 > {
     goTo(
@@ -123,11 +123,15 @@ export interface NavigationProvider<
     close(): void;
 }
 
-export interface FlowStore<Step, MainStep extends PropertyKey, SharedState> {
+export interface FlowStore<
+    Step extends PropertyKey,
+    MainStep extends Step,
+    SharedState
+> {
     steps: Step[];
-    get createCurrentStep(): Step extends any
-        ? CreateStepStructure<Step, MainStep, SharedState> | undefined
-        : never;
+    get createCurrentStep():
+        | CreateStepStructure<Step, MainStep, SharedState>
+        | undefined;
     goTo({ step }: { step: Step }): void;
     goNext(): void;
     goBack(): void;

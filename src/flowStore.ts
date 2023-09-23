@@ -31,6 +31,11 @@ export class FlowStoreImpl<
         }, [] as Step[]);
     }
 
+    // for testing purpose
+    get currentNode() {
+        return this.currentStep;
+    }
+
     get createCurrentStep():
         | CreateStepStructure<Step, MainStep, SharedState>
         | undefined {

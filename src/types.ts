@@ -103,7 +103,7 @@ export type Flow<
     MainStep extends Step,
     SharedState
 > = {
-    [P in Step & string]: CreateStep<Step, MainStep, SharedState>;
+    [P in Step]: CreateStep<Step, MainStep, SharedState>;
 };
 
 export interface NavigationProvider<

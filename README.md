@@ -56,7 +56,7 @@ npm run storybook
 
 ## TODOs
 
--   [] Add tests
+-   [x] Add tests for flowStore
 -   [] Use miniExtractCssPlugin or stay with style-loader?
 -   [] Move fonts to the `assets/` folder after build
 -   [] Render text color based on theme
